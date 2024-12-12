@@ -1,7 +1,10 @@
 import { useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import StandardCard from "../components/manga/cards/StandardCard";
+import StandardCardSkeleton from "../components/skeleton/StandardCardSkeleton";
 import { useMangas } from "../services/MangaService";
 
 export default function Browse() {
@@ -9,11 +12,8 @@ export default function Browse() {
   const [dropdown1, setDropdown1] = useState("");
   const [dropdown2, setDropdown2] = useState("");
 
-  const { data, error } = useMangas();
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useMangas(21); // Fetch 24 items per page
 
   const handleSearchChange = (e: any) => {
     setSearchTerm(e.target.value);
@@ -26,6 +26,10 @@ export default function Browse() {
   const handleDropdown2Change = (e: any) => {
     setDropdown2(e.target.value);
   };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <>
@@ -70,13 +74,23 @@ export default function Browse() {
             </div>
           </div>
         </div>
-        <div className="w-11/12 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-4">
-          {data ? (
-            data.map((manga) => <StandardCard key={manga.id} manga={manga} />)
-          ) : (
-            <div>No data available</div>
-          )}
-        </div>
+
+        <InfiniteScroll
+          dataLength={data?.pages.flatMap((page) => page.content).length || 0}
+          next={fetchNextPage}
+          hasMore={!!hasNextPage}
+          loader={Array.from({ length: 10 }).map((_, index) => (
+            <StandardCardSkeleton />
+          ))}
+          endMessage={<div>No more data</div>}
+          className="w-11/12 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-4"
+        >
+          {data?.pages
+            .flatMap((page) => page.content)
+            .map((manga) => (
+              <StandardCard key={manga.id} manga={manga} />
+            ))}
+        </InfiniteScroll>
       </main>
       <Footer />
     </>

@@ -20,7 +20,7 @@ export default function Header() {
               <ul className="flex justify-around h-full">
                 <li className="h-full flex items-center">
                   <a
-                    href="/Browse"
+                    href="/dashboard"
                     className="text-black text-xl hover:border-b-2 hover:border-purple-800"
                   >
                     Dashboard
@@ -28,7 +28,7 @@ export default function Header() {
                 </li>
                 <li className="h-full flex items-center">
                   <a
-                    href="#"
+                    href="/browse"
                     className="text-black text-xl  hover:border-b-2 hover:border-purple-800"
                   >
                     Browse
@@ -36,7 +36,7 @@ export default function Header() {
                 </li>
                 <li className="h-full flex items-center">
                   <a
-                    href="#"
+                    href="/discovery"
                     className="text-black text-xl hover:border-b-2 hover:border-purple-800"
                   >
                     Discovery
