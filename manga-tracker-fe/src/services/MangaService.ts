@@ -13,10 +13,9 @@ const fetchMangas = async (page: number, size: number): Promise<Page<MangaDto>> 
 export const useMangas = (pageSize: number) => {
   return useInfiniteQuery<Page<MangaDto>, Error>(
     'mangas',
-    ({ pageParam = 0 }) => fetchMangas(pageParam, pageSize), // Pass the current page and page size
+    ({ pageParam = 0 }) => fetchMangas(pageParam, pageSize), 
     {
       getNextPageParam: (lastPage) => {
-        // If there are more pages, return the next page index
         return lastPage.number + 1 < lastPage.totalPages ? lastPage.number + 1 : undefined;
       },
     }
@@ -31,3 +30,34 @@ export const useMangas = (pageSize: number) => {
   export const useMangaById = (id: string) => {
     return useQuery<MangaDto, Error>(['manga', id], () => fetchMangaById(id))
   }
+
+  export const fetchSortedMangas = async (
+    page: number,
+    size: number,
+    sort: string,
+    sortDirection: string,
+    selectedTypes: string[]
+  ): Promise<Page<MangaDto>> => {
+    const typesParam = selectedTypes.length > 0 ? `&types=${selectedTypes.join(',')}` : '';
+    const response = await axiosInstance.get(
+      `/manga/sorted?page=${page}&size=${size}&sort=${sort}&sortDirection=${sortDirection}${typesParam}`
+    );
+    return response.data;
+  };
+
+  export const usePopularMangas = (
+    pageSize: number,
+    sort: string,
+    sortDirection: string,
+    selectedTypes: string[]
+  ) => {
+    return useInfiniteQuery<Page<MangaDto>, Error>(
+      ['sortedMangas', sort, sortDirection, selectedTypes],
+      ({ pageParam = 0 }) => fetchSortedMangas(pageParam, pageSize, sort, sortDirection, selectedTypes),
+      {
+        getNextPageParam: (lastPage) => {
+          return lastPage.number + 1 < lastPage.totalPages ? lastPage.number + 1 : undefined;
+        },
+      }
+    );
+  };
