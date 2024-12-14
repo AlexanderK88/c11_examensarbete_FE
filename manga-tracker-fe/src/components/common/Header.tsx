@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
@@ -8,58 +9,69 @@ export default function Header() {
     setIsMobile(!isMobile);
   };
 
+  const isActive = (path: string) => {
+    const location = useLocation();
+    return location.pathname === path ? "border-purple-800" : "";
+  };
+
   return (
     <>
-      <header className="bg-white border-b-2 shadow-sm relative z-20 h-16 px-4">
+      <header className="w-full bg-white border-b-2 shadow-sm relative z-20 h-16 px-4">
         <div className="flex justify-between h-full ">
           <div className="h-full flex items-center">
             <img src="/logo.png" alt="LOGO" className="w-48 " />
           </div>
-          <div className="hidden lg:flex space-x-8 items-center w-1/3 self-center h-full">
-            <nav className="font-semibold w-full h-full">
-              <ul className="flex justify-around h-full">
-                <li className="h-full flex items-center">
-                  <a
-                    href="/dashboard"
-                    className="text-black text-xl hover:border-b-2 hover:border-purple-800"
+          <div className="flex flex-row align-center h-full">
+            <div className="hidden md:flex items-center h-full mr-10">
+              <nav className="h-full w-full font-semibold">
+                <ul className="h-full flex gap-8">
+                  <li
+                    className={`h-full flex items-center border-b-2 border-white hover:border-purple-800 ${isActive(
+                      "/dashboard"
+                    )}`}
                   >
-                    Dashboard
-                  </a>
-                </li>
-                <li className="h-full flex items-center">
-                  <a
-                    href="/browse"
-                    className="text-black text-xl  hover:border-b-2 hover:border-purple-800"
+                    <a href="/dashboard" className="text-black text-xl">
+                      Dashboard
+                    </a>
+                  </li>
+                  <li
+                    className={`h-full flex items-center border-b-2 border-white hover:border-purple-800 ${isActive(
+                      "/browse"
+                    )}`}
                   >
-                    Browse
-                  </a>
-                </li>
-                <li className="h-full flex items-center">
-                  <a
-                    href="/discovery"
-                    className="text-black text-xl hover:border-b-2 hover:border-purple-800"
+                    <a href="/browse" className="text-black text-xl">
+                      Browse
+                    </a>
+                  </li>
+                  <li
+                    className={`h-full flex items-center border-b-2 border-white hover:border-purple-800 ${isActive(
+                      "/discovery"
+                    )}`}
                   >
-                    Discovery
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div className="flex space-x-8 items-center right-0">
-            <input
-              type="text"
-              placeholder="Search"
-              className="hidden md:inline-block w-42 p-1 border border-gray-300 rounded-md"
-            />
-            <img
-              src="/pfp.jpg"
-              alt="Avatar"
-              className="rounded-full w-10 sm:w-12"
-            />
-            <button onClick={handleMobileMenu} className="lg:hidden">
-              {" "}
-              <FaBars size={30} />{" "}
-            </button>
+                    <a href="/discovery" className="text-black text-xl">
+                      Discovery
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+
+            <div className="flex items-center ">
+              <input
+                type="text"
+                placeholder="Search"
+                className="hidden md:inline-block w-42 p-1 border border-gray-300 rounded-md"
+              />
+              <img
+                src="/pfp.jpg"
+                alt="Avatar"
+                className="rounded-full w-10 sm:w-12 md:ml-4 hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
+              />
+              <button onClick={handleMobileMenu} className="lg:hidden">
+                {" "}
+                <FaBars size={30} />{" "}
+              </button>
+            </div>
           </div>
         </div>
       </header>
