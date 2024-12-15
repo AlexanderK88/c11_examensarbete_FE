@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { MangaDto } from "../../types/mangaTypes";
+import SearchInput from "../filtering/SearchInput";
+import MangaModal from "../modals/MangaModal";
 
 export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
+  const [manga, setManga] = useState<MangaDto[]>([]);
+  const [manga1, setManga1] = useState<MangaDto[]>([]);
+
+  const location = useLocation();
 
   const handleMobileMenu = () => {
     setIsMobile(!isMobile);
   };
 
   const isActive = (path: string) => {
-    const location = useLocation();
-    return location.pathname === path ? "border-purple-800" : "";
+    return location.pathname === path
+      ? "border-purple-800"
+      : "border-transparent";
   };
 
   return (
@@ -26,25 +34,25 @@ export default function Header() {
               <nav className="h-full w-full font-semibold">
                 <ul className="h-full flex gap-8">
                   <li
-                    className={`h-full flex items-center border-b-2 border-white hover:border-purple-800 ${isActive(
+                    className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/dashboard"
-                    )}`}
+                    )} `}
                   >
                     <a href="/dashboard" className="text-black text-xl">
                       Dashboard
                     </a>
                   </li>
                   <li
-                    className={`h-full flex items-center border-b-2 border-white hover:border-purple-800 ${isActive(
+                    className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/browse"
-                    )}`}
+                    )} `}
                   >
                     <a href="/browse" className="text-black text-xl">
                       Browse
                     </a>
                   </li>
                   <li
-                    className={`h-full flex items-center border-b-2 border-white hover:border-purple-800 ${isActive(
+                    className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/discovery"
                     )}`}
                   >
@@ -57,17 +65,16 @@ export default function Header() {
             </div>
 
             <div className="flex items-center ">
-              <input
-                type="text"
-                placeholder="Search"
-                className="hidden md:inline-block w-42 p-1 border border-gray-300 rounded-md"
-              />
+              <div className="hidden lg:inline-block relative">
+                <SearchInput setMangas={setManga} />
+                <MangaModal mangas={manga} />
+              </div>
               <img
                 src="/pfp.jpg"
                 alt="Avatar"
-                className="rounded-full w-10 sm:w-12 md:ml-4 hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
+                className="rounded-full w-10 sm:w-12 md:mx-4  hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
               />
-              <button onClick={handleMobileMenu} className="lg:hidden">
+              <button onClick={handleMobileMenu} className="ml-4 lg:hidden">
                 {" "}
                 <FaBars size={30} />{" "}
               </button>
@@ -84,20 +91,17 @@ export default function Header() {
       >
         <ul className="space-y-6 text-lg font-semibold">
           <li>
-            <a href="#">Dashboard</a>
+            <a href="/dashboard">Dashboard</a>
           </li>
           <li>
-            <a href="#">Browse</a>
+            <a href="/browse">Browse</a>
           </li>
           <li>
-            <a href="#">Discovery</a>
+            <a href="/discovery">Discovery</a>
           </li>
           <li>
-            <input
-              type="text"
-              placeholder="Search"
-              className=" w-full p-1 border border-gray-300 rounded-md md:hidden"
-            />
+            <SearchInput setMangas={setManga1} />
+            <MangaModal mangas={manga1} />
           </li>
         </ul>
       </div>

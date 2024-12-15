@@ -6,19 +6,25 @@ import Footer from "../components/common/Footer";
 import StandardCard from "../components/manga/cards/StandardCard";
 import StandardCardSkeleton from "../components/skeleton/StandardCardSkeleton";
 import TypeDropdown from "../components/modals/TypeModal";
-import { usePopularMangas } from "../services/MangaService";
+import { useSortedMangas } from "../services/MangaService";
+import { MangaDto } from "../types/mangaTypes";
 
 export default function Browse() {
   const [sort, setSort] = useState("popularity");
   const [sortDirection, setSortDirection] = useState("asc");
+  const [mangas, setMangas] = useState([] as MangaDto[]);
+  const [search, setSearch] = useState("");
 
   const [dropdown2, setDropdown2] = useState("");
 
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    usePopularMangas(21, sort, sortDirection, selectedTypes);
+    useSortedMangas(21, sort, sortDirection, selectedTypes, search);
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
   const handleToggleDropdown = () => {
     setIsTypeDropdownOpen((prev) => !prev);
   };
@@ -58,17 +64,19 @@ export default function Browse() {
     <>
       <Header />
       <main className="min-h-screen">
-        <div className="w-10/12 lg:w-11/12 mt-40 p-4 mx-auto flex flex-col md:flex-row justify-between">
+        <div className="w-9/12 lg:w-10/12 mt-40 mx-auto flex flex-col md:flex-row justify-between">
           <input
             type="text"
-            placeholder="Search"
-            className="w-10/12 mx-auto md:mt-auto md:h-10 lg:mx-0 lg:w-56 p-1 border border-gray-300 rounded-md lg:ml-4"
+            placeholder="Search series..."
+            className="w-10/12 mx-auto md:mt-auto md:h-10 lg:mx-0 lg:w-56 p-1 pl-4 border border-gray-300 rounded-md lg:ml-4"
+            value={search}
+            onChange={handleSearch}
           />
           <div className=" mt-4 md:mt-0 md:ml-4 w-10/12 lg:w-3/4 xl:w-2/4 mx-auto lg:mx-0 flex flex-col lg:flex-row gap-4">
             <div className="relative w-full mx-auto flex gap-6 md:gap-4 items-center md:justify-end">
               <button
                 onClick={handleToggleDropdown}
-                className="realtive w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none"
+                className=" font-semibold realtive w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none"
               >
                 Type
               </button>
@@ -77,8 +85,8 @@ export default function Browse() {
                 onClose={() => setIsTypeDropdownOpen(false)}
                 onApply={handleApplyTypes}
               />
-              <button className="w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none">
-                Tags
+              <button className="font-semibold w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none">
+                Genre
               </button>
             </div>
             <div className="w-full mx-auto flex gap-6 md:gap-4 items-center">
@@ -113,7 +121,7 @@ export default function Browse() {
           loader={Array.from({ length: 10 }).map((_, index) => (
             <StandardCardSkeleton key={index} />
           ))}
-          className="w-11/12 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-4"
+          className="w-10/12 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-4"
         >
           {data?.pages
             .flatMap((page) => page.content)

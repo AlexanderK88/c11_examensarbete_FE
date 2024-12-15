@@ -36,24 +36,68 @@ export const useMangas = (pageSize: number) => {
     size: number,
     sort: string,
     sortDirection: string,
-    selectedTypes: string[]
+    selectedTypes: string[],
+    search: string
   ): Promise<Page<MangaDto>> => {
     const typesParam = selectedTypes.length > 0 ? `&types=${selectedTypes.join(',')}` : '';
     const response = await axiosInstance.get(
-      `/manga/sorted?page=${page}&size=${size}&sort=${sort}&sortDirection=${sortDirection}${typesParam}`
+      `/manga/sorted?page=${page}&size=${size}&sort=${sort}&sortDirection=${sortDirection}${typesParam}&search=${search}`
     );
     return response.data;
   };
 
-  export const usePopularMangas = (
+  export const useSortedMangas = (
     pageSize: number,
     sort: string,
     sortDirection: string,
-    selectedTypes: string[]
+    selectedTypes: string[],
+    search: string
   ) => {
     return useInfiniteQuery<Page<MangaDto>, Error>(
-      ['sortedMangas', sort, sortDirection, selectedTypes],
-      ({ pageParam = 0 }) => fetchSortedMangas(pageParam, pageSize, sort, sortDirection, selectedTypes),
+      ['sortedMangas', sort, sortDirection, selectedTypes, search],
+      ({ pageParam = 0 }) => fetchSortedMangas(pageParam, pageSize, sort, sortDirection, selectedTypes, search),
+      {
+        getNextPageParam: (lastPage) => {
+          return lastPage.number + 1 < lastPage.totalPages ? lastPage.number + 1 : undefined;
+        },
+      }
+    );
+  };
+  
+  const fetchMangasBySearch = async (
+    page: number,
+    size: number,
+    search: string
+  ): Promise<Page<MangaDto>> => {
+    const response = await axiosInstance.get(`/manga/search?page=${page}&size=${size}&query=${search}`);
+    return response.data;
+  }
+
+  export const useMangasBySearch = (pageSize: number, search: string) => {
+    return useInfiniteQuery<Page<MangaDto>, Error>(
+      ['searchMangas', search],
+      ({ pageParam = 0 }) => fetchMangasBySearch(pageParam, pageSize, search),
+      {
+        getNextPageParam: (lastPage) => {
+          return lastPage.number + 1 < lastPage.totalPages ? lastPage.number + 1 : undefined;
+        },
+      }
+    );
+  };
+
+  const fetchMangasByGenre = async (
+    page: number,
+    size: number,
+    genre: number
+  ): Promise<Page<MangaDto>> => {
+    const response = await axiosInstance.get(`/manga/genre/${genre}?page=${page}&size=${size}`);
+    return response.data;
+  }
+
+  export const useMangasByGenre = (pageSize: number, genre: number) => {
+    return useInfiniteQuery<Page<MangaDto>, Error>(
+      ['genreMangas', genre],
+      ({ pageParam = 0 }) => fetchMangasByGenre(pageParam, pageSize, genre),
       {
         getNextPageParam: (lastPage) => {
           return lastPage.number + 1 < lastPage.totalPages ? lastPage.number + 1 : undefined;

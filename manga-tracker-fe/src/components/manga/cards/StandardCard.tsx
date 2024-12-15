@@ -14,7 +14,7 @@ export default function StandardCard({ manga }: StandardCardProps) {
       <div className="">
         <div className="rounded-lg">
           <img
-            className="mt-8 w-[215px] h-[322px] rounded-lg shadow-md hover:transform hover:scale-105 transition-transform hover:cursor-pointer"
+            className="mt-2 w-[215px] h-[322px] rounded-lg shadow-lg shadow-purple-300 hover:transform hover:scale-105 transition-transform hover:cursor-pointer"
             src={manga.images[0].imageUrl}
             alt={manga.title}
           />
