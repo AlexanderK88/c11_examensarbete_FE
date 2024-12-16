@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useMangaById } from "../services/MangaService";
+import { useMangaById, useMangas } from "../services/MangaService";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { IoMdBook } from "react-icons/io";
@@ -135,6 +135,7 @@ export default function Individual() {
       <div>
         <div>
           <h1>Similar Series</h1>
+          <div></div>
         </div>
         <div></div>
       </div>
