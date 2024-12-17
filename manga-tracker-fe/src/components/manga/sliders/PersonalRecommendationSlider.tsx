@@ -35,7 +35,7 @@ const PersonalRecommendations: React.FC = () => {
   };
 
   return (
-    <div className="w-full mx-auto gap-2">
+    <div className="w-full xl:w-11/12 px-4 md:px-8 lg:px-16 mx-auto gap-2">
       {isLoading ? (
         <p className="text-center">Loading...</p>
       ) : (

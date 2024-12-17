@@ -55,8 +55,8 @@ export default function Discovery() {
     <>
       <Header />
       <main className="min-h-screen">
-        <div className="w-full">
-          <h2 className="text-3xl font-bold text-center mb-2 mt-2">
+        <div className="w-full mt-10">
+          <h2 className="text-3xl font-semibold text-center mb-10">
             Personal Recommendations
           </h2>
           <PersonalRecommendationSlider />

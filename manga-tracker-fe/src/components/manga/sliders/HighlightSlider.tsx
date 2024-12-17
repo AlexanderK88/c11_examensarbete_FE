@@ -23,7 +23,7 @@ export default function HighlightSlider({
   };
 
   const sliderSettings = {
-    dots: false,
+    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 5.5,
