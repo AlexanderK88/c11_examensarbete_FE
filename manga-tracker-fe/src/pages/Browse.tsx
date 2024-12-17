@@ -1,37 +1,40 @@
-import { useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useSortedMangas } from "../services/MangaService";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
-import StandardCard from "../components/manga/cards/StandardCard";
-import StandardCardSkeleton from "../components/skeleton/StandardCardSkeleton";
-import TypeDropdown from "../components/modals/TypeModal";
-import { useSortedMangas } from "../services/MangaService";
-import { MangaDto } from "../types/mangaTypes";
+import SearchBar from "../components/browseComponents/SearchBar";
+import SortAndFilterControls from "../components/browseComponents/SortAndFilterControls";
+import InfiniteScrollContent from "../components/browseComponents/InfiniteScrollComponent";
 
-export default function Browse() {
+export default function Browse2() {
   const [sort, setSort] = useState("popularity");
   const [sortDirection, setSortDirection] = useState("asc");
-  const [mangas, setMangas] = useState([] as MangaDto[]);
   const [search, setSearch] = useState("");
-
+  const [searchParams] = useSearchParams();
   const [dropdown2, setDropdown2] = useState("");
 
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+  const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useSortedMangas(21, sort, sortDirection, selectedTypes, search);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-  const handleToggleDropdown = () => {
-    setIsTypeDropdownOpen((prev) => !prev);
-  };
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const { data, error, fetchNextPage, hasNextPage } = useSortedMangas(
+    21,
+    sort,
+    sortDirection,
+    selectedTypes,
+    selectedGenre,
+    search
+  );
 
   const handleApplyTypes = (types: string[]) => {
-    setSelectedTypes(types); // Update selected types
+    setSelectedTypes(types);
     console.log("Selected Types:", types);
+  };
+
+  const handleApplyGenres = (genre: string) => {
+    setSelectedGenre(genre); // Update selected genres
+    console.log("Selected Genres:", genre);
   };
 
   const handleSortChange = (e: any) => {
@@ -56,6 +59,19 @@ export default function Browse() {
     console.log("Sort:", sort, "SortDirection:", sortDirection);
   };
 
+  useEffect(() => {
+    if (searchParams.has("sort") && searchParams.has("sortDirection")) {
+      setSort(searchParams.get("sort") || "popularity");
+      setSortDirection(searchParams.get("sortDirection") || "asc");
+    }
+    if (searchParams.has("selectedTypes")) {
+      setSelectedTypes([searchParams.get("selectedTypes") || ""]);
+    }
+    if (searchParams.has("genre")) {
+      setSelectedGenre(searchParams.get("genre") || "");
+    }
+  }, [searchParams]);
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -63,72 +79,38 @@ export default function Browse() {
   return (
     <>
       <Header />
-      <main className="min-h-screen">
-        <div className="w-9/12 lg:w-10/12 mt-40 mx-auto flex flex-col md:flex-row justify-between">
-          <input
-            type="text"
-            placeholder="Search series..."
-            className="w-10/12 mx-auto md:mt-auto md:h-10 lg:mx-0 lg:w-56 p-1 pl-4 border border-gray-300 rounded-md lg:ml-4"
-            value={search}
-            onChange={handleSearch}
-          />
-          <div className=" mt-4 md:mt-0 md:ml-4 w-10/12 lg:w-3/4 xl:w-2/4 mx-auto lg:mx-0 flex flex-col lg:flex-row gap-4">
-            <div className="relative w-full mx-auto flex gap-6 md:gap-4 items-center md:justify-end">
-              <button
-                onClick={handleToggleDropdown}
-                className=" font-semibold realtive w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none"
-              >
-                Type
-              </button>
-              <TypeDropdown
-                isOpen={isTypeDropdownOpen}
-                onClose={() => setIsTypeDropdownOpen(false)}
-                onApply={handleApplyTypes}
-              />
-              <button className="font-semibold w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none">
-                Genre
-              </button>
-            </div>
-            <div className="w-full mx-auto flex gap-6 md:gap-4 items-center">
-              <select
-                value={sort}
-                onChange={handleSortChange}
-                className="w-2/4 p-2 border lg:max-w-48 border-gray-300 rounded-md"
-              >
-                <option value="popularity">Popularity</option>
-                <option value="chapters">Chapters released</option>
-                <option value="publishedFrom">Newest</option>
-                <option value="score">Highest rated</option>
-              </select>
-              <select
-                value={dropdown2}
-                onChange={(e) => setDropdown2(e.target.value)}
-                className="w-2/4 lg:max-w-48 p-2 border border-gray-300 rounded-md lg:mr-4"
-              >
-                <option value="">Release period</option>
-                <option value="option1">This month</option>
-                <option value="option2">This year</option>
-                <option value="option3">All time</option>
-              </select>
-            </div>
+      <main className="min-h-screen bg-gray-50">
+        <div className="bg-white shadow-md py-4 px-0 sm:px-6 mb-8 pt-6">
+          <div className="w-10/12 mx-auto flex flex-col lg:flex-row justify-between gap-6">
+            <SearchBar
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <SortAndFilterControls
+              sort={sort}
+              sortDirection={sortDirection}
+              onSortChange={handleSortChange}
+              dropdown2={dropdown2}
+              onDropdown2Change={(e) => setDropdown2(e.target.value)}
+              selectedTypes={selectedTypes}
+              onToggleTypeDropdown={() =>
+                setIsTypeDropdownOpen((prev) => !prev)
+              }
+              onApplyTypes={handleApplyTypes}
+              isTypeDropdownOpen={isTypeDropdownOpen}
+              onToggleGenreDropdown={() =>
+                setIsGenreDropdownOpen((prev) => !prev)
+              }
+              onApplyGenre={handleApplyGenres}
+              isGenreDropdownOpen={isGenreDropdownOpen}
+            />
           </div>
         </div>
-
-        <InfiniteScroll
-          dataLength={data?.pages.flatMap((page) => page.content).length || 0}
-          next={fetchNextPage}
-          hasMore={!!hasNextPage}
-          loader={Array.from({ length: 10 }).map((_, index) => (
-            <StandardCardSkeleton key={index} />
-          ))}
-          className="w-10/12 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-4"
-        >
-          {data?.pages
-            .flatMap((page) => page.content)
-            .map((manga) => (
-              <StandardCard key={manga.id} manga={manga} />
-            ))}
-        </InfiniteScroll>
+        <InfiniteScrollContent
+          data={data}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage ?? false}
+        />
       </main>
       <Footer />
     </>

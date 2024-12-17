@@ -11,15 +11,15 @@ export default function StandardCard({ manga }: StandardCardProps) {
       key={manga.id}
       className="mx-auto max-w-[215px] hover:cursor-default"
     >
-      <div className="">
+      <div className="p-2">
         <div className="rounded-lg">
           <img
-            className="mt-2 w-[215px] h-[322px] rounded-lg shadow-lg shadow-purple-300 hover:transform hover:scale-105 transition-transform hover:cursor-pointer"
+            className="w-[215px] h-[322px] rounded-lg shadow-lg shadow-purple-300 hover:transform hover:scale-105 transition-transform hover:cursor-pointer"
             src={manga.images[0].imageUrl}
             alt={manga.title}
           />
         </div>
-        <h2 className="ml-2 font-semibold text-left mt-2 font-sans text-xl truncate hover:transform hover:scale-105 transition-transform hover:cursor-pointer">
+        <h2 className="font-semibold text-left mt-2 font-sans text-xl truncate hover:transform hover:scale-105 transition-transform hover:cursor-pointer">
           {manga.title}
         </h2>
       </div>

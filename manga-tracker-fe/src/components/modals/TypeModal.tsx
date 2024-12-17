@@ -22,7 +22,7 @@ export default function TypeDropdown({
   if (!isOpen) return null;
 
   return (
-    <div className="absolute left-0 top-10 xl:left-3 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+    <div className="absolute left-0 top-10 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
       <div className="p-4">
         <h2 className="text-lg font-bold mb-4">Select Type</h2>
         <div className="space-y-2">

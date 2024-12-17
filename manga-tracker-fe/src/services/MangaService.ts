@@ -37,11 +37,12 @@ export const useMangas = (pageSize: number) => {
     sort: string,
     sortDirection: string,
     selectedTypes: string[],
+    genre: string,
     search: string
   ): Promise<Page<MangaDto>> => {
     const typesParam = selectedTypes.length > 0 ? `&types=${selectedTypes.join(',')}` : '';
     const response = await axiosInstance.get(
-      `/manga/sorted?page=${page}&size=${size}&sort=${sort}&sortDirection=${sortDirection}${typesParam}&search=${search}`
+      `/manga/sorted?page=${page}&size=${size}&sort=${sort}&sortDirection=${sortDirection}${typesParam}&genre=${genre}&search=${search}`
     );
     return response.data;
   };
@@ -51,11 +52,12 @@ export const useMangas = (pageSize: number) => {
     sort: string,
     sortDirection: string,
     selectedTypes: string[],
+    genre: string,
     search: string
   ) => {
     return useInfiniteQuery<Page<MangaDto>, Error>(
-      ['sortedMangas', sort, sortDirection, selectedTypes, search],
-      ({ pageParam = 0 }) => fetchSortedMangas(pageParam, pageSize, sort, sortDirection, selectedTypes, search),
+      ['sortedMangas', sort, sortDirection, selectedTypes, genre, search],
+      ({ pageParam = 0 }) => fetchSortedMangas(pageParam, pageSize, sort, sortDirection, selectedTypes, genre, search),
       {
         getNextPageParam: (lastPage) => {
           return lastPage.number + 1 < lastPage.totalPages ? lastPage.number + 1 : undefined;
