@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MangaDto } from "../../types/mangaTypes"; // Adjust the import based on where you define your MangaDto type
+import { MangaDto } from "../../types/mangaTypes";
 
 export default function MangaModal({ mangas }: { mangas: MangaDto[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +23,7 @@ export default function MangaModal({ mangas }: { mangas: MangaDto[] }) {
                     className="flex items-center space-x-4 hover:shadow-md rounded-md p-2"
                   >
                     <img
-                      src={manga.images[0].smallImageUrl} // Use the correct poster URL from your data
+                      src={manga.images[0].smallImageUrl}
                       alt={manga.title}
                       className="w-12 min-w-12 max-w-12 object-cover rounded-md"
                     />
