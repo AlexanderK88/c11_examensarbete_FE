@@ -41,22 +41,22 @@ const PersonalRecommendations: React.FC = () => {
       ) : (
         <Slider {...sliderSettings}>
           {manga1 && (
-            <div className="w-full">
+            <div className="w-full my-6">
               <PersonalRecommendationCard manga={manga1} />
             </div>
           )}
           {manga2 && (
-            <div className="w-full">
+            <div className="w-full my-6">
               <PersonalRecommendationCard manga={manga2} />
             </div>
           )}
           {manga3 && (
-            <div className="w-full">
+            <div className="w-full my-6">
               <PersonalRecommendationCard manga={manga3} />
             </div>
           )}
           {manga4 && (
-            <div className="w-full">
+            <div className="w-full my-6">
               <PersonalRecommendationCard manga={manga4} />
             </div>
           )}
