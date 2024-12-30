@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { MangaDto } from "../../types/mangaTypes";
 import SearchInput from "../filtering/SearchInput";
 import MangaModal from "../modals/MangaModal";
+import { useAuthContext } from "../../provider/AuthProvider";
 
 export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
@@ -11,15 +12,14 @@ export default function Header() {
   const [manga1, setManga1] = useState<MangaDto[]>([]);
 
   const location = useLocation();
+  const { user, logout } = useAuthContext(); // Access user and logout from context
 
   const handleMobileMenu = () => {
     setIsMobile(!isMobile);
   };
 
   const isActive = (path: string) => {
-    return location.pathname === path
-      ? "border-purple-800"
-      : "border-transparent";
+    return location.pathname === path ? "border-purple-800" : "border-transparent";
   };
 
   return (
@@ -69,14 +69,21 @@ export default function Header() {
                 <SearchInput setMangas={setManga} />
                 <MangaModal mangas={manga} />
               </div>
+              {user ? ( // Show logout button if the user is logged in
+                <button
+                  onClick={logout}
+                  className="text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
+                >
+                  Logout
+                </button>
+              ) : null}
               <img
                 src="/pfp.jpg"
                 alt="Avatar"
                 className="rounded-full w-10 sm:w-12 md:mx-4  hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
               />
               <button onClick={handleMobileMenu} className="ml-4 lg:hidden">
-                {" "}
-                <FaBars size={30} />{" "}
+                <FaBars size={30} />
               </button>
             </div>
           </div>

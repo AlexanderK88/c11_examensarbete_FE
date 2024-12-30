@@ -1,35 +1,16 @@
+import { useState, useEffect } from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import HeroSlider from "../components/manga/sliders/HeroSlider";
 import HighlightSlider from "../components/manga/sliders/HighlightSlider";
 import PersonalRecommendationSlider from "../components/manga/sliders/PersonalRecommendationSlider";
 import { useSortedMangas, useMangasByGenre } from "../services/MangaService";
+import axios from "axios";
 
 export default function Discovery() {
-  const { data: newMangasData } = useSortedMangas(
-    15,
-    "publishedFrom",
-    "desc",
-    [],
-    "",
-    ""
-  );
-  const { data: highestRatedMangasData } = useSortedMangas(
-    15,
-    "score",
-    "desc",
-    [],
-    "",
-    ""
-  );
-  const { data: mostReadMangasData } = useSortedMangas(
-    15,
-    "popularity",
-    "asc",
-    [],
-    "",
-    ""
-  );
+  const { data: newMangasData } = useSortedMangas(15, "publishedFrom", "desc", [], "", "");
+  const { data: highestRatedMangasData } = useSortedMangas(15, "score", "desc", [], "", "");
+  const { data: mostReadMangasData } = useSortedMangas(15, "popularity", "asc", [], "", "");
   const { data: mostReadManhwasData } = useSortedMangas(
     15,
     "popularity",
@@ -56,8 +37,7 @@ export default function Discovery() {
     "New Releases": "/browse?sort=publishedFrom&sortDirection=desc",
     "Highest Rated": "/browse?sort=score&sortDirection=desc",
     "Most Read Mangas": "/browse?sort=popularity&sortDirection=asc",
-    "Most Read Manhwas":
-      "/browse?sort=popularity&sortDirection=asc&selectedTypes=Manhwa",
+    "Most Read Manhwas": "/browse?sort=popularity&sortDirection=asc&selectedTypes=Manhwa",
     "Popular Romance Series": "/browse?genre=Romance",
     "Popular Comedy Series": "/browse?genre=Comedy",
   };
@@ -70,9 +50,7 @@ export default function Discovery() {
           <HeroSlider mangas={deduplicatedMixedData} />
         </div>
         <div className="w-full mt-10">
-          <h2 className="text-3xl font-semibold text-center mb-10">
-            Personal Recommendations
-          </h2>
+          <h2 className="text-3xl font-semibold text-center mb-10">Personal Recommendations</h2>
           <PersonalRecommendationSlider />
         </div>
         <div className="w-full">
