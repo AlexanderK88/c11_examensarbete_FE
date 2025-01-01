@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user, isLoading } = useAuthContext();
+  const { dbUser, isLoading } = useAuthContext();
 
   // Show a loading screen while user authentication is being checked
   if (isLoading) {
@@ -15,7 +15,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   // Redirect to the home page if no user is logged in
-  if (!user) {
+  if (!dbUser) {
     return <Navigate to="/" replace />;
   }
 

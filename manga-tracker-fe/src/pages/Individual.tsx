@@ -5,17 +5,22 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { IoMdBook } from "react-icons/io";
 import { FaStar } from "react-icons/fa6";
+import SaveMangaModal from "../components/modals/SaveMangaModal";
 
 export default function Individual() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<string>("overview");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams();
   const { data: manga, isLoading, error } = useMangaById(id as string);
 
-  console.log(manga);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   useEffect(() => {
     const handleResize = () => {
+      console.log("Resizing...");
       setIsMobile(window.innerWidth < 700);
     };
     window.addEventListener("resize", handleResize);
@@ -121,7 +126,10 @@ export default function Individual() {
                   </div>
                 </div>
               </div>
-              <button className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700">
+              <button
+                className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700"
+                onClick={toggleModal}
+              >
                 Add to library
               </button>
               <h2 className="text-red-600 mt-4 mx-auto w-12">Report</h2>
@@ -208,7 +216,10 @@ export default function Individual() {
             </div>
             <div className="flex w-full mt-[150px] px-6">
               <div className="flex flex-col w-[300px] space-y-4 ">
-                <button className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700">
+                <button
+                  className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700"
+                  onClick={toggleModal}
+                >
                   Add to library
                 </button>
                 <div className="w-[256px] mx-auto border rounded-md shadow-md p-2 flex gap-4 items-center">
@@ -261,6 +272,16 @@ export default function Individual() {
             </div>
           </main>
         </>
+      )}
+      {isModalOpen && manga && (
+        <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-[400px] w-max-[400px] bg-white rounded-lg shadow-lg px-10 py-5">
+            <SaveMangaModal manga={manga} />
+            <button className="text-red-500 mt-4" onClick={toggleModal}>
+              Close
+            </button>
+          </div>
+        </div>
       )}
       <Footer />
     </>
