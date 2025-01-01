@@ -6,7 +6,7 @@ import SearchInput from "../filtering/SearchInput";
 import MangaModal from "../modals/MangaModal";
 import { useAuthContext } from "../../provider/AuthProvider";
 
-export default function Header() {
+export default function ProfileHeader() {
   const [isMobile, setIsMobile] = useState(false);
   const [manga, setManga] = useState<MangaDto[]>([]);
   const [manga1, setManga1] = useState<MangaDto[]>([]);
@@ -26,10 +26,10 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full bg-white border-b-2 shadow-sm relative z-20 h-16 px-4">
+      <header className="w-full bg-black bg-opacity-25  shadow-sm relative z-20 h-16 px-4">
         <div className="flex justify-between h-full ">
-          <div className="h-full flex items-center">
-            <img src="/logo.png" alt="LOGO" className="w-48 " />
+          <div className="h-full flex items-center ">
+            <h1 className="text-purple-600 text-4xl font-bold font-mono">MV</h1>
           </div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">
@@ -40,7 +40,7 @@ export default function Header() {
                       "/dashboard"
                     )} `}
                   >
-                    <a href="/dashboard" className="text-black text-xl">
+                    <a href="/dashboard" className="text-white text-xl">
                       Dashboard
                     </a>
                   </li>
@@ -49,7 +49,7 @@ export default function Header() {
                       "/browse"
                     )} `}
                   >
-                    <a href="/browse" className="text-black text-xl">
+                    <a href="/browse" className="text-white text-xl">
                       Browse
                     </a>
                   </li>
@@ -58,7 +58,7 @@ export default function Header() {
                       "/discovery"
                     )}`}
                   >
-                    <a href="/discovery" className="text-black text-xl">
+                    <a href="/discovery" className="text-white text-xl">
                       Discovery
                     </a>
                   </li>
@@ -74,12 +74,15 @@ export default function Header() {
               {dbUser ? ( // Show logout button if the user is logged in
                 <button
                   onClick={logout}
-                  className="hidden lg:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
+                  className="hidden md:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
                 >
                   Logout
                 </button>
               ) : null}
-              <button onClick={handleMobileMenu} className="lg:hidden">
+              <button
+                onClick={handleMobileMenu}
+                className=" text-white lg:hidden"
+              >
                 <FaBars size={30} />
               </button>
               <img
@@ -96,7 +99,7 @@ export default function Header() {
           isMobile
             ? "opacity-100 pointer-events-auto translate-y-0 duration-200"
             : "opacity-0 pointer-events-none -translate-y-full duration-0"
-        } transition-all ease-out absolute left-0 right-0 z-10 border-2 border-t-0 shadow-sm bg-white p-6 pt-8 rounded-sm lg:hidden`}
+        } transition-all ease-out absolute left-0 right-0 z-10 shadow-sm bg-black bg-opacity-25 text-white p-6 pt-8 rounded-sm lg:hidden`}
       >
         <ul className="space-y-6 text-lg font-semibold">
           <li>

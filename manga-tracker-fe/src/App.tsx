@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Home from "./pages/Home";
 import { AuthProvider } from "./provider/AuthProvider";
 import ProtectedRoute from "./provider/ProtectedRoute";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 function App() {
@@ -41,6 +42,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Discovery />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />
