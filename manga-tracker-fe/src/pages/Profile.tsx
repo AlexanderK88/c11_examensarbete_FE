@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import ProfileHeader from "../components/common/ProfileHeader";
 import { IoIosArrowDown } from "react-icons/io";
 import Footer from "../components/common/Footer";
@@ -5,42 +6,35 @@ import { formatDistanceToNow } from "date-fns";
 import { useAuthContext } from "../provider/AuthProvider";
 import { useFetchAllSavedMangas } from "../services/SaveMangaService";
 import StandardCard from "../components/manga/cards/StandardCard";
+import StandardCardSkeleton from "../components/skeleton/StandardCardSkeleton";
+import FilterModalProfile from "../components/modals/FilterModalProfile";
+import { MangaDto } from "../types/mangaTypes";
 
 export default function Profile() {
   const { dbUser } = useAuthContext();
+  const [isLibrary, setIsLibrary] = useState<boolean>(true);
+  const [mangas, setMangas] = useState<MangaDto[]>([]);
+  const [isFilterModalVisible, setIsFilterModalVisible] =
+    useState<boolean>(false);
+
   if (!dbUser) {
     return null;
   }
   const { data, error, isLoading } = useFetchAllSavedMangas(dbUser.id);
-  console.log("data:", data);
 
-  console.log("username:", dbUser?.username);
-  console.log("profilePictureUrl:", dbUser?.profilePictureUrl);
-  console.log("email:", dbUser?.email);
-  console.log("createdAt:", dbUser?.createdAt);
+  useEffect(() => {
+    if (data) {
+      setMangas(data);
+    }
+  }, [data]);
 
-  // if (isLoading) {
-  //   return (
-  //     <>
-  //       <Header />
-  //       <main className="min-h-screen flex items-center justify-center">
-  //         <div>Loading...</div>
-  //       </main>
-  //       <Footer />
-  //     </>
-  //   );
-  // }
+  const handleLibrary = () => {
+    setIsLibrary(!isLibrary);
+  };
 
-  // if (error) {
-  //   return (
-  //     <>
-  //       <Header />
-  //       <main className="min-h-screen flex items-center justify-center">
-  //         <div>Error: {error.message}</div>
-  //       </main>
-  //       <Footer />
-  //     </>
-  //   );
+  const toggleFilterModal = () => {
+    setIsFilterModalVisible((prev) => !prev);
+  };
 
   return (
     <>
@@ -66,28 +60,54 @@ export default function Profile() {
           </div>
 
           <div className="absolute flex gap-5 bottom-[-20px] left-[180px] text-black bg-white p-2 px-4 rounded-3xl shadow-lg ">
-            <h4 className="text-gray-400 rounded-2xl hover:bg-purple-700 px-4 py-1 cursor-pointer hover:text-white">
+            <h4
+              className={`rounded-2xl px-4 py-1 cursor-pointer ${
+                isLibrary
+                  ? "text-gray-400 hover:bg-purple-700 hover:text-white"
+                  : "bg-purple-700 text-white"
+              }`}
+              onClick={handleLibrary}
+            >
               Overview
             </h4>
-            <h4 className="text-gray-400 rounded-2xl hover:bg-purple-700 px-4 py-1 cursor-pointer hover:text-white">
+            <h4
+              className={`rounded-2xl px-4 py-1 cursor-pointer ${
+                isLibrary
+                  ? "bg-purple-700 text-white"
+                  : "text-gray-400 hover:bg-purple-700 hover:text-white"
+              }`}
+              onClick={handleLibrary}
+            >
               Library
             </h4>
           </div>
         </div>
         <div></div>
         <div className="w-full h-full h-min-screen mt-[140px] border-t-2 border-b-2 py-4 border-gray-300 flex flex-col items-center">
-          <div className="w-full flex justify-between">
+          <div
+            className="w-full flex justify-between cursor-pointer"
+            onClick={toggleFilterModal}
+          >
             <h3 className="text-xl ml-10 font-semibold">Filters</h3>
             <IoIosArrowDown className="text-2xl mt-1 text-black mr-10" />
           </div>
-          <div className="filters hidden"></div>
         </div>
-        {data &&
-          data.map((manga) => (
-            <div className="flex flex-wrap justify-center">
+        {isLoading && (
+          <div>
+            <StandardCardSkeleton />
+            <StandardCardSkeleton />
+            <StandardCardSkeleton />
+          </div>
+        )}
+        {isFilterModalVisible && data && (
+          <FilterModalProfile mangas={data} setMangas={setMangas} />
+        )}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
+          {data &&
+            mangas.map((manga) => (
               <StandardCard manga={manga} key={manga.id} />
-            </div>
-          ))}
+            ))}
+        </div>
       </main>
       <Footer />
     </>

@@ -6,19 +6,38 @@ import Footer from "../components/common/Footer";
 import { IoMdBook } from "react-icons/io";
 import { FaStar } from "react-icons/fa6";
 import SaveMangaModal from "../components/modals/SaveMangaModal";
+import { useFetchAllSavedMangas } from "../services/SaveMangaService";
+import { useAuthContext } from "../provider/AuthProvider";
+import { useDeleteSavedManga } from "../services/SaveMangaService";
+import { MangaDto } from "../types/mangaTypes";
 
 export default function Individual() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<string>("overview");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const { dbUser } = useAuthContext();
   const { id } = useParams();
   const { data: manga, isLoading, error } = useMangaById(id as string);
+
+  const { data: savedMangas } = useFetchAllSavedMangas(dbUser?.id || "");
+
+  const { mutate: deleteSavedManga } = useDeleteSavedManga(
+    dbUser?.id || "",
+    id as string
+  );
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleDelete = () => {
+    deleteSavedManga();
+    setIsSaved(false);
+  };
+
   useEffect(() => {
+    setIsMobile(window.innerWidth < 700);
     const handleResize = () => {
       console.log("Resizing...");
       setIsMobile(window.innerWidth < 700);
@@ -28,6 +47,13 @@ export default function Individual() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (manga && savedMangas) {
+      const isMangaSaved = savedMangas.some((saved) => saved.id === manga.id);
+      setIsSaved(isMangaSaved);
+    }
+  }, [manga, savedMangas]);
 
   if (isLoading) {
     return (
@@ -126,12 +152,23 @@ export default function Individual() {
                   </div>
                 </div>
               </div>
-              <button
-                className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700"
-                onClick={toggleModal}
-              >
-                Add to library
-              </button>
+
+              {isSaved ? (
+                <button
+                  className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700"
+                  onClick={handleDelete}
+                >
+                  Remove from library
+                </button>
+              ) : (
+                <button
+                  className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700"
+                  onClick={toggleModal}
+                >
+                  Add to library
+                </button>
+              )}
+
               <h2 className="text-red-600 mt-4 mx-auto w-12">Report</h2>
             </div>
             <div>
@@ -216,12 +253,21 @@ export default function Individual() {
             </div>
             <div className="flex w-full mt-[150px] px-6">
               <div className="flex flex-col w-[300px] space-y-4 ">
-                <button
-                  className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700"
-                  onClick={toggleModal}
-                >
-                  Add to library
-                </button>
+                {isSaved ? (
+                  <button
+                    className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700"
+                    onClick={handleDelete}
+                  >
+                    Remove from library
+                  </button>
+                ) : (
+                  <button
+                    className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700"
+                    onClick={toggleModal}
+                  >
+                    Add to library
+                  </button>
+                )}
                 <div className="w-[256px] mx-auto border rounded-md shadow-md p-2 flex gap-4 items-center">
                   <div className="p-1 h-10 w-10 bg-purple-700 rounded-md text-center text-white">
                     <p className="mx-auto my-1">読</p>
@@ -275,11 +321,8 @@ export default function Individual() {
       )}
       {isModalOpen && manga && (
         <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-[400px] w-max-[400px] bg-white rounded-lg shadow-lg px-10 py-5">
-            <SaveMangaModal manga={manga} />
-            <button className="text-red-500 mt-4" onClick={toggleModal}>
-              Close
-            </button>
+          <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
+            <SaveMangaModal manga={manga} setIsModalOpen={setIsModalOpen} />
           </div>
         </div>
       )}

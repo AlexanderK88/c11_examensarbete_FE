@@ -5,9 +5,10 @@ import { MangaDto } from "../../types/mangaTypes";
 
 type Props = {
   manga: MangaDto;
+  setIsModalOpen: (isOpen: boolean) => void;
 };
 
-export default function SaveMangaModal({ manga }: Props) {
+export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
   const { dbUser } = useAuthContext();
   const { mutate, isLoading, isError, isSuccess } = useSaveManga();
   const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
@@ -26,14 +27,9 @@ export default function SaveMangaModal({ manga }: Props) {
       status: readingStatus || "reading",
       score: score || 8,
       chaptersRead: selectedOption ? parseInt(selectedOption.split(" ")[1]) : 0,
+      title: manga.title,
     });
-    console.log("Saving manga with data:", {
-      userid: dbUser ? parseInt(dbUser.id) : 0,
-      mangaid: manga.id,
-      status: readingStatus || "reading",
-      score: score || 8,
-      chaptersRead: selectedOption ? parseInt(selectedOption.split(" ")[1]) : 0,
-    });
+    setIsModalOpen(false);
   };
 
   const handleOptionClick = (option: string) => {
@@ -71,25 +67,30 @@ export default function SaveMangaModal({ manga }: Props) {
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="h-[400px] sm:h-[385px] flex flex-row py-2 mb-3">
       <div className="w-full">
-        <h1 className="font-semibold text-2xl mt-2 mb-5">{manga.title}</h1>
-        <div className="w-full">
-          <img className="hidden sm:block" src="MangaImage" />
-          <div>
-            <div className="w-full">
+        <h1 className="font-semibold text-2xl">{manga.title}</h1>
+        <div className="w-full flex sm:flex-row mt-4">
+          <img
+            className="hidden sm:block sm:mr-10 rounded-md shadow-md max-h-[300px]"
+            src={manga.images[0].imageUrl}
+          />
+
+          <div className="w-full flex flex-col space-y-4 sm:justify-between">
+            <div className="w-ful">
               <p className="font-semibold">Last Read Chapter</p>
               <button
-                className="border rounded px-2 mt-4 py-1 w-full text-left"
+                className="border rounded px-2 mt-2 py-1 w-full text-left"
                 onClick={toggleChapterDropdown}
               >
-                {selectedOption || "Select an option"}
+                {(selectedOption == "" && "No chapters Available") ||
+                  "Choose chapter"}
               </button>
               {isDropdownOpen && (
-                <div className="absolute border rounded mt-2 bg-white max-h-44 overflow-y-scroll w-[180px]">
+                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50 max-h-44 overflow-y-scroll w-[320px]">
                   <ul>
                     {Array.from(
-                      { length: manga.chapters || 1 },
+                      { length: manga.chapters || 0 },
                       (_, i) => i
                     ).map((i) => (
                       <li
@@ -97,7 +98,7 @@ export default function SaveMangaModal({ manga }: Props) {
                         className="hover:bg-gray-200 p-1"
                         onClick={() => handleOptionClick(`Chapter ${i}`)}
                       >
-                        Chapter {i}
+                        {`Chapter ${i}`}
                       </li>
                     ))}
                   </ul>
@@ -105,63 +106,64 @@ export default function SaveMangaModal({ manga }: Props) {
               )}
             </div>
 
-            <div className="w-full flex flex-row mt-4">
-              <div className="w-1/2">
-                <p className="font-semibold">Status</p>
-                <button
-                  className="border rounded px-2 py-1 w-full text-left"
-                  onClick={toggleStatusDropdown}
-                >
-                  {readingStatus || "Select Status"}
-                </button>
-                {isStatusDropdownOpen && (
-                  <div className="absolute border rounded mt-2 bg-white max-h-44 overflow-y-scroll w-[180px]">
-                    <ul>
-                      {["Reading", "Completed", "On Hold", "Dropped"].map(
-                        (status) => (
-                          <li
-                            key={status}
-                            className="hover:bg-gray-200 p-1"
-                            onClick={() => handleStatusOptionClick(status)}
-                          >
-                            {status}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              <div className="w-1/2">
-                <p className="font-semibold">Rate</p>
-                <button
-                  className="border rounded px-2 py-1 w-full text-left"
-                  onClick={toggleScoreDropdown}
-                >
-                  {score || "Select a rating"}
-                </button>
-                {isScoreDropdownOpen && (
-                  <div className="absolute border rounded mt-2 bg-white max-h-44 overflow-y-scroll w-[180px]">
-                    <ul>
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
-                        <li
-                          key={score}
-                          className="hover:bg-gray-200 p-1"
-                          onClick={() => handleScoreOptionClick(score)}
-                        >
-                          {score}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
+            <div className="w-full mt-4">
+              <p className="font-semibold">Status</p>
+              <button
+                className="border rounded px-2 py-1 mt-2 w-full text-left"
+                onClick={toggleStatusDropdown}
+              >
+                {readingStatus || "Select Status"}
+              </button>
+              {isStatusDropdownOpen && (
+                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50 max-h-44 overflow-y-scroll w-[320px]">
+                  <ul>
+                    {[
+                      "Reading",
+                      "Completed",
+                      "On Hold",
+                      "Dropped",
+                      "Plan to read",
+                    ].map((status) => (
+                      <li
+                        key={status}
+                        className="hover:bg-gray-200 p-1"
+                        onClick={() => handleStatusOptionClick(status)}
+                      >
+                        {status}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
 
+            <div className="w-full mt-4">
+              <p className="font-semibold">Rate</p>
+              <button
+                className="border rounded px-2 py-1 mt-2 w-full text-left"
+                onClick={toggleScoreDropdown}
+              >
+                {score || "Select a rating"}
+              </button>
+              {isScoreDropdownOpen && (
+                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50  max-h-44 overflow-y-scroll w-[320px]">
+                  <ul>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
+                      <li
+                        key={score}
+                        className="hover:bg-gray-200 p-1"
+                        onClick={() => handleScoreOptionClick(score)}
+                      >
+                        {score}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
             <div className="w-full">
               <button
-                className="w-full p-2 bg-purple-600 rounded-md shadow-md text-white mb-2 mt-4"
+                className="w-full p-2 bg-purple-600 rounded-md shadow-md text-white mb-2 mt-4 sm:my-0"
                 onClick={handleSave}
                 disabled={isLoading}
               >
@@ -173,6 +175,9 @@ export default function SaveMangaModal({ manga }: Props) {
             </div>
           </div>
         </div>
+        <button className="text-red-400 text-xl font-thin font-mono mt-3 cursor-pointer hover:text-red-500">
+          Close
+        </button>
       </div>
     </div>
   );

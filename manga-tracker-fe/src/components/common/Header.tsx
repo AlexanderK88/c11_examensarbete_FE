@@ -82,11 +82,13 @@ export default function Header() {
               <button onClick={handleMobileMenu} className="lg:hidden">
                 <FaBars size={30} />
               </button>
-              <img
-                src="/pfp.jpg"
-                alt="Avatar"
-                className="rounded-full ml-4 w-10 sm:w-12 md:mx-4  hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
-              />
+              <a href="/profile">
+                <img
+                  src={dbUser?.profilePictureUrl || "/avatar.png"}
+                  alt="Avatar"
+                  className="rounded-full ml-4 w-10 sm:w-12 md:mx-4  hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
+                />
+              </a>
             </div>
           </div>
         </div>

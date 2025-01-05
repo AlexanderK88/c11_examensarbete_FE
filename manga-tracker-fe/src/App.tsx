@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import { AuthProvider } from "./provider/AuthProvider";
 import ProtectedRoute from "./provider/ProtectedRoute";
 import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 function App() {
@@ -50,6 +51,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
                   </ProtectedRoute>
                 }
               />

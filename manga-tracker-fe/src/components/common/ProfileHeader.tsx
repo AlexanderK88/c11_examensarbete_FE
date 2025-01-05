@@ -86,7 +86,7 @@ export default function ProfileHeader() {
                 <FaBars size={30} />
               </button>
               <img
-                src="/pfp.jpg"
+                src={dbUser?.profilePictureUrl}
                 alt="Avatar"
                 className="rounded-full ml-4 w-10 sm:w-12 md:mx-4  hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
               />
