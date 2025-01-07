@@ -2,6 +2,7 @@ import { useSaveManga } from "../../services/SaveMangaService";
 import { useAuthContext } from "../../provider/AuthProvider";
 import { useState } from "react";
 import { MangaDto } from "../../types/mangaTypes";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   manga: MangaDto;
@@ -16,9 +17,15 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
     useState<Boolean>(false);
   const [isScoreDropdownOpen, setIsScoreDropdownOpen] =
     useState<Boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedChapter, setSelectedChapter] = useState<string>("");
   const [readingStatus, setReadingStatus] = useState<string>("");
   const [score, setScore] = useState<number>(0);
+
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    navigate(0); // React Router 6+ supports reloading the current route
+  };
 
   const handleSave = () => {
     mutate({
@@ -26,14 +33,17 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
       mangaid: manga.id,
       status: readingStatus || "reading",
       score: score || 8,
-      chaptersRead: selectedOption ? parseInt(selectedOption.split(" ")[1]) : 0,
+      chaptersRead: selectedChapter
+        ? parseInt(selectedChapter.split(" ")[1])
+        : 0,
       title: manga.title,
     });
     setIsModalOpen(false);
+    refreshPage();
   };
 
   const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
+    setSelectedChapter(option);
     setIsDropdownOpen(false);
   };
 
@@ -66,6 +76,16 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
     setIsStatusDropdownOpen(false);
   };
 
+  const handleTextForChapter = () => {
+    if (selectedChapter == "" && !manga.chapters) {
+      return "No chapters available";
+    } else if (selectedChapter == "") {
+      return "Choose chapter";
+    } else {
+      return selectedChapter;
+    }
+  };
+
   return (
     <div className="h-[400px] sm:h-[385px] flex flex-row py-2 mb-3">
       <div className="w-full">
@@ -83,8 +103,7 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
                 className="border rounded px-2 mt-2 py-1 w-full text-left"
                 onClick={toggleChapterDropdown}
               >
-                {(selectedOption == "" && "No chapters Available") ||
-                  "Choose chapter"}
+                {handleTextForChapter()}
               </button>
               {isDropdownOpen && (
                 <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50 max-h-44 overflow-y-scroll w-[320px]">
@@ -175,7 +194,10 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
             </div>
           </div>
         </div>
-        <button className="text-red-400 text-xl font-thin font-mono mt-3 cursor-pointer hover:text-red-500">
+        <button
+          className="text-red-400 text-xl font-thin font-mono mt-3 cursor-pointer hover:text-red-500"
+          onClick={() => setIsModalOpen(false)}
+        >
           Close
         </button>
       </div>
