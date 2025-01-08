@@ -56,7 +56,7 @@ export default function MangaListItem({ manga }: Props) {
             {manga.title}
           </h3>
           <div
-            className={`px-4 py-1 rounded-lg border font-semibold text-center w-[127px] ${getStatusClass(
+            className={`px-4 py-1 rounded-lg border shadow-md font-semibold text-center w-[127px] ${getStatusClass(
               manga.status
             )}`}
           >

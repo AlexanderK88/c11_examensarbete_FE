@@ -9,6 +9,7 @@ import {
 import FilterForDashboard from "../components/modals/FilterForDashboard";
 import { IoIosArrowDown } from "react-icons/io";
 import MangaListItem from "../components/manga/MangaListItem";
+import ListView from "../components/manga/ListView";
 
 export default function Dashboard() {
   const [isListView, setIsListView] = useState<boolean>(false);
@@ -83,9 +84,12 @@ export default function Dashboard() {
         </div>
         <div className="w-full h-full ">
           {isLoading && <div>LOADING</div>}
-          <div className="flex flex-col gap-0 ">
-            {mangas && mangas.map((manga) => <MangaListItem manga={manga} />)}
-          </div>
+          {!isListView && (
+            <div className="flex flex-col gap-0 ">
+              {mangas && mangas.map((manga) => <MangaListItem manga={manga} />)}
+            </div>
+          )}
+          {isListView && <ListView />}
         </div>
       </main>
       <Footer />
