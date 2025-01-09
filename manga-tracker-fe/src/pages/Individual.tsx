@@ -6,19 +6,43 @@ import Footer from "../components/common/Footer";
 import { IoMdBook } from "react-icons/io";
 import { FaStar } from "react-icons/fa6";
 import SaveMangaModal from "../components/modals/SaveMangaModal";
+import { useFetchAllSavedMangas } from "../services/SaveMangaService";
+import { useAuthContext } from "../provider/AuthProvider";
+import { useDeleteSavedManga } from "../services/SaveMangaService";
+import { MangaDto } from "../types/mangaTypes";
+import SynopsisDesktop from "../components/individualPage/SynopsisDesktop";
+import SynopsisMobile from "../components/individualPage/SynopsisMobile";
+import ReviewMobile from "../components/individualPage/ReviewMobile";
+import ReviewDesktop from "../components/individualPage/ReviewDesktop";
 
 export default function Individual() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<string>("overview");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAddReviewModal, setShowAddReviewModal] = useState(false);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const { dbUser } = useAuthContext();
   const { id } = useParams();
   const { data: manga, isLoading, error } = useMangaById(id as string);
+
+  const { data: savedMangas } = useFetchAllSavedMangas(dbUser?.id || "");
+
+  const { mutate: deleteSavedManga } = useDeleteSavedManga(
+    dbUser?.id || "",
+    id as string
+  );
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleDelete = () => {
+    deleteSavedManga();
+    setIsSaved(false);
+  };
+
   useEffect(() => {
+    setIsMobile(window.innerWidth < 700);
     const handleResize = () => {
       console.log("Resizing...");
       setIsMobile(window.innerWidth < 700);
@@ -28,6 +52,13 @@ export default function Individual() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (manga && savedMangas) {
+      const isMangaSaved = savedMangas.some((saved) => saved.id === manga.id);
+      setIsSaved(isMangaSaved);
+    }
+  }, [manga, savedMangas]);
 
   if (isLoading) {
     return (
@@ -126,20 +157,45 @@ export default function Individual() {
                   </div>
                 </div>
               </div>
-              <button
-                className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700"
-                onClick={toggleModal}
-              >
-                Add to library
-              </button>
+
+              {isSaved ? (
+                <button
+                  className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700"
+                  onClick={handleDelete}
+                >
+                  Remove from library
+                </button>
+              ) : (
+                <button
+                  className="text-white mt-4 p-2 bg-purple-800 w-full rounded-lg hover:bg-purple-700"
+                  onClick={toggleModal}
+                >
+                  Add to library
+                </button>
+              )}
+
               <h2 className="text-red-600 mt-4 mx-auto w-12">Report</h2>
             </div>
             <div>
               <div className="flex flex-row justify-center h-full gap-10 mt-5">
-                <p className="h-full hover:border-b border-purple-700 py-5">
+                <p
+                  className={`h-full hover:border-b cursor-pointer border-purple-700 py-5 ${
+                    activeMenu === "overview"
+                      ? "border-b-2 border-purple-700"
+                      : ""
+                  }`}
+                  onClick={() => handleActiveMenu("overview")}
+                >
                   Overview
                 </p>
-                <p className="h-full hover:border-b border-purple-700 py-5">
+                <p
+                  className={`h-full hover:border-b cursor-pointer border-purple-700 py-5 ${
+                    activeMenu === "reviews"
+                      ? "border-b-2 border-purple-700"
+                      : ""
+                  }`}
+                  onClick={() => handleActiveMenu("reviews")}
+                >
                   Reviews
                 </p>
                 <p className="h-full hover:border-b border-purple-700 py-5">
@@ -147,26 +203,26 @@ export default function Individual() {
                 </p>
               </div>
               <div className="bg-stone-400 h-[1px] w-full mb-5"></div>
-              <div className="border rounded-lg m-5 p-5">
-                <div>
-                  <h2 className="text-3xl">Synopsis</h2>
-                </div>
-                <div className="bg-stone-400 h-[1px] w-full my-5"></div>
-                <div>
-                  <p>{manga?.synopsis || "No synopsis available."}</p>
-                </div>
-              </div>
+              {activeMenu === "overview" && (
+                <SynopsisMobile synopsis={manga?.synopsis} />
+              )}
+              {activeMenu === "reviews" && (
+                <ReviewMobile
+                  mangaid={id ? id : ""}
+                  userid={dbUser?.id ? dbUser.id : ""}
+                />
+              )}
             </div>
           </main>
         </>
       )}
       {!isMobile && (
         <>
-          <div className="h-[1px] translate-y-[300px] bg-gray-400"></div>
-          <main className="bg-gray-50 min-h-screen max-w-[1200px] mx-auto">
+          <div className="h-[1px] translate-y-[300px] bg-gray-400 w"></div>
+          <main className="bg-gray-50 max-w-screen-lg mx-auto">
             {/* Hero Section */}
 
-            <div className="relative h-[300px]  border-gray-400 ">
+            <div className="relative h-[300px] border-gray-400 ">
               <div className="absolute bottom-[-150px] left-[170px] transform -translate-x-1/2">
                 {/* Image */}
                 <img
@@ -175,8 +231,8 @@ export default function Individual() {
                   className="w-[256px] h-[384px] rounded-lg shadow-md"
                 />
               </div>
-              <div className="absolute w-full  ml-5 left-[340px] top-[90px]">
-                <h1 className="text-black sm:text-2xl md:text-3xl lg:text-4xl font-bold sm:w-1/2 lg:max-w-[600px] ">
+              <div className="absolute ml-5 left-[340px] top-[90px]">
+                <h1 className="text-black sm:text-2xl md:text-3xl lg:text-4xl font-bold  ">
                   {manga?.title || "Manga Title"}
                 </h1>
                 <div className="flex flex-wrap gap-1 my-4">
@@ -190,7 +246,7 @@ export default function Individual() {
                   )) || <p>No genres available</p>}
                 </div>
               </div>
-              <div className="flex flex-row gap-10 h-[55px] ml-5 left-[350px] bottom-0 absolute w-full text-stone-500">
+              <div className="flex flex-row gap-10 h-[55px] ml-5 left-[350px] bottom-0 absolute text-stone-500">
                 <p
                   className={`h-full hover:border-b-2 cursor-pointer hover:border-purple-700 py-5 ${
                     activeMenu === "overview"
@@ -216,12 +272,21 @@ export default function Individual() {
             </div>
             <div className="flex w-full mt-[150px] px-6">
               <div className="flex flex-col w-[300px] space-y-4 ">
-                <button
-                  className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700"
-                  onClick={toggleModal}
-                >
-                  Add to library
-                </button>
+                {isSaved ? (
+                  <button
+                    className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700"
+                    onClick={handleDelete}
+                  >
+                    Remove from library
+                  </button>
+                ) : (
+                  <button
+                    className="w-[256px] mx-auto text-white mt-4 p-2 bg-purple-800 rounded-lg hover:bg-purple-700"
+                    onClick={toggleModal}
+                  >
+                    Add to library
+                  </button>
+                )}
                 <div className="w-[256px] mx-auto border rounded-md shadow-md p-2 flex gap-4 items-center">
                   <div className="p-1 h-10 w-10 bg-purple-700 rounded-md text-center text-white">
                     <p className="mx-auto my-1">読</p>
@@ -259,27 +324,21 @@ export default function Individual() {
               </div>
 
               {/* Right Panel */}
-              <div className="flex-1 bg-white min-h-[500px] m-4 translate-y-[-135px] border-2 border-stone-200 rounded-md shadow-md max-w-[700px]">
-                <div className="border-b  border-stone-200 p-4">
-                  <h1 className=" text-start ml-3 text-3xl  font-mono text-stone-950">
-                    Synopsis
-                  </h1>
-                </div>
-                <div className="ml-7 mr-14 my-6">
-                  <p>{manga?.synopsis || "No synopsis available."}</p>
-                </div>
-              </div>
+              {activeMenu === "overview" && <SynopsisDesktop manga={manga} />}
+              {activeMenu === "reviews" && (
+                <ReviewDesktop
+                  mangaid={id ? id : ""}
+                  userid={dbUser?.id ? dbUser.id : ""}
+                />
+              )}
             </div>
           </main>
         </>
       )}
       {isModalOpen && manga && (
         <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-[400px] w-max-[400px] bg-white rounded-lg shadow-lg px-10 py-5">
-            <SaveMangaModal manga={manga} />
-            <button className="text-red-500 mt-4" onClick={toggleModal}>
-              Close
-            </button>
+          <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
+            <SaveMangaModal manga={manga} setIsModalOpen={setIsModalOpen} />
           </div>
         </div>
       )}

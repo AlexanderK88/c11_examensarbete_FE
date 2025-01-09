@@ -37,3 +37,28 @@ export interface MangaDto {
   authors: AuthorDto[];
   genres: GenreDto[];
 }
+
+export interface CommentDto {
+  commentText: string;
+  userId: number;
+  reviewId:number;
+}
+
+export interface ReviewDto {
+  title: string;
+  reviewText: string;
+  spoiler: boolean;
+  rating:number;
+  userId: number;
+  mangaId:number;
+  comments: CommentDto[];
+  username: string;
+}
+
+export interface AddReviewDto {
+  reviewText: string;
+  spoiler: boolean;
+  rating:number;
+  userId: number;
+  mangaId:number;
+}
