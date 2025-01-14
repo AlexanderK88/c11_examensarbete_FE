@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useAddReview } from "../../services/ReviewService";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   neededAttributes: {
@@ -11,17 +10,12 @@ interface Props {
   };
 }
 
-export default function ReviewModalDesktop({ neededAttributes }: Props) {
+export default function ReviewModalMobile({ neededAttributes }: Props) {
   const [value, setValue] = useState<number>(0);
   const [spoiler, setSpoiler] = useState<boolean>(false);
   const [reviewText, setReviewText] = useState<string>("");
   const { mutate, isSuccess } = useAddReview();
   const { userid, mangaId, setShowModal } = neededAttributes;
-  const navigate = useNavigate();
-
-  const refreshPage = () => {
-    navigate(0); // React Router 6+ supports reloading the current route
-  };
 
   const handleAddReview = () => {
     console.log("Adding review");
@@ -37,7 +31,6 @@ export default function ReviewModalDesktop({ neededAttributes }: Props) {
       reviewText: reviewText,
     });
     setShowModal(false);
-    refreshPage();
   };
 
   const handleValueChangeUp = () => {
@@ -62,15 +55,15 @@ export default function ReviewModalDesktop({ neededAttributes }: Props) {
   };
   return (
     <>
-      <div className="relative w-1/2 lg:w-1/3 p-6 bg-white rounded-lg shadow-lg">
+      <div className="relative w-[500px] p-6 bg-white rounded-lg shadow-lg">
         <div
-          className="absolute right-5 top-5 text-2xl"
+          className="absolute right-5 top-5 text-2xl cursor-pointer"
           onClick={() => setShowModal(false)}
         >
           <IoMdClose />
         </div>
         <div className="w-full">
-          <h2 className="text-black text-xl font-semibold">Review </h2>
+          <h2 className="text-black text-xl font-semibold">Review</h2>
           <textarea
             placeholder=" Write your review..."
             className="mt-3 h-36 border-2 w-full rounded-sm p-2"
@@ -87,12 +80,11 @@ export default function ReviewModalDesktop({ neededAttributes }: Props) {
               >
                 <p className="text-center text-xl font-bold text-gray-500">-</p>
               </button>
-              <input
-                type="number"
-                className="w-14 border-2 border-gray-300 rounded-md text-center text-xl"
-                value={value}
-                readOnly
-              />
+              <div className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center">
+                <p className="text-center text-xl font-bold text-gray-500">
+                  {value}
+                </p>
+              </div>
               <button
                 className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center"
                 onClick={handleValueChangeUp}

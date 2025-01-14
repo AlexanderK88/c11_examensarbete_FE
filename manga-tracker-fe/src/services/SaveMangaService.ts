@@ -12,6 +12,8 @@ export interface SaveMangaDto {
     title: string;
 }
 
+
+
 const saveManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
     try {
         console.log("Saving manga:", manga);
@@ -79,5 +81,22 @@ export const useFetchUsersSavedMangas = (userId: string) => {
         retry: false,
         enabled: !!userId,
         onError: () => console.log("Failed to fetch saved mangas for user with id:", userId),
+    });
+};
+
+const updateSavedManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
+    try {
+        console.log("Updating saved manga:", manga);
+        const response = await axiosInstance.put("/user/manga/edit", manga);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to update saved manga:", error);
+        return manga;
+    }
+}
+
+export const useUpdateSavedManga = () => {
+    return useMutation(updateSavedManga, {
+        onError: () => console.log("Failed to update saved manga"),
     });
 };

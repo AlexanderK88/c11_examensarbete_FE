@@ -10,12 +10,12 @@ interface Props {
 
 const ReviewDesktop = ({ mangaid, userid }: Props) => {
   const [showModal, setShowModal] = useState(false);
+  const [showThread, setShowThread] = useState(false);
 
-  const neededAttributesMobile = {
-    userid,
-    mangaId: parseInt(mangaid),
-    setShowModal,
+  const handleShowThread = () => {
+    setShowThread(!showThread);
   };
+
   const neededAttributes = {
     userid,
     mangaId: parseInt(mangaid),
@@ -24,8 +24,6 @@ const ReviewDesktop = ({ mangaid, userid }: Props) => {
 
   const { reviews, isLoading, isError } = useFetchReviews(mangaid);
   console.log(reviews);
-  const text =
-    "Naruto is an unforgettable journey of perseverance, friendship, and epic ninja action! From the moment we meet the quirky and determined Naruto Uzumaki in the Hidden Leaf Village, it's impossible not to root for him as he chases his dream of becoming Hokage. The show balances heart-pounding battles with heartfelt moments that make you laugh, cry, and cheer. The character development is stellar—watching";
 
   const truncateLongReview = (review: string) => {
     if (review.length > 200) {
@@ -84,7 +82,10 @@ const ReviewDesktop = ({ mangaid, userid }: Props) => {
                 <div className="w-full px-3  mt-2 max-h-32 ">
                   "{truncateLongReview(review.reviewText)}"
                 </div>
-                <p className="w-full text-end pr-3 text-purple-600 font-semibold">
+                <p
+                  className="w-full text-end pr-3 text-purple-600 font-semibold cursor-pointer hover:text-purple-700"
+                  onClick={handleShowThread}
+                >
                   See thread
                 </p>
               </div>

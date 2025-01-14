@@ -55,7 +55,7 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
   };
   return (
     <>
-      <div className="relative w-5/6 p-6 bg-white rounded-lg shadow-lg">
+      <div className="relative w-[400px] p-6 bg-white rounded-lg shadow-lg">
         <div
           className="absolute right-5 top-5 text-2xl cursor-pointer"
           onClick={() => setShowMobileModal(false)}
@@ -63,7 +63,7 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
           <IoMdClose />
         </div>
         <div className="w-full">
-          <h2 className="text-black text-xl font-semibold">Review </h2>
+          <h2 className="text-black text-xl font-semibold">Review</h2>
           <textarea
             placeholder=" Write your review..."
             className="mt-3 h-36 border-2 w-full rounded-sm p-2"
@@ -80,12 +80,11 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
               >
                 <p className="text-center text-xl font-bold text-gray-500">-</p>
               </button>
-              <input
-                type="number"
-                className="w-14 border-2 border-gray-300 rounded-md text-center text-xl"
-                value={value}
-                readOnly
-              />
+              <div className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center">
+                <p className="text-center text-xl font-bold text-gray-500">
+                  {value}
+                </p>
+              </div>
               <button
                 className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center"
                 onClick={handleValueChangeUp}

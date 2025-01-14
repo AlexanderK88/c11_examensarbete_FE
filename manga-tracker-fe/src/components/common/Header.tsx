@@ -12,7 +12,7 @@ export default function Header() {
   const [manga1, setManga1] = useState<MangaDto[]>([]);
 
   const location = useLocation();
-  const { dbUser, logout } = useAuthContext(); // Access user and logout from context
+  const { dbUser, logout } = useAuthContext();
 
   const handleMobileMenu = () => {
     setIsMobile(!isMobile);
@@ -71,7 +71,7 @@ export default function Header() {
                 <SearchInput setMangas={setManga} />
                 <MangaModal mangas={manga} />
               </div>
-              {dbUser ? ( // Show logout button if the user is logged in
+              {dbUser ? (
                 <button
                   onClick={logout}
                   className="hidden lg:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
