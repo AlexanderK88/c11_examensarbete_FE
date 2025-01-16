@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetchReviews } from "../../services/ReviewService";
-import { MangaDto, ReviewDto } from "../../types/mangaTypes";
+import { ReviewDto } from "../../types/mangaTypes";
 import ReviewModalDesktop from "../modals/ReviewModalDesktop";
+import ReviewThreadModal from "../modals/ReviewThreadModal";
 
 interface Props {
   userid: string;
@@ -10,9 +11,12 @@ interface Props {
 
 const ReviewDesktop = ({ mangaid, userid }: Props) => {
   const [showModal, setShowModal] = useState(false);
+  const [currentReview, setCurrentReview] = useState<ReviewDto | null>(null);
   const [showThread, setShowThread] = useState(false);
+  const [hasCommented, setHasCommented] = useState(false);
 
-  const handleShowThread = () => {
+  const handleShowThread = (review: ReviewDto) => {
+    setCurrentReview(review);
     setShowThread(!showThread);
   };
 
@@ -22,8 +26,21 @@ const ReviewDesktop = ({ mangaid, userid }: Props) => {
     setShowModal,
   };
 
-  const { reviews, isLoading, isError } = useFetchReviews(mangaid);
-  console.log(reviews);
+  const { reviews, isLoading, refetch, isError } = useFetchReviews(mangaid);
+
+  useEffect(() => {
+    if (hasCommented) {
+      refetch().then(() => {
+        const updatedReview = reviews?.find(
+          (review) => review.reviewId === currentReview?.reviewId
+        );
+        if (updatedReview) {
+          setCurrentReview(updatedReview);
+        }
+      });
+      setHasCommented(false);
+    }
+  }, [hasCommented, reviews, currentReview?.reviewId, refetch]);
 
   const truncateLongReview = (review: string) => {
     if (review.length > 200) {
@@ -84,11 +101,20 @@ const ReviewDesktop = ({ mangaid, userid }: Props) => {
                 </div>
                 <p
                   className="w-full text-end pr-3 text-purple-600 font-semibold cursor-pointer hover:text-purple-700"
-                  onClick={handleShowThread}
+                  onClick={() => handleShowThread(review)}
                 >
                   See thread
                 </p>
               </div>
+              {showThread && currentReview && (
+                <div className="fixed inset-0 w-full h-full px-5 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+                  <ReviewThreadModal
+                    review={currentReview}
+                    setShowThread={setShowThread}
+                    setHasCommented={setHasCommented}
+                  />
+                </div>
+              )}
             </div>
           ))}
         {showModal && (

@@ -1,6 +1,6 @@
 import React from "react";
-import { useMangaById } from "../../../services/MangaService"; // Fixed path
-import PersonalRecommendationCard from "../cards/PersonalRecommendationCard"; // Fixed path
+import { useMangaById } from "../../../services/MangaService";
+import PersonalRecommendationCard from "../cards/PersonalRecommendationCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

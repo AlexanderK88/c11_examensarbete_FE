@@ -29,17 +29,14 @@ export default function Browse2() {
 
   const handleApplyTypes = (types: string[]) => {
     setSelectedTypes(types);
-    console.log("Selected Types:", types);
   };
 
   const handleApplyGenres = (genre: string) => {
-    setSelectedGenre(genre); // Update selected genres
-    console.log("Selected Genres:", genre);
+    setSelectedGenre(genre);
   };
 
   const handleSortChange = (e: any) => {
     const value = e.target.value;
-    console.log("Dropdown value:", value);
     if (value === "popularity") {
       setSortDirection("asc");
       setSort(value);
@@ -56,7 +53,6 @@ export default function Browse2() {
       setSortDirection("desc");
       setSort(value);
     }
-    console.log("Sort:", sort, "SortDirection:", sortDirection);
   };
 
   useEffect(() => {

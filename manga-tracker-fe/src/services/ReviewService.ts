@@ -60,3 +60,19 @@ export const useFetchReviews = (mangaId: string) => {
     export const useAddComment = () => {
         return useMutation(addComment);
     }
+
+    const deleteComment = async (commentId: number): Promise<void> => {
+        try {
+          console.log("Deleting comment with id:", commentId);
+          await axiosInstance.delete(`/review/comment/${commentId}`);
+        } catch (error) {
+          console.error("Failed to delete comment:", error);
+          throw error; 
+        }
+      };
+      
+      export const useDeleteComment = () => {
+        return useMutation(deleteComment, {
+          onError: () => console.log("Failed to delete list"),
+        });
+      };

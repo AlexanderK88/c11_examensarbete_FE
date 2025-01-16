@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { CommentDto, ReviewDto } from "../../types/mangaTypes";
-import { useAddComment } from "../../services/ReviewService";
+import { useAddComment, useDeleteComment } from "../../services/ReviewService";
 import { useAuthContext } from "../../provider/AuthProvider";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 interface ReviewThreadModalProps {
   review: ReviewDto;
@@ -15,7 +16,8 @@ export default function ReviewThreadModal({
   setHasCommented,
 }: ReviewThreadModalProps) {
   const { dbUser } = useAuthContext();
-  const { mutate } = useAddComment();
+  const { mutate: deleteComment } = useDeleteComment();
+  const { mutate: addComment } = useAddComment();
   const [comment, setComment] = useState<string>("");
   const [comments, setComments] = useState<CommentDto[]>([]);
 
@@ -30,7 +32,7 @@ export default function ReviewThreadModal({
 
   const handleAddComment = (comment: string) => {
     if (!comment.trim()) return;
-    mutate(
+    addComment(
       {
         reviewId: review.reviewId,
         userId: dbUser ? dbUser.id : "",
@@ -59,6 +61,14 @@ export default function ReviewThreadModal({
     return date.toLocaleString();
   };
 
+  const deleteCommentHandler = (commentId: number) => {
+    deleteComment(commentId, {
+      onSuccess: () => {
+        setComments((prev) => prev.filter((c) => c.id !== commentId));
+      },
+    });
+  };
+
   return (
     <div className="relative w-full min-h-[400px] max-w-[800px] flex flex-col bg-white p-4 rounded-lg shadow-lg">
       <div className="w-full flex flex-col">
@@ -83,8 +93,19 @@ export default function ReviewThreadModal({
       <div className="overflow-y-scroll max-h-60">
         {comments &&
           comments.map((comment) => (
-            <div className="pl-4">
-              <p className="font-semibold">{comment.username}</p>
+            <div className="pl-4 py-2 border-t border-gray-300 ">
+              <div className="flex justify-between">
+                <p className="font-semibold">{comment.username}</p>
+                {comment.username === dbUser?.username && (
+                  <span
+                    className="p-2 cursor-pointer hover:bg-gray-300 mr-2 rouned-md"
+                    onClick={() => deleteCommentHandler(comment.id)}
+                  >
+                    <FaRegTrashCan />
+                  </span>
+                )}
+              </div>
+
               <h3 className="text-md">{comment.commentText}</h3>
             </div>
           ))}

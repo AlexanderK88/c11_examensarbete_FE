@@ -12,7 +12,7 @@ export default function ProfileHeader() {
   const [manga1, setManga1] = useState<MangaDto[]>([]);
 
   const location = useLocation();
-  const { dbUser, logout } = useAuthContext(); // Access user and logout from context
+  const { dbUser, logout } = useAuthContext();
 
   const handleMobileMenu = () => {
     setIsMobile(!isMobile);
@@ -29,7 +29,7 @@ export default function ProfileHeader() {
       <header className="w-full bg-black bg-opacity-25  shadow-sm relative z-20 h-16 px-4">
         <div className="flex justify-between h-full ">
           <div className="h-full flex items-center ">
-            <h1 className="text-purple-600 text-4xl font-bold font-mono">MV</h1>
+            <h1 className="text-purple-600 text-4xl font-bold font-sans">MV</h1>
           </div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">
@@ -114,6 +114,16 @@ export default function ProfileHeader() {
           <li>
             <SearchInput setMangas={setManga1} />
             <MangaModal mangas={manga1} />
+          </li>
+          <li>
+            {dbUser ? (
+              <button
+                onClick={logout}
+                className="w-full text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md "
+              >
+                Logout
+              </button>
+            ) : null}
           </li>
         </ul>
       </div>

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Carousel, { ResponsiveType } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ImageCard from "../cards/ImageCard";
@@ -55,14 +54,14 @@ export default function HeroSlider({ mangas }: HeroSectionProps) {
         containerClass="carousel-container"
       >
         {mangasContent.length > 0
-          ? mangasContent.map((manga: MangaDto, index: number) => {
+          ? mangasContent.map((manga: MangaDto) => {
               return (
                 <div key={manga.id} className="mx-auto my-8">
                   <ImageCard manga={manga} />
                 </div>
               );
             })
-          : Array.from({ length: 15 }).map((_, index) => (
+          : Array.from({ length: 15 }).map((_) => (
               <div className="mx-auto my-8">
                 <ImageCardSkeleton />
               </div>

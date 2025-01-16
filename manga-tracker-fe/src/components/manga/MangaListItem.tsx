@@ -22,17 +22,17 @@ export default function MangaListItem({ manga }: Props) {
   const getStatusClass = (status: string) => {
     switch (status) {
       case "Completed":
-        return "bg-green-500 text-white hover:bg-green-600"; // A deeper green for a polished look
+        return "bg-green-500 text-white hover:bg-green-600";
       case "Reading":
-        return "bg-blue-400 text-white hover:bg-blue-500"; // Vibrant blue for active engagement
+        return "bg-blue-400 text-white hover:bg-blue-500";
       case "On Hold":
-        return "bg-orange-400 text-white hover:bg-orange-500"; // Orange for a warm, paused feel
+        return "bg-orange-400 text-white hover:bg-orange-500";
       case "Dropped":
-        return "bg-red-400 text-white hover:bg-red-500"; // Bold red to signify discontinuation
+        return "bg-red-400 text-white hover:bg-red-500";
       case "Plan to Read":
-        return "bg-teal-400 text-white hover:bg-teal-500"; // Calm teal for planned activities
+        return "bg-teal-400 text-white hover:bg-teal-500";
       default:
-        return "bg-gray-200 text-black hover:bg-gray-300"; // Neutral gray for unknown statuses
+        return "bg-gray-200 text-black hover:bg-gray-300";
     }
   };
 
@@ -54,9 +54,11 @@ export default function MangaListItem({ manga }: Props) {
     <div className="w-full h-32 flex items-center p-4 border-purple-300 border-b-2">
       <div className="w-full mr-4">
         <div className="flex justify-between w-full">
-          <h3 className="truncate max-w-52 sm:max-w-96 md:max-w-full font-semibold py-1">
-            {manga.title}
-          </h3>
+          <a href={`/manga/${manga.mangaid}`}>
+            <h3 className="truncate max-w-52 sm:max-w-96 md:max-w-full font-semibold py-1">
+              {manga.title}
+            </h3>
+          </a>
           <div
             className={`px-4 py-1 rounded-lg border shadow-md font-semibold text-center w-[127px] ${getStatusClass(
               manga.status

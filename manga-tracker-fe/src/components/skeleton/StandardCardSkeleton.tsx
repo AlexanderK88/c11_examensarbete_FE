@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function StandardCardSkeleton() {
   return (
     <div className="mx-auto max-w-[215px] mt-8">

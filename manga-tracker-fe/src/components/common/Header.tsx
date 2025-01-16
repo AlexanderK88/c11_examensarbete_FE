@@ -26,7 +26,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full bg-white border-b-2 shadow-sm relative z-20 h-16 px-4">
+      <header className="w-full bg-white border-b-2 shadow-sm relative z-20 h-16 px-4 font-sans">
         <div className="flex justify-between h-full ">
           <div className="h-full flex items-center">
             <img src="/logo.png" alt="LOGO" className="w-48 " />
@@ -113,6 +113,16 @@ export default function Header() {
           <li>
             <SearchInput setMangas={setManga1} />
             <MangaModal mangas={manga1} />
+          </li>
+          <li>
+            {dbUser ? (
+              <button
+                onClick={logout}
+                className="w-full text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md "
+              >
+                Logout
+              </button>
+            ) : null}
           </li>
         </ul>
       </div>

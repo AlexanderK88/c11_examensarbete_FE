@@ -18,7 +18,6 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
   const { userid, mangaId, setShowMobileModal } = neededAttributes;
 
   const handleAddReview = () => {
-    console.log("Adding review");
     if (!reviewText) {
       alert("Please write a review");
       return;

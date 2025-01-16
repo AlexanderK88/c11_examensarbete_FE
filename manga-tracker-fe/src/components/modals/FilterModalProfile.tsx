@@ -48,7 +48,7 @@ export default function FilterModalProfile({
         ? b[newSort as keyof MangaDto] ?? 0
         : 0;
 
-      if (newSortDirection === "asc") {
+      if (sortDirection === "asc") {
         return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
       } else {
         return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
@@ -85,7 +85,6 @@ export default function FilterModalProfile({
   return (
     <div className="w-full flex flex-col gap-6 md:mx-10 mt-8">
       <div className="flex flex-col md:flex-row gap-4 sjustify-center items-center">
-        {/* Sorting */}
         <label className="text-lg font-semibold">Sort By:</label>
         <select
           value={sort}
@@ -99,7 +98,6 @@ export default function FilterModalProfile({
           <option value="publishedFrom">Published From</option>
         </select>
 
-        {/* Filtering */}
         <label className="text-lg font-semibold">Filter By Type:</label>
         <div className="flex flex-wrap gap-4 items-center">
           {availableTypes.map((type) => (

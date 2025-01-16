@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useMangaById, useMangas } from "../services/MangaService";
+import { useMangaById } from "../services/MangaService";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { IoMdBook } from "react-icons/io";
@@ -9,7 +9,6 @@ import SaveMangaModal from "../components/modals/SaveMangaModal";
 import { useFetchAllSavedMangas } from "../services/SaveMangaService";
 import { useAuthContext } from "../provider/AuthProvider";
 import { useDeleteSavedManga } from "../services/SaveMangaService";
-import { MangaDto } from "../types/mangaTypes";
 import SynopsisDesktop from "../components/individualPage/SynopsisDesktop";
 import SynopsisMobile from "../components/individualPage/SynopsisMobile";
 import ReviewMobile from "../components/individualPage/ReviewMobile";
@@ -19,7 +18,6 @@ export default function Individual() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<string>("overview");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showAddReviewModal, setShowAddReviewModal] = useState(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const { dbUser } = useAuthContext();
   const { id } = useParams();
@@ -44,7 +42,6 @@ export default function Individual() {
   useEffect(() => {
     setIsMobile(window.innerWidth < 700);
     const handleResize = () => {
-      console.log("Resizing...");
       setIsMobile(window.innerWidth < 700);
     };
     window.addEventListener("resize", handleResize);
@@ -220,11 +217,8 @@ export default function Individual() {
         <>
           <div className="h-[1px] translate-y-[300px] bg-gray-400 w"></div>
           <main className="bg-gray-50 max-w-screen-lg mx-auto">
-            {/* Hero Section */}
-
             <div className="relative h-[300px] border-gray-400 ">
               <div className="absolute bottom-[-150px] left-[170px] transform -translate-x-1/2">
-                {/* Image */}
                 <img
                   src={manga?.images[0].largeImageUrl}
                   alt={manga?.title || "Manga"}
@@ -323,7 +317,6 @@ export default function Individual() {
                 <p className="mx-auto text-red-500  font-thin">REPORT ISSUE</p>
               </div>
 
-              {/* Right Panel */}
               {activeMenu === "overview" && <SynopsisDesktop manga={manga} />}
               {activeMenu === "reviews" && (
                 <ReviewDesktop
