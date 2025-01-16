@@ -29,12 +29,12 @@ const SortAndFilterControls = ({
   isGenreDropdownOpen,
 }: Props) => {
   return (
-    <div className="w-full sm:w-10/12 mx-auto lg:mx-0 flex justify-end flex-col lg:flex-row gap-2 sm:gap-4 md:gap-6">
+    <div className="w-full sm:w-10/12 mx-auto lg:mx-0 flex justify-end flex-col lg:flex-row gap-2 sm:gap-4 md:gap-6 text-black">
       <div className="flex gap-2 sm:gap-4 md:gap-6">
         <div className="relative w-full sm:w-2/4 lg:w-24">
           <button
             onClick={() => onToggleGenreDropdown()}
-            className="font-semibold w-full px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 focus:outline-none"
+            className=" text-white font-semibold w-full px-4 py-2 border-2 border-dashed border-gray-200 rounded-md hover:border-solid focus:outline-none"
           >
             Genre
           </button>
@@ -47,7 +47,7 @@ const SortAndFilterControls = ({
         <div className="relative w-full sm:w-2/4 lg:w-24">
           <button
             onClick={() => onToggleTypeDropdown()}
-            className=" font-semibold w-full px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 focus:outline-none"
+            className=" text-white font-semibold w-full px-4 py-2 border-2 border-dashed border-gray-200 rounded-md hover:border-solid  focus:outline-none"
           >
             Type
           </button>

@@ -6,7 +6,7 @@ interface SynopsisMobileProps {
 
 const SynopsisMobile: React.FC<SynopsisMobileProps> = ({ synopsis }) => {
   return (
-    <div className="border rounded-lg m-5 p-5">
+    <div className="border rounded-lg m-5 p-5 bg-[#121212]">
       <div>
         <h2 className="text-3xl">Synopsis</h2>
       </div>

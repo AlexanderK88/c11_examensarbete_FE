@@ -83,13 +83,13 @@ export default function FilterModalProfile({
   }, [searchParams]);
 
   return (
-    <div className="w-full flex flex-col gap-6 md:mx-10 mt-8">
+    <div className="w-full flex flex-col gap-6 md:mx-10 mt-8 text-white">
       <div className="flex flex-col md:flex-row gap-4 sjustify-center items-center">
         <label className="text-lg font-semibold">Sort By:</label>
         <select
           value={sort}
           onChange={handleSortChange}
-          className="border p-2 sm:p-1 rounded-md "
+          className="border p-2 sm:p-1 rounded-md text-black "
         >
           <option>Standard</option>
           <option value="popularity">Popularity</option>

@@ -89,9 +89,9 @@ export default function Individual() {
       <Header />
       {isMobile && (
         <>
-          <main className="w-full font-sans">
+          <main className="w-full font-sans bg-[#121212] text-white">
             <div className="mt-2 w-11/12 mx-auto">
-              <h1 className="text-3xl my-4 font-semibold">
+              <h1 className="text-3xl my-4 font-semibold text-white">
                 {manga?.title || "Untitled"}
               </h1>
               <div className="w-full flex mx-auto">
@@ -112,16 +112,16 @@ export default function Individual() {
                         >
                           {genre.name}
                         </p>
-                      )) || <p>No genres available</p>}
+                      )) || <p className="text-white">No genres available</p>}
                     </div>
                   </div>
                   <div className="border rounded-md shadow-md p-1 flex gap-4 items-center">
                     <div className="p-1 ml-1 h-10 w-10 bg-purple-700 rounded-md text-center text-white">
-                      <p className="mx-auto my-1">読</p>
+                      <p className="mx-auto my-1 text-white">読</p>
                     </div>
                     <div className="mr-2">
-                      <h3 className="text-sm right-0">Type</h3>
-                      <p className="text-md font-bold">
+                      <h3 className="text-sm right-0 text-white">Type</h3>
+                      <p className="text-md font-bold text-white">
                         {manga?.type || "Unknown"}
                       </p>
                     </div>
@@ -133,8 +133,8 @@ export default function Individual() {
                       </p>
                     </div>
                     <div>
-                      <h3 className="text-sm">Chapters available</h3>
-                      <p className="text-md font-bold">
+                      <h3 className="text-sm text-white">Chapters</h3>
+                      <p className="text-md font-bold text-white">
                         {manga?.chapters ?? "Soon"}
                       </p>
                     </div>
@@ -146,8 +146,8 @@ export default function Individual() {
                       </p>
                     </div>
                     <div>
-                      <h3 className="text-sm">Rating</h3>
-                      <p className="text-md font-bold">
+                      <h3 className="text-sm text-white">Rating</h3>
+                      <p className="text-md font-bold text-white">
                         {manga?.score ?? "No rating"}
                       </p>
                     </div>
@@ -215,8 +215,8 @@ export default function Individual() {
       )}
       {!isMobile && (
         <>
-          <div className="h-[1px] translate-y-[300px] bg-gray-400 w"></div>
-          <main className="bg-gray-50 max-w-screen-lg mx-auto">
+          <div className="h-[1px] translate-y-[300px] bg-[#121212] text-white "></div>
+          <main className=" max-w-screen-lg mx-auto">
             <div className="relative h-[300px] border-gray-400 ">
               <div className="absolute bottom-[-150px] left-[170px] transform -translate-x-1/2">
                 <img
@@ -226,7 +226,7 @@ export default function Individual() {
                 />
               </div>
               <div className="absolute ml-5 left-[340px] top-[90px]">
-                <h1 className="text-black sm:text-2xl md:text-3xl lg:text-4xl font-bold  ">
+                <h1 className="text-white sm:text-2xl md:text-3xl lg:text-4xl font-bold  ">
                   {manga?.title || "Manga Title"}
                 </h1>
                 <div className="flex flex-wrap gap-1 my-4">
@@ -237,10 +237,10 @@ export default function Individual() {
                     >
                       {genre.name}
                     </p>
-                  )) || <p>No genres available</p>}
+                  )) || <p className="text-white">No genres available</p>}
                 </div>
               </div>
-              <div className="flex flex-row gap-10 h-[55px] ml-5 left-[350px] bottom-0 absolute text-stone-500">
+              <div className="flex flex-row gap-10 h-[55px] ml-5 left-[350px] bottom-0 absolute  text-white">
                 <p
                   className={`h-full hover:border-b-2 cursor-pointer hover:border-purple-700 py-5 ${
                     activeMenu === "overview"
@@ -286,8 +286,8 @@ export default function Individual() {
                     <p className="mx-auto my-1">読</p>
                   </div>
                   <div>
-                    <h3 className="text-sm">Type</h3>
-                    <p className="text-md font-bold">
+                    <h3 className="text-sm text-white">Type</h3>
+                    <p className="text-md font-bold text-white">
                       {manga?.type || "Unknown"}
                     </p>
                   </div>
@@ -297,8 +297,8 @@ export default function Individual() {
                     <IoMdBook />
                   </div>
                   <div>
-                    <h3 className="text-sm">Chapters available</h3>
-                    <p className="text-md font-bold">
+                    <h3 className="text-sm text-white">Chapters</h3>
+                    <p className="text-md font-bold text-white">
                       {manga?.chapters ?? "Soon"}
                     </p>
                   </div>
@@ -308,8 +308,8 @@ export default function Individual() {
                     <FaStar />
                   </div>
                   <div>
-                    <h3 className="text-sm">Rating</h3>
-                    <p className="text-md font-bold">
+                    <h3 className="text-sm text-white">Rating</h3>
+                    <p className="text-md font-bold text-white">
                       {manga?.score ?? "No rating"}
                     </p>
                   </div>
@@ -330,7 +330,7 @@ export default function Individual() {
       )}
       {isModalOpen && manga && (
         <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
+          <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] rounded-lg shadow-lg px-10 py-5">
             <SaveMangaModal manga={manga} setIsModalOpen={setIsModalOpen} />
           </div>
         </div>

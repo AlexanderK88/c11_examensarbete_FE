@@ -54,9 +54,9 @@ const ReviewMobile = ({ mangaid, userid }: Props) => {
 
   return (
     <>
-      <div className="w-full border-b-2 border-gray-300">
-        <div className="w-full p-3 px-6 pr-5 flex justify-between items-center border-b border-t border-gray-300">
-          <h1 className="text-black font-bold text-xl">Review forum</h1>
+      <div className="w-full border-b-2 border-zinc-800">
+        <div className="w-full p-3 px-6 pr-5 flex justify-between items-center border-b border-zinc-800">
+          <h1 className="text-white font-bold text-xl">Review forum</h1>
           <button
             onClick={handleModal}
             className="font-semibold w-44 rounded-md shadow-md p-2 text-white bg-purple-600 cursor-pointer hover:bg-purple-700"
@@ -66,33 +66,33 @@ const ReviewMobile = ({ mangaid, userid }: Props) => {
         </div>
         {isLoading && (
           <div className="w-full h-96 flex justify-center items-center">
-            <p className="text-black font-semibold">Loading...</p>
+            <p className="text-white font-semibold">Loading...</p>
           </div>
         )}
         {isError && (
           <div className="w-full h-96 flex justify-center items-center">
-            <p className="text-black font-semibold">Error fetching reviews</p>
+            <p className="text-white font-semibold">Error fetching reviews</p>
           </div>
         )}
         {reviews && reviews.length === 0 && (
           <div className="w-full h-96 flex justify-center items-center">
-            <p className="text-black font-semibold">No reviews available</p>
+            <p className="text-white font-semibold">No reviews available</p>
           </div>
         )}
         {reviews &&
           reviews.length > 0 &&
           reviews.map((review: ReviewDto) => (
-            <div className="w-full mt-2 border-b-2 border-gray-300">
+            <div className="w-full mt-2 border-b-2 border-zinc-800">
               <div className="relative w-full p-3">
                 <div className="w-full flex space-x-6 ml-3 items-center">
-                  <p className="text-black font-semibold">
+                  <p className="text-white font-semibold">
                     Rating: {review.rating}/10
                   </p>
                   <p className="absolute right-6 text-purple-600 hover:text-purple-700 font-semibold">
                     {review.comments.length} comments
                   </p>
                 </div>
-                <p className="px-3 pt-3 text-purple-900 font-semibold">
+                <p className="px-3 pt-3 text-purple-500 font-semibold">
                   {review.username}
                 </p>
                 <div className="w-full px-3 mt-2 max-h-32 ">

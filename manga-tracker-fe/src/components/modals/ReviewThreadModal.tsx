@@ -70,10 +70,10 @@ export default function ReviewThreadModal({
   };
 
   return (
-    <div className="relative w-full min-h-[400px] max-w-[800px] flex flex-col bg-white p-4 rounded-lg shadow-lg">
+    <div className="relative w-full min-h-[400px] max-w-[800px] flex flex-col bg-[#121212] p-4 rounded-lg shadow-lg">
       <div className="w-full flex flex-col">
         <div className="flex justify-between">
-          <h2 className="text-xl font-semibold text-purple-700 p-2">
+          <h2 className="text-xl font-semibold text-purple-500 p-2">
             {review?.username}
           </h2>
           <h3 className="text-xl font-semibold p-2">
@@ -83,22 +83,25 @@ export default function ReviewThreadModal({
             {handleTimeText(review.createdAt)}
           </span>
         </div>
-        <div className="mb-2 p-2 border-gray-300 rounded-md w-full min-h-20">
-          <p className="text-lg italic">
+        <div className="mb-2 p-2 border-zinc-800 rounded-md w-full min-h-20">
+          <p className="text-white text-lg italic">
             <span className="font-semibold">Review: </span>
             {review?.reviewText}
           </p>
         </div>
       </div>
-      <div className="overflow-y-scroll max-h-60">
+      <div className="overflow-y-scroll max-h-80 text-white mx-2 border-2 border-zinc-800">
         {comments &&
           comments.map((comment) => (
-            <div className="pl-4 py-2 border-t border-gray-300 ">
+            <div
+              className="pl-4 py-2 border-t border-zinc-800 "
+              key={comment.id}
+            >
               <div className="flex justify-between">
                 <p className="font-semibold">{comment.username}</p>
                 {comment.username === dbUser?.username && (
                   <span
-                    className="p-2 cursor-pointer hover:bg-gray-300 mr-2 rouned-md"
+                    className="p-2 cursor-pointer hover:bg-black mr-2 rouned-md"
                     onClick={() => deleteCommentHandler(comment.id)}
                   >
                     <FaRegTrashCan />
@@ -115,7 +118,7 @@ export default function ReviewThreadModal({
           <textarea
             value={comment}
             placeholder="Write your comment..."
-            className="border-2 border-gray-300 w-full rounded-md my-2 p-2 h-18 text-left align-top "
+            className="border-2 border-zinc-800 bg-black w-full rounded-md my-2 p-2 h-18 text-left align-top "
             onChange={(e) => setComment(e.target.value)}
           />
           <button

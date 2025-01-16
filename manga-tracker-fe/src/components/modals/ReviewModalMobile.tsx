@@ -54,41 +54,41 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
   };
   return (
     <>
-      <div className="relative w-[400px] p-6 bg-white rounded-lg shadow-lg">
+      <div className="relative w-[400px] p-6 bg-[#121212] rounded-lg shadow-lg">
         <div
-          className="absolute right-5 top-5 text-2xl cursor-pointer"
+          className="absolute right-5 top-5 text-2xl cursor-pointer text-white"
           onClick={() => setShowMobileModal(false)}
         >
           <IoMdClose />
         </div>
         <div className="w-full">
-          <h2 className="text-black text-xl font-semibold">Review</h2>
+          <h2 className="text-white text-xl font-semibold">Review</h2>
           <textarea
             placeholder=" Write your review..."
-            className="mt-3 h-36 border-2 w-full rounded-sm p-2"
+            className="mt-3 h-36 border-2 w-full rounded-sm p-2 bg-black border-zinc-800 text-white"
             onChange={handleReviewTextChange}
           />
           <div className="w-full flex mt-4 justify-between items-center">
-            <h2 className="text-black text-xl font-semibold mr-4">
+            <h2 className="text-white text-xl font-semibold mr-4">
               Rate the series 1-10
             </h2>
             <div className="flex gap-2">
               <button
-                className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center"
+                className="w-10 h-10 rounded-md border-2 border-zinc-800 flex justify-center items-center"
                 onClick={handleValueChangeDown}
               >
-                <p className="text-center text-xl font-bold text-gray-500">-</p>
+                <p className="text-center text-xl font-bold text-white">-</p>
               </button>
-              <div className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center">
+              <div className="w-10 h-10 rounded-md border-2 border-zinc-800 flex justify-center items-center">
                 <p className="text-center text-xl font-bold text-gray-500">
                   {value}
                 </p>
               </div>
               <button
-                className="w-10 h-10 rounded-md border-2 border-gray-300 flex justify-center items-center"
+                className="w-10 h-10 rounded-md border-2 border-zinc-800 flex justify-center items-center"
                 onClick={handleValueChangeUp}
               >
-                <p className="text-center text-xl font-bold text-gray-500 shadow-sm">
+                <p className="text-center text-xl font-bold text-white shadow-sm">
                   +
                 </p>
               </button>
@@ -97,16 +97,16 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
           <div className="mt-2 flex">
             <p className="font-semibold">Spoiler? </p>
             <div className="ml-4 flex items-center gap-1">
-              <p>Yes</p>
+              <p className="text-white">Yes</p>
               <button
-                className={`border-2 border-gray-300 p-2 w-4 h-4 rounded-md cursor-pointer ${
+                className={`border-2 border-zinc-800 p-2 w-4 h-4 rounded-md cursor-pointer ${
                   spoiler && "bg-purple-600"
                 }`}
                 onClick={() => handleSpoilerChange(true)}
               ></button>
-              <p className="ml-2">No</p>
+              <p className="ml-2 text-white">No</p>
               <button
-                className={`border-2 border-gray-300 p-2 w-4 h-4 rounded-md cursor-pointer ${
+                className={`border-2 border-zinc-800 p-2 w-4 h-4 rounded-md cursor-pointer ${
                   !spoiler && "bg-purple-600"
                 }`}
                 onClick={() => handleSpoilerChange(false)}

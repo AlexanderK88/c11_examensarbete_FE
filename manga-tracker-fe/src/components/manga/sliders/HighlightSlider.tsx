@@ -54,10 +54,10 @@ export default function HighlightSlider({
   return (
     <div className="w-full xl:w-11/12 px-4 md:px-8 lg:px-16 mx-auto mt-10 relative">
       <div className="flex justify-between items-end mb-4 gap-2">
-        <p className="text-3xl font-semibold">{title}</p>
+        <p className="text-3xl font-semibold text-white">{title}</p>
         <p
           onClick={handleGoToBrowse}
-          className="pb-[1.5px] underline rounded-md px-2 italic hover:bg-purple-400 hover:text-white cursor-pointer"
+          className="pb-[1.5px] underline rounded-md px-2 italic hover:bg-purple-400 hover:text-white cursor-pointer text-white"
         >
           See all
         </p>

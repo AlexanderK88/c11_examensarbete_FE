@@ -40,22 +40,22 @@ export default function ListView() {
   }, []);
 
   const statusColors: Record<Status, string> = {
-    Reading: "bg-blue-400",
-    Completed: "bg-green-400",
-    "On-Hold": "bg-yellow-400",
-    Dropped: "bg-red-400",
-    "Plan to Read": "bg-gray-400",
+    Reading: "bg-blue-500",
+    Completed: "bg-green-500",
+    "On-Hold": "bg-yellow-500",
+    Dropped: "bg-red-500",
+    "Plan to Read": "bg-gray-500",
   };
   return (
     <div className="w-full h-full flex justify-center flex-col">
       <button
-        className="w-full max-auto bg-purple-600 hover:bg-purple-700 p-2 cursor-pointer  text-xl text-white"
+        className="w-full max-auto bg-purple-600 hover:bg-purple-700 rounded-md p-2 cursor-pointer  text-xl text-white"
         onClick={handleModalVisibility}
       >
         Create List
       </button>
       <div className="w-full p-2 py-6">
-        <div className="flex justify-between w-full ">
+        <div className="flex justify-between w-full text-white">
           {Object.entries(statusColors).map(([status, color]) => (
             <div key={status} className="flex items-center space-x-1">
               <div className={`w-4 h-4 ${color} rounded`}></div>

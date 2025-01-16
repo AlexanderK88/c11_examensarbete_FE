@@ -69,7 +69,7 @@ export default function Discovery() {
           <HeroSlider mangas={deduplicatedMixedData} />
         </div>
         <div className="w-full mt-10">
-          <h2 className="text-3xl font-semibold text-center mb-10">
+          <h2 className="text-3xl font-semibold text-center mb-10 text-white">
             Personal Recommendations
           </h2>
           <PersonalRecommendationSlider />
