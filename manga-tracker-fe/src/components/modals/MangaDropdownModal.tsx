@@ -6,38 +6,38 @@ import { IoReturnDownBack } from "react-icons/io5";
 import { IoIosSave } from "react-icons/io";
 
 interface MangaDropdownModalProps {
-  setSelectedSeries: any;
-  setIsModalVisible: any;
+  selectedMangas: number[];
+  setSelectedMangas: React.Dispatch<React.SetStateAction<number[]>>;
+  setSelectedSeries: React.Dispatch<React.SetStateAction<number[]>>;
+  setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCancel: () => void;
 }
 
 export default function MangaDropdownModal({
   setSelectedSeries,
   setIsModalVisible,
+  setSelectedMangas,
+  selectedMangas,
+  handleCancel,
 }: MangaDropdownModalProps) {
   const { dbUser } = useAuthContext();
   const { data, error, isLoading } = useFetchUsersSavedMangas(
     dbUser ? dbUser.id : ""
   );
 
-  const [selectedMangas, setSelectedMangas] = useState<number[]>([]);
-
   const addMangasToSelectedSeries = (id: number) => {
-    setSelectedSeries((prev: string[]) => [...prev, id]);
-    setSelectedMangas((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    setSelectedSeries((prev: number[]) => [...prev, id]);
+    setSelectedMangas((prev) =>
+      prev.includes(id) ? prev.filter((manga) => manga !== id) : [...prev, id]
+    );
   };
 
   const handleSaveAndGoBack = () => {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
-    setSelectedMangas([]);
-    setSelectedSeries([]);
-    setIsModalVisible(false);
-  };
-
   return (
-    <div className="w-full h-full absolute left-0 top-0 bg-white pb-4 rounded-md shadow-md overflow-y-scroll">
+    <div className="w-10/12 h-1/2 bg-white pb-4 rounded-md shadow-md overflow-y-scroll">
       <div className="w-full flex gap-2 items-center p-4">
         <button
           className="w-full flex justify-center items-center h-8 p-2 border-2 border-red-600 rounded-md "

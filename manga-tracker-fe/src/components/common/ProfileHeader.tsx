@@ -71,7 +71,7 @@ export default function ProfileHeader() {
                 <SearchInput setMangas={setManga} />
                 <MangaModal mangas={manga} />
               </div>
-              {dbUser ? ( // Show logout button if the user is logged in
+              {dbUser ? (
                 <button
                   onClick={logout}
                   className="hidden md:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"

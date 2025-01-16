@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetchReviews } from "../../services/ReviewService";
 import { MangaDto, ReviewDto } from "../../types/mangaTypes";
 import ReviewModalMobile from "../modals/ReviewModalMobile";
+import ReviewThreadModal from "../modals/ReviewThreadModal";
 
 interface Props {
   userid: string;
@@ -10,14 +11,37 @@ interface Props {
 
 const ReviewMobile = ({ mangaid, userid }: Props) => {
   const [showModal, setShowMobileModal] = useState(false);
+  const [currentReview, setCurrentReview] = useState<ReviewDto | null>(null);
+  const [showThread, setShowThread] = useState(false);
+  const [hasCommented, setHasCommented] = useState(false);
 
+  const handleShowThread = (review: ReviewDto) => {
+    setCurrentReview(review);
+    setShowThread(!showThread);
+  };
   const neededAttributes = {
     userid,
     mangaId: parseInt(mangaid),
     setShowMobileModal,
   };
 
-  const { reviews, isLoading, isError } = useFetchReviews(mangaid);
+  const { reviews, isLoading, refetch, isError } = useFetchReviews(mangaid);
+
+  useEffect(() => {
+    if (hasCommented) {
+      refetch().then(() => {
+        // Find the current review after the refetch
+        const updatedReview = reviews?.find(
+          (review) => review.reviewId === currentReview?.reviewId
+        );
+        if (updatedReview) {
+          setCurrentReview(updatedReview); // Update currentReview with new data
+        }
+      });
+      setHasCommented(false);
+    }
+  }, [hasCommented, reviews, currentReview?.reviewId, refetch]);
+
   console.log(reviews);
   const text =
     "Naruto is an unforgettable journey of perseverance, friendship, and epic ninja action! From the moment we meet the quirky and determined Naruto Uzumaki in the Hidden Leaf Village, it's impossible not to root for him as he chases his dream of becoming Hokage. The show balances heart-pounding battles with heartfelt moments that make you laugh, cry, and cheer. The character development is stellar—watching";
@@ -76,13 +100,25 @@ const ReviewMobile = ({ mangaid, userid }: Props) => {
                 <p className="px-3 pt-3 text-purple-900 font-semibold">
                   {review.username}
                 </p>
-                <div className="w-full px-3  mt-2 max-h-32 ">
+                <div className="w-full px-3 mt-2 max-h-32 ">
                   "{truncateLongReview(review.reviewText)}"
                 </div>
-                <p className="w-full text-end pr-3 text-purple-600 font-semibold">
+                <p
+                  className="w-full text-end pr-3 text-purple-600 font-semibold cursor-pointer"
+                  onClick={() => handleShowThread(review)}
+                >
                   See thread
                 </p>
               </div>
+              {showThread && currentReview && (
+                <div className="fixed inset-0 w-full h-full px-5 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+                  <ReviewThreadModal
+                    review={currentReview}
+                    setShowThread={setShowThread}
+                    setHasCommented={setHasCommented}
+                  />
+                </div>
+              )}
             </div>
           ))}
         {showModal && (

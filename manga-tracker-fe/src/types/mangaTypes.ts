@@ -31,8 +31,8 @@ export interface MangaDto {
   ranking: number;
   score: number | null;
   scoredBy: number;
-  publishedFrom: string;  // ISO 8601 format date string
-  publishedTo: string;    // ISO 8601 format date string
+  publishedFrom: string;
+  publishedTo: string;
   images: ImageDto[];
   authors: AuthorDto[];
   genres: GenreDto[];
@@ -40,12 +40,20 @@ export interface MangaDto {
 
 export interface CommentDto {
   commentText: string;
-  userId: number;
+  username: string;
   reviewId:number;
+  createdAt: string;
+}
+
+export interface AddCommentDto {
+  commentText: string;
+  reviewId: number;
+  userId: string;
 }
 
 export interface ReviewDto {
   title: string;
+  reviewId: number;
   reviewText: string;
   spoiler: boolean;
   rating:number;
@@ -53,6 +61,7 @@ export interface ReviewDto {
   mangaId:number;
   comments: CommentDto[];
   username: string;
+  createdAt: string;
 }
 
 export interface AddReviewDto {

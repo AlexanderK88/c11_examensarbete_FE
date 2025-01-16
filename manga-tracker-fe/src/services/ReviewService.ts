@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "react-query";
 import axiosInstance from "./axiosInstance";
-import { ReviewDto, AddReviewDto
- } from "../types/mangaTypes";
+import { ReviewDto, AddReviewDto} from "../types/mangaTypes";
+import { CommentDto, AddCommentDto } from "../types/mangaTypes";
 
 
 const fetchReviews = async (mangaId: string) => {
@@ -44,4 +44,19 @@ export const useFetchReviews = (mangaId: string) => {
 
     export const useAddReview = () => {
         return useMutation(addReview);
+    }
+
+    const addComment = async (comment: AddCommentDto) => {
+        try {
+            console.log("Adding comment:", comment);
+            const response = await axiosInstance.post("/review/comment", comment);
+            return response.data;
+        } catch (error) {
+            console.error("Failed to add comment:", error);
+            return null;
+        }
+    }
+
+    export const useAddComment = () => {
+        return useMutation(addComment);
     }
