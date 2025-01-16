@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useFetchUsersSavedMangas } from "../../services/SaveMangaService";
 import { CiSquarePlus } from "react-icons/ci";
 import { useAuthContext } from "../../provider/AuthProvider";
@@ -8,13 +7,11 @@ import { IoIosSave } from "react-icons/io";
 interface MangaDropdownModalProps {
   selectedMangas: number[];
   setSelectedMangas: React.Dispatch<React.SetStateAction<number[]>>;
-  setSelectedSeries: React.Dispatch<React.SetStateAction<number[]>>;
   setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   handleCancel: () => void;
 }
 
 export default function MangaDropdownModal({
-  setSelectedSeries,
   setIsModalVisible,
   setSelectedMangas,
   selectedMangas,
@@ -26,7 +23,6 @@ export default function MangaDropdownModal({
   );
 
   const addMangasToSelectedSeries = (id: number) => {
-    setSelectedSeries((prev: number[]) => [...prev, id]);
     setSelectedMangas((prev) =>
       prev.includes(id) ? prev.filter((manga) => manga !== id) : [...prev, id]
     );

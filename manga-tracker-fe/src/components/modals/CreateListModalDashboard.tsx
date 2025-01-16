@@ -12,8 +12,6 @@ export default function CreateListModalDashboard({
   setModalVisible,
 }: CreateListModalDashboardProps) {
   const { dbUser } = useAuthContext();
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [selectedSeries, setSelectedSeries] = useState<string[]>([]);
   const [listName, setListName] = useState<string>("");
   const { mutate } = useCreateNewList();
 
@@ -32,9 +30,9 @@ export default function CreateListModalDashboard({
         listName: listName,
         userId: dbUser.id,
       };
-      console.log("Creating new list:", list);
       mutate(list);
       setModalVisible(false);
+      refreshPage();
     }
   };
 

@@ -1,6 +1,5 @@
 import { useMangasBySearch } from "../../services/MangaService";
 import { useState, useEffect } from "react";
-
 import { MangaDto } from "../../types/mangaTypes";
 
 interface SearchInputProps {
@@ -17,7 +16,6 @@ export default function SearchInput({ setMangas }: SearchInputProps) {
     } else {
       setMangas([]);
     }
-    console.log("Data:", data);
   }, [data, setMangas]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +31,7 @@ export default function SearchInput({ setMangas }: SearchInputProps) {
       <input
         type="text"
         placeholder="Search series..."
-        className="w-42 p-1 pl-3 border border-gray-300 rounded-md"
+        className=" p-1 pl-3 border border-gray-300 rounded-md"
         value={search}
         onChange={handleSearch}
       />

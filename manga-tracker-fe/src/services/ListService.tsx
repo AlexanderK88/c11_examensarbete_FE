@@ -14,7 +14,6 @@ export interface ListDtoWithId extends ListDto {
 
 const createNewList = async (list: ListDto): Promise<ListDto> => {
   try {
-    console.log("Creating new list:", list);
     const response = await axiosInstance.post("/user/list", list);
     return response.data;
   } catch (error) {
@@ -58,7 +57,7 @@ const addMangaToList = async (
     await axiosInstance.post(`/user/list/add/${listId}`, mangaIds);
   } catch (error) {
     console.error("Failed to add manga to list:", error);
-    throw error; // Ensure errors are properly propagated
+    throw error;
   }
 };
 
@@ -72,4 +71,20 @@ export const useAddMangaToList = () => {
       },
     }
   );
+};
+
+const deleteList = async (listId: string): Promise<void> => {
+  try {
+    console.log("Deleting list with id:", listId);
+    await axiosInstance.delete(`/user/list/${listId}`);
+  } catch (error) {
+    console.error("Failed to delete list:", error);
+    throw error;
+  }
+};
+
+export const useDeleteList = () => {
+  return useMutation(deleteList, {
+    onError: () => console.log("Failed to delete list"),
+  });
 };

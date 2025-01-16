@@ -39,6 +39,7 @@ export interface MangaDto {
 }
 
 export interface CommentDto {
+  id: number;
   commentText: string;
   username: string;
   reviewId:number;

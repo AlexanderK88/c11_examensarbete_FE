@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SaveMangaDto } from "../../services/SaveMangaService";
 
 interface Props {
@@ -44,7 +44,6 @@ export default function FilterForDashboard({ mangas, setMangas }: Props) {
       : [...selectedStatuses, status];
 
     setSelectedStatuses(updatedStatuses);
-    console.log("Selected Statuses:", updatedStatuses);
 
     const filteredMangas = mangas.filter((manga) =>
       updatedStatuses.length > 0 ? updatedStatuses.includes(manga.status) : true
@@ -56,7 +55,6 @@ export default function FilterForDashboard({ mangas, setMangas }: Props) {
   return (
     <div className=" flex flex-col gap-6 mt-8">
       <div className="flex flex-col md:flex-row gap-4 justify-center sm:justify-end items-center sm:items-start">
-        {/* Sorting */}
         <label className="text-lg font-semibold min-w-[70px]">Sort By:</label>
         <select
           value={sort}
@@ -67,7 +65,6 @@ export default function FilterForDashboard({ mangas, setMangas }: Props) {
           <option value="score">Score</option>
         </select>
 
-        {/* Filtering */}
         <label className="text-lg font-semibold min-w-[140px]">
           Filter By Status:
         </label>

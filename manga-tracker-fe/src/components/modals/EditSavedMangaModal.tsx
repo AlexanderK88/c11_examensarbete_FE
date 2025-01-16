@@ -62,7 +62,6 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
     setIsScoreDropdownOpen(false);
   };
 
-  // Handle opening a dropdown and closing others
   const toggleChapterDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
     setIsStatusDropdownOpen(false);
@@ -203,7 +202,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
           </div>
         </div>
         <button
-          className="text-red-400 text-xl font-thin font-mono mt-3 cursor-pointer hover:text-red-500"
+          className="text-red-400 text-xl font-thin font-sans mt-3 cursor-pointer hover:text-red-500"
           onClick={() => setIsModalOpen(false)}
         >
           Close

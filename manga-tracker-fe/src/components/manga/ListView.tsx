@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoIosArrowUp } from "react-icons/io";
 import CreateListModalDashboard from "../modals/CreateListModalDashboard";
 import ListItem from "./ListItem";
-import {
-  useFetchAllLists,
-  useAddMangaToList,
-} from "../../services/ListService";
+import { useFetchAllLists } from "../../services/ListService";
 import { useAuthContext } from "../../provider/AuthProvider";
 type Status = "Reading" | "Completed" | "On-Hold" | "Dropped" | "Plan to Read";
 
@@ -25,29 +20,25 @@ const testStatuses: Status[] = [
 ];
 
 export default function ListView() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
   const [modalVisible, setModalVisible] = useState<Boolean>(false);
   const { dbUser } = useAuthContext();
   const { data: lists } = useFetchAllLists(dbUser?.id || "");
 
-  console.log("Lists:", lists);
-
   const handleModalVisibility = () => {
     if (!modalVisible) {
-      document.body.style.overflow = "hidden"; // Disable scrolling
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"; // Enable scrolling
+      document.body.style.overflow = "auto";
     }
     setModalVisible(!modalVisible);
   };
 
   useEffect(() => {
     return () => {
-      document.body.style.overflow = "auto"; // Reset scrolling when component unmounts
+      document.body.style.overflow = "auto";
     };
   }, []);
 
-  // Map statuses to colors
   const statusColors: Record<Status, string> = {
     Reading: "bg-blue-400",
     Completed: "bg-green-400",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFetchReviews } from "../../services/ReviewService";
-import { MangaDto, ReviewDto } from "../../types/mangaTypes";
+import { ReviewDto } from "../../types/mangaTypes";
 import ReviewModalMobile from "../modals/ReviewModalMobile";
 import ReviewThreadModal from "../modals/ReviewThreadModal";
 
@@ -30,21 +30,16 @@ const ReviewMobile = ({ mangaid, userid }: Props) => {
   useEffect(() => {
     if (hasCommented) {
       refetch().then(() => {
-        // Find the current review after the refetch
         const updatedReview = reviews?.find(
           (review) => review.reviewId === currentReview?.reviewId
         );
         if (updatedReview) {
-          setCurrentReview(updatedReview); // Update currentReview with new data
+          setCurrentReview(updatedReview);
         }
       });
       setHasCommented(false);
     }
   }, [hasCommented, reviews, currentReview?.reviewId, refetch]);
-
-  console.log(reviews);
-  const text =
-    "Naruto is an unforgettable journey of perseverance, friendship, and epic ninja action! From the moment we meet the quirky and determined Naruto Uzumaki in the Hidden Leaf Village, it's impossible not to root for him as he chases his dream of becoming Hokage. The show balances heart-pounding battles with heartfelt moments that make you laugh, cry, and cheer. The character development is stellar—watching";
 
   const truncateLongReview = (review: string) => {
     if (review.length > 200) {

@@ -12,7 +12,9 @@ import MangaListItem from "../components/manga/MangaListItem";
 import ListView from "../components/manga/ListView";
 
 export default function Dashboard() {
-  const [isListView, setIsListView] = useState<boolean>(false);
+  const [isListView, setIsListView] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("isListView") || "false")
+  );
   const { dbUser } = useAuthContext();
   const [mangas, setMangas] = useState<SaveMangaDto[]>([]);
   const [isFilterModalVisible, setIsFilterModalVisible] =
@@ -24,15 +26,15 @@ export default function Dashboard() {
   const { data, error, isLoading } = useFetchUsersSavedMangas(dbUser.id);
 
   useEffect(() => {
-    console.log("fetched with user id:", dbUser.id);
-    console.log("Data:", data);
     if (data) {
       setMangas(data);
     }
   }, [data]);
 
   const handleListView = () => {
-    setIsListView(!isListView);
+    const newIsListView = !isListView;
+    setIsListView(newIsListView);
+    localStorage.setItem("isListView", JSON.stringify(newIsListView));
   };
 
   const toggleFilterModal = () => {

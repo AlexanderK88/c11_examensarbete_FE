@@ -3,9 +3,12 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { ListDtoWithId } from "../../services/ListService";
 import MangaDropdownModal from "../modals/MangaDropdownModal";
-import { useAddMangaToList } from "../../services/ListService";
+import { useAddMangaToList, useDeleteList } from "../../services/ListService";
 import EditSavedMangaModal from "../modals/EditSavedMangaModal";
 import { SaveMangaDto } from "../../services/SaveMangaService";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+
 type Status = "Reading" | "Completed" | "On Hold" | "Dropped" | "Plan to read";
 
 interface ListItemProps {
@@ -14,12 +17,18 @@ interface ListItemProps {
 export default function ListItem({ list }: ListItemProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
   const [currentManga, setCurrentManga] = useState<SaveMangaDto>();
-  const [selectedSeries, setSelectedSeries] = useState<number[]>([]);
   const [selectedMangas, setSelectedMangas] = useState<number[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [sortedList, setSortedList] = useState<ListDtoWithId | null>(null);
-  const { mutate, isLoading, isError } = useAddMangaToList();
+  const { mutate: deleteList } = useDeleteList();
+  const { mutate: addMangaToList, isLoading, isError } = useAddMangaToList();
+
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    navigate(0);
+  };
 
   const handleOpenSavedMangaModal = (manga: SaveMangaDto) => {
     setIsModalOpen(true);
@@ -38,9 +47,8 @@ export default function ListItem({ list }: ListItemProps) {
   }, [list.savedMangas]);
 
   const handleAddMangaToList = (listId: string, mangaIds: number[]) => {
-    console.log("Adding manga to list with id:", listId);
-    console.log("Manga id:", mangaIds);
-    mutate({ listId, mangaIds });
+    addMangaToList({ listId, mangaIds });
+    refreshPage();
   };
 
   const handleDropdown = () => {
@@ -69,7 +77,6 @@ export default function ListItem({ list }: ListItemProps) {
       }));
     }
 
-    // Calculate percentages only for present statuses
     const presentStatuses = Object.entries(statusCounts).filter(
       ([, count]) => count > 0
     );
@@ -79,7 +86,6 @@ export default function ListItem({ list }: ListItemProps) {
       percentage: (count / total) * 100,
     }));
 
-    // Adjust to ensure total percentage equals 100%
     const totalPercentage = distribution.reduce(
       (sum, { percentage }) => sum + percentage,
       0
@@ -100,7 +106,6 @@ export default function ListItem({ list }: ListItemProps) {
     list.savedMangas.map((manga) => manga.status as Status)
   );
 
-  // Map statuses to colors
   const statusColors: Record<Status, string> = {
     Reading: "bg-blue-400",
     Completed: "bg-green-400",
@@ -111,17 +116,21 @@ export default function ListItem({ list }: ListItemProps) {
 
   const handleModalVisibility = () => {
     if (!modalVisible) {
-      document.body.style.overflow = "hidden"; // Disable scrolling
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"; // Enable scrolling
+      document.body.style.overflow = "auto";
     }
     setModalVisible(!modalVisible);
   };
 
   const handleCancel = () => {
     setSelectedMangas([]);
-    setSelectedSeries([]);
     setModalVisible(false);
+  };
+
+  const handleDeleteList = (listId: string) => {
+    deleteList(listId);
+    refreshPage();
   };
   return (
     <>
@@ -129,8 +138,18 @@ export default function ListItem({ list }: ListItemProps) {
         <div className="w-full flex flex-col pt-6">
           <div className="px-5 pb-4 w-full flex justify-between">
             <h3 className="text-2xl">{list.listName}</h3>
-            <div className="flex justify-center items-center w-20 h-8 shadow-md rounded-md bg-gray-200">
-              <p className="mx-auto my-auto">{list.savedMangas.length}</p>
+            <div className="flex gap-6">
+              <div className="flex justify-center items-center w-20 h-8 shadow-md rounded-md bg-gray-200">
+                <p className="mx-auto my-auto">{list.savedMangas.length}</p>
+              </div>
+              <div className="cursor-pointer hover:bg-gray-300 p-2 items-center rounded-md">
+                <p
+                  className="text-center"
+                  onClick={() => handleDeleteList(list.id)}
+                >
+                  <FaRegTrashCan />
+                </p>
+              </div>
             </div>
           </div>
           <div className="mt-2 h-6 w-full flex shadow-md overflow-hidden">
@@ -143,7 +162,7 @@ export default function ListItem({ list }: ListItemProps) {
             ))}
           </div>
         </div>
-        <div
+        <button
           className="w-10 flex items-center min-h-full bg-purple-600 cursor-pointer hover:bg-purple-700 "
           onClick={handleDropdown}
         >
@@ -156,7 +175,7 @@ export default function ListItem({ list }: ListItemProps) {
               <IoIosArrowDown />
             </p>
           )}
-        </div>
+        </button>
       </div>
       {isDropdownOpen && (
         <div className="w-full h-full bg-gray-200">
@@ -167,12 +186,12 @@ export default function ListItem({ list }: ListItemProps) {
               to add them to your list
             </p>
             <div className="relative w-full gap-4 flex justify-evenly my-2">
-              <div
+              <button
                 onClick={handleModalVisibility}
                 className="p-2 w-48 md:w-full rounded-md shadow-md bg-purple-600 hover:bg-purple-700 cursor-pointer text-center text-white text-lg lg:text-xl "
               >
                 Choose Mangas
-              </div>
+              </button>
               <button
                 className="p-2 w-48 md:w-full rounded-md shadow-md bg-purple-600 hover:bg-purple-700 cursor-pointer text-white text-lg lg:text-xl "
                 onClick={() => handleAddMangaToList(list.id, selectedMangas)}
@@ -183,7 +202,6 @@ export default function ListItem({ list }: ListItemProps) {
               {modalVisible && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                   <MangaDropdownModal
-                    setSelectedSeries={setSelectedSeries}
                     setIsModalVisible={setModalVisible}
                     setSelectedMangas={setSelectedMangas}
                     selectedMangas={selectedMangas}
@@ -199,7 +217,7 @@ export default function ListItem({ list }: ListItemProps) {
               return (
                 <div
                   key={manga.mangaid}
-                  className="w-full h-12 flex justify-between items-center border-b-2 bg-white border-gray-300 p-4 "
+                  className="w-full h-12 flex justify-between items-center border-b-2 bg-white border-gray-300 p-4 cursor-pointer"
                 >
                   <p
                     className="ml-4 text-md font-semibold truncate w-2/4"
