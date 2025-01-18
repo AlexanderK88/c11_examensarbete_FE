@@ -87,7 +87,7 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
   };
 
   return (
-    <div className="h-[400px] sm:h-[385px] flex flex-row py-2 mb-3">
+    <div className="h-[450px] flex flex-row p-6 py-10  bg-[#121212] rounded-md shadow-md text-white">
       <div className="w-full">
         <h1 className="font-semibold text-2xl">{manga.title}</h1>
         <div className="w-full flex sm:flex-row mt-4">
@@ -191,15 +191,15 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
               {isLoading && <p>Saving...</p>}
               {isError && <p>Failed to save the manga.</p>}
               {isSuccess && <p>Manga saved successfully!</p>}
+              <button
+                className="text-red-500 text-xl  font-sans mt-3 cursor-pointer hover:text-red-600"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
-        <button
-          className="text-red-400 text-xl font-thin font-sans mt-3 cursor-pointer hover:text-red-500"
-          onClick={() => setIsModalOpen(false)}
-        >
-          Close
-        </button>
       </div>
     </div>
   );

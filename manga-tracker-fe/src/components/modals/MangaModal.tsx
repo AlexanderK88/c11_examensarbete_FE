@@ -12,8 +12,8 @@ export default function MangaModal({ mangas }: { mangas: MangaDto[] }) {
   return (
     <>
       {isModalOpen && (
-        <div className="absolute right-0 mt-2 bg-white shadow-lg border rounded-md min-w-96 max-w-96 pt-2">
-          <div className="p-4 max-h-64 overflow-y-scroll no-scrollbar">
+        <div className="absolute right-0 mt-2 bg-black shadow-lg border rounded-md min-w-96 max-w-96 pt-2">
+          <div className="p-4 max-h-[500px] overflow-y-scroll no-scrollbar text-white">
             <h3 className="text-lg font-semibold mb-2">Search List</h3>
             <ul className="space-y-4">
               {mangas.map((manga, index) => (

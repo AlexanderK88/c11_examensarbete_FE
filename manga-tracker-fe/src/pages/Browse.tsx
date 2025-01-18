@@ -75,8 +75,8 @@ export default function Browse2() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50">
-        <div className="bg-white shadow-md py-4 px-0 sm:px-6 mb-8 pt-6">
+      <main className="min-h-screen bg-[#121212] text-white">
+        <div className="bg-[#121212] py-4 px-0 sm:px-6  pt-10">
           <div className="w-10/12 mx-auto flex flex-col lg:flex-row justify-between gap-6">
             <SearchBar
               value={search}

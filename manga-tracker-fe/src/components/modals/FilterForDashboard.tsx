@@ -53,13 +53,13 @@ export default function FilterForDashboard({ mangas, setMangas }: Props) {
   };
 
   return (
-    <div className=" flex flex-col gap-6 mt-8">
+    <div className=" flex flex-col gap-6 mt-8 text-white">
       <div className="flex flex-col md:flex-row gap-4 justify-center sm:justify-end items-center sm:items-start">
         <label className="text-lg font-semibold min-w-[70px]">Sort By:</label>
         <select
           value={sort}
           onChange={handleSortChange}
-          className="w-full sm:max-w-[150px] border p-2 sm:p-1 rounded-md"
+          className="w-full sm:max-w-[150px] border p-2 sm:p-1 rounded-md text-black"
         >
           <option>Default</option>
           <option value="score">Score</option>

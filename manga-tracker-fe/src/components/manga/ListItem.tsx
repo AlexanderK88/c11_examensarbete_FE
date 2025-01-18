@@ -47,6 +47,9 @@ export default function ListItem({ list }: ListItemProps) {
   }, [list.savedMangas]);
 
   const handleAddMangaToList = (listId: string, mangaIds: number[]) => {
+    if (mangaIds.length < 1) {
+      return;
+    }
     addMangaToList({ listId, mangaIds });
     refreshPage();
   };
@@ -107,11 +110,11 @@ export default function ListItem({ list }: ListItemProps) {
   );
 
   const statusColors: Record<Status, string> = {
-    Reading: "bg-blue-400",
-    Completed: "bg-green-400",
-    "On Hold": "bg-yellow-400",
-    Dropped: "bg-red-400",
-    "Plan to read": "bg-gray-400",
+    Reading: "bg-blue-500",
+    Completed: "bg-green-500",
+    "On Hold": "bg-yellow-500",
+    Dropped: "bg-red-500",
+    "Plan to read": "bg-gray-500",
   };
 
   const handleModalVisibility = () => {
@@ -134,17 +137,17 @@ export default function ListItem({ list }: ListItemProps) {
   };
   return (
     <>
-      <div className="w-full h-full flex justify-between border-2 shadow-md border-gray-300 mt-4">
+      <div className="w-full h-full flex justify-between shadow-lg border border-gray-800 rounded-t-md shadow-black  mt-8">
         <div className="w-full flex flex-col pt-6">
           <div className="px-5 pb-4 w-full flex justify-between">
-            <h3 className="text-2xl">{list.listName}</h3>
+            <h3 className="text-2xl text-white">{list.listName}</h3>
             <div className="flex gap-6">
-              <div className="flex justify-center items-center w-20 h-8 shadow-md rounded-md bg-gray-200">
+              <div className="flex justify-center items-center w-20 h-8 shadow-md rounded-md bg-zinc-800 text-white">
                 <p className="mx-auto my-auto">{list.savedMangas.length}</p>
               </div>
-              <div className="cursor-pointer hover:bg-gray-300 p-2 items-center rounded-md">
+              <div className="cursor-pointer hover:bg-black p-2 items-center rounded-md">
                 <p
-                  className="text-center"
+                  className="text-center text-white"
                   onClick={() => handleDeleteList(list.id)}
                 >
                   <FaRegTrashCan />
@@ -152,7 +155,7 @@ export default function ListItem({ list }: ListItemProps) {
               </div>
             </div>
           </div>
-          <div className="mt-2 h-6 w-full flex shadow-md overflow-hidden">
+          <div className="mt-2 h-6 w-full flex  shadow-md overflow-hidden">
             {distribution.map(({ status, percentage }) => (
               <div
                 key={status}
@@ -163,7 +166,7 @@ export default function ListItem({ list }: ListItemProps) {
           </div>
         </div>
         <button
-          className="w-10 flex items-center min-h-full bg-purple-600 cursor-pointer hover:bg-purple-700 "
+          className="w-10 flex items-center min-h-full bg-purple-600 cursor-pointer hover:bg-purple-700 rounded-tr-md "
           onClick={handleDropdown}
         >
           {isDropdownOpen ? (
@@ -178,60 +181,27 @@ export default function ListItem({ list }: ListItemProps) {
         </button>
       </div>
       {isDropdownOpen && (
-        <div className="w-full h-full bg-gray-200">
-          <div className="w-full h-full">
-            <p className="p-2 mx-auto w-11/12">
-              First choose what mangas you would like to add to your list, then
-              after you've saved those you press the "Add series to list" button
-              to add them to your list
-            </p>
-            <div className="relative w-full gap-4 flex justify-evenly my-2">
-              <button
-                onClick={handleModalVisibility}
-                className="p-2 w-48 md:w-full rounded-md shadow-md bg-purple-600 hover:bg-purple-700 cursor-pointer text-center text-white text-lg lg:text-xl "
-              >
-                Choose Mangas
-              </button>
-              <button
-                className="p-2 w-48 md:w-full rounded-md shadow-md bg-purple-600 hover:bg-purple-700 cursor-pointer text-white text-lg lg:text-xl "
-                onClick={() => handleAddMangaToList(list.id, selectedMangas)}
-              >
-                Add series to list
-              </button>
-
-              {modalVisible && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                  <MangaDropdownModal
-                    setIsModalVisible={setModalVisible}
-                    setSelectedMangas={setSelectedMangas}
-                    selectedMangas={selectedMangas}
-                    handleCancel={handleCancel}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-
+        <div className="w-full h-full bg-[#121212]">
           <div>
             {sortedList?.savedMangas?.map((manga) => {
               return (
                 <div
                   key={manga.mangaid}
-                  className="w-full h-12 flex justify-between items-center border-b-2 bg-white border-gray-300 p-4 cursor-pointer"
+                  className="w-full h-12 flex justify-between items-center border-b bg-[#121212] border-zinc-800 p-4 cursor-pointer shadow-black shadow-md"
                 >
                   <p
-                    className="ml-4 text-md font-semibold truncate w-2/4"
+                    className="ml-4 text-md font-semibold truncate w-2/4 text-white"
                     onClick={() => handleOpenSavedMangaModal(manga)}
                   >
                     {manga.title}
                   </p>
-                  <div className="w-20 h-8 shadow-md rounded-md bg-gray-200 flex items-center">
-                    <p className="mx-auto my-auto text-center font-semibold">
+                  <div className="w-20 h-8 shadow-md rounded-md bg-zinc-800 flex items-center">
+                    <p className="mx-auto my-auto text-center font-semibold text-white">
                       {manga.score}/10
                     </p>
                   </div>
-                  <div className="w-20 md:w-[120px] h-8 shadow-md rounded-md bg-gray-200 flex items-center">
-                    <p className="mx-auto truncate md:text-clip text-center ">
+                  <div className="w-20 md:w-[120px] h-8 shadow-md rounded-md bg-zinc-800  flex items-center">
+                    <p className="mx-auto truncate md:text-clip text-center text-white">
                       {manga.status}
                     </p>
                   </div>
@@ -248,6 +218,42 @@ export default function ListItem({ list }: ListItemProps) {
                 </div>
               );
             })}
+            <div className="w-full h-full">
+              <p className="p-2 mx-auto w-full text-white italic">
+                * First choose what mangas you would like to add to your list,
+                then after you've saved those you press the "Add series to list"
+                button to add them to your list
+              </p>
+              <div className="relative w-full gap-4 flex justify-evenly my-2">
+                <button
+                  onClick={handleModalVisibility}
+                  className="p-2 w-48 md:w-full rounded-md shadow-md shadow-black bg-purple-600 hover:bg-purple-700 cursor-pointer text-center text-white text-lg lg:text-xl "
+                >
+                  Choose Mangas
+                </button>
+                <button
+                  disabled={selectedMangas.length < 1}
+                  className={`${
+                    selectedMangas.length < 1
+                      ? "bg-zinc-600 "
+                      : "bg-purple-600 hover:bg-purple-700  "
+                  }p-2 w-48 md:w-full rounded-md shadow-md  text-white text-lg lg:text-xl`}
+                  onClick={() => handleAddMangaToList(list.id, selectedMangas)}
+                >
+                  Add series to list
+                </button>
+                {modalVisible && (
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <MangaDropdownModal
+                      setIsModalVisible={setModalVisible}
+                      setSelectedMangas={setSelectedMangas}
+                      selectedMangas={selectedMangas}
+                      handleCancel={handleCancel}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

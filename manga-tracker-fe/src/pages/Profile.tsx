@@ -47,7 +47,7 @@ export default function Profile() {
               src={dbUser?.profilePictureUrl}
               alt=""
             />
-            <p className=" text-center font-semibold text-black max-w-[100px]">
+            <p className=" text-center font-semibold text-white max-w-[100px]">
               {dbUser?.username}
             </p>
             <p className="text-center text-gray-500 max-w-[100px]">
@@ -59,7 +59,7 @@ export default function Profile() {
             </p>
           </div>
 
-          <div className="absolute flex gap-5 bottom-[-20px] left-[180px] text-black bg-white p-2 px-4 rounded-3xl shadow-lg ">
+          <div className="absolute flex gap-5 bottom-[-20px] left-[180px] bg-black text-white p-2 px-4 rounded-3xl shadow-lg">
             <h4
               className={`rounded-2xl px-4 py-1 cursor-pointer ${
                 isLibrary
@@ -83,13 +83,13 @@ export default function Profile() {
           </div>
         </div>
         <div></div>
-        <div className="w-full h-full h-min-screen mt-[140px] border-t-2 border-b-2 py-4 border-gray-300 flex flex-col items-center">
+        <div className="w-full h-full h-min-screen mt-[140px] border-t-2 border-b-2 py-4 border-zinc-800 flex flex-col items-center">
           <div
             className="w-full flex justify-between cursor-pointer"
             onClick={toggleFilterModal}
           >
-            <h3 className="text-xl ml-10 font-semibold">Filters</h3>
-            <IoIosArrowDown className="text-2xl mt-1 text-black mr-10" />
+            <h3 className="text-xl ml-10 font-semibold text-white">Filters</h3>
+            <IoIosArrowDown className="text-2xl mt-1 text-white mr-10" />
           </div>
         </div>
         {isLoading && (

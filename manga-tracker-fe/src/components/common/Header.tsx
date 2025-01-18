@@ -26,10 +26,10 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full bg-white border-b-2 shadow-sm relative z-20 h-16 px-4 font-sans">
+      <header className="w-full bg-[#121212] text-white  shadow-md relative z-20 h-16 px-4 font-sans">
         <div className="flex justify-between h-full ">
-          <div className="h-full flex items-center">
-            <img src="/logo.png" alt="LOGO" className="w-48 " />
+          <div className="h-full flex items-center text-3xl font-semibold ml-8">
+            MangaVault
           </div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">
@@ -40,7 +40,7 @@ export default function Header() {
                       "/dashboard"
                     )} `}
                   >
-                    <a href="/dashboard" className="text-black text-xl">
+                    <a href="/dashboard" className=" text-xl">
                       Dashboard
                     </a>
                   </li>
@@ -49,7 +49,7 @@ export default function Header() {
                       "/browse"
                     )} `}
                   >
-                    <a href="/browse" className="text-black text-xl">
+                    <a href="/browse" className=" text-xl">
                       Browse
                     </a>
                   </li>
@@ -58,7 +58,7 @@ export default function Header() {
                       "/discovery"
                     )}`}
                   >
-                    <a href="/discovery" className="text-black text-xl">
+                    <a href="/discovery" className=" text-xl">
                       Discovery
                     </a>
                   </li>
@@ -79,7 +79,10 @@ export default function Header() {
                   Logout
                 </button>
               ) : null}
-              <button onClick={handleMobileMenu} className="lg:hidden">
+              <button
+                onClick={handleMobileMenu}
+                className="lg:hidden text-white"
+              >
                 <FaBars size={30} />
               </button>
               <a href="/profile">

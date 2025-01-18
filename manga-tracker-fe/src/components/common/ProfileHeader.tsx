@@ -74,7 +74,7 @@ export default function ProfileHeader() {
               {dbUser ? (
                 <button
                   onClick={logout}
-                  className="hidden md:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
+                  className="hidden lg:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
                 >
                   Logout
                 </button>
@@ -119,7 +119,7 @@ export default function ProfileHeader() {
             {dbUser ? (
               <button
                 onClick={logout}
-                className="w-full text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md "
+                className="w-full text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md mb-4 "
               >
                 Logout
               </button>

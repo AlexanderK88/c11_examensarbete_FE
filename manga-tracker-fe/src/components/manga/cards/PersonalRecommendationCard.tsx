@@ -8,7 +8,7 @@ export default function PersonalRecommendationCard({
   manga,
 }: PersonalRecommendationCardProps) {
   return (
-    <div className="mx-auto max-w-[410px] lg:max-w-[600px] p-4 bg-purple-200 rounded-lg shadow-md hover:shadow-lg transition-shadow md:mr-4 hover:bg-purple-300 ">
+    <div className="mx-auto max-w-[410px] lg:max-w-[600px] p-4 bg-purple-400 rounded-lg shadow-md hover:shadow-lg transition-shadow md:mr-4 hover:bg-purple-300 ">
       <div className="flex gap-4 items-start">
         <div className="flex-shrink-0">
           <img
@@ -23,7 +23,7 @@ export default function PersonalRecommendationCard({
               {manga.title}
             </h2>
           </a>
-          <p className="text-gray-600 text-sm lg:text-base line-clamp-6">
+          <p className="text-black text-sm lg:text-base line-clamp-6">
             {manga.synopsis}
           </p>
         </div>

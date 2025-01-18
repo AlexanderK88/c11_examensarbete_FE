@@ -44,8 +44,8 @@ export default function Dashboard() {
     <>
       <Header />
       <main className="min-h-screen w-full lg:w-10/12 mx-auto">
-        <div className="relative w-full flex justify-end items-center p-5 border-b-2 border-purple-300 shadow-sm">
-          <div className="absolute top-[20px] flex gap-5 left-[10px] text-black bg-white p-2 px-4 rounded-3xl shadow-lg">
+        <div className="relative w-full flex justify-end items-center p-5  shadow-sm">
+          <div className="absolute top-[20px] flex gap-5 left-[10px] text-white bg-black p-2 px-4 rounded-3xl shadow-lg">
             <h4
               className={`rounded-2xl px-4 py-1 cursor-pointer ${
                 isListView
@@ -73,8 +73,10 @@ export default function Dashboard() {
                 className="flex justify-between cursor-pointer"
                 onClick={toggleFilterModal}
               >
-                <h3 className="text-xl ml-10 font-semibold">Filters</h3>
-                <IoIosArrowDown className="text-2xl mt-1 text-black mr-10" />
+                <h3 className="text-xl ml-10 font-semibold text-white">
+                  Filters
+                </h3>
+                <IoIosArrowDown className="text-2xl text-white mt-1 mr-10" />
               </div>
             </div>
             <div className="mt-[90px] w-full">
