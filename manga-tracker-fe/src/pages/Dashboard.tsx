@@ -2,10 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { useAuthContext } from "../provider/AuthProvider";
-import {
-  SaveMangaDto,
-  useFetchUsersSavedMangas,
-} from "../services/SaveMangaService";
+import { SaveMangaDto, useFetchUsersSavedMangas } from "../services/SaveMangaService";
 import FilterForDashboard from "../components/modals/FilterForDashboard";
 import { IoIosArrowDown } from "react-icons/io";
 import MangaListItem from "../components/manga/MangaListItem";
@@ -17,8 +14,7 @@ export default function Dashboard() {
   );
   const { dbUser } = useAuthContext();
   const [mangas, setMangas] = useState<SaveMangaDto[]>([]);
-  const [isFilterModalVisible, setIsFilterModalVisible] =
-    useState<boolean>(false);
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState<boolean>(false);
 
   if (!dbUser) {
     return null;
@@ -69,13 +65,8 @@ export default function Dashboard() {
           </div>
           <div className="w-full">
             <div className="absolute right-4 top-[20px] max-w-44 border-2 rounded-lg py-[8px] border-gray-200 flex flex-col items-center">
-              <div
-                className="flex justify-between cursor-pointer"
-                onClick={toggleFilterModal}
-              >
-                <h3 className="text-xl ml-10 font-semibold text-white">
-                  Filters
-                </h3>
+              <div className="flex justify-between cursor-pointer" onClick={toggleFilterModal}>
+                <h3 className="text-xl ml-10 font-semibold text-white">Filters</h3>
                 <IoIosArrowDown className="text-2xl text-white mt-1 mr-10" />
               </div>
             </div>
@@ -90,7 +81,19 @@ export default function Dashboard() {
           {isLoading && <div>LOADING</div>}
           {!isListView && (
             <div className="flex flex-col gap-0 ">
-              {mangas && mangas.map((manga) => <MangaListItem manga={manga} />)}
+              {mangas.length < 1 && (
+                <h2 className="font-sans text-gray-300 text-center">
+                  No series has been saved, go to
+                  <a href="/discovery">
+                    <span className="underlined font-semibold cursor-pointer hover:text-purple-700">
+                      {" "}
+                      Discovery{" "}
+                    </span>{" "}
+                  </a>{" "}
+                  to find some!
+                </h2>
+              )}
+              {mangas && mangas.map((manga) => <MangaListItem manga={manga} key={manga.mangaid} />)}
             </div>
           )}
           {isListView && <ListView />}

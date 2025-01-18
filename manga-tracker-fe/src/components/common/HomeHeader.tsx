@@ -9,17 +9,15 @@ export default function HomeHeader() {
   };
 
   const isActive = (path: string) => {
-    return location.pathname === path
-      ? "border-purple-800"
-      : "border-transparent";
+    return location.pathname === path ? "border-purple-800" : "border-transparent";
   };
 
   return (
     <>
-      <header className="w-full bg-white border-b-2 shadow-sm relative z-20 h-16 px-4">
+      <header className="w-full bg-[#121212] border-b-2 shadow-sm relative z-20 h-16 px-4 text-white font-sans">
         <div className="flex justify-between h-full ">
-          <div className="h-full flex items-center">
-            <img src="/logo.png" alt="LOGO" className="w-48 " />
+          <div className="h-full flex items-center text-purple-700">
+            <h1 className="text-3xl"> MangaVault </h1>
           </div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">
@@ -30,7 +28,7 @@ export default function HomeHeader() {
                       "/d"
                     )} `}
                   >
-                    <a href="/" className="text-black text-xl">
+                    <a href="/" className="text-white text-xl">
                       About us
                     </a>
                   </li>
@@ -39,7 +37,7 @@ export default function HomeHeader() {
                       "/d"
                     )} `}
                   >
-                    <a href="/" className="text-black text-xl">
+                    <a href="/" className="text-white text-xl">
                       FAQ
                     </a>
                   </li>
@@ -48,7 +46,7 @@ export default function HomeHeader() {
                       "/d"
                     )}`}
                   >
-                    <a href="/" className="text-black text-xl">
+                    <a href="/" className="text-white text-xl">
                       Pricing
                     </a>
                   </li>

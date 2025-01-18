@@ -10,13 +10,7 @@ export default function FilterForDashboard({ mangas, setMangas }: Props) {
   const [sort, setSort] = useState<string>("Default");
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
 
-  const availableStatuses = [
-    "Reading",
-    "Completed",
-    "On Hold",
-    "Dropped",
-    "Plan to read",
-  ];
+  const availableStatuses = ["Reading", "Completed", "On Hold", "Dropped", "Plan to read"];
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -59,15 +53,13 @@ export default function FilterForDashboard({ mangas, setMangas }: Props) {
         <select
           value={sort}
           onChange={handleSortChange}
-          className="w-full sm:max-w-[150px] border p-2 sm:p-1 rounded-md text-black"
+          className="w-full sm:max-w-[150px] border p-2 sm:p-1 rounded-md text-white bg-black"
         >
           <option>Default</option>
           <option value="score">Score</option>
         </select>
 
-        <label className="text-lg font-semibold min-w-[140px]">
-          Filter By Status:
-        </label>
+        <label className="text-lg font-semibold min-w-[140px]">Filter By Status:</label>
         <div className="flex flex-wrap justify-center gap-4 sm:gap-1 sm:justify-start items-center">
           {availableStatuses.map((status) => (
             <label key={status} className="flex items-center gap-2">

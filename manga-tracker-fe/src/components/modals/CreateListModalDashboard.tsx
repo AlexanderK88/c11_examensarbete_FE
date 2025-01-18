@@ -38,15 +38,15 @@ export default function CreateListModalDashboard({
 
   return (
     <>
-      <div className="relative w-[400px] h-full flex flex-col justify-between max-h-[250px] px-6 py-6 rounded-lg bg-white shadow-md">
+      <div className="relative w-[400px] h-full flex flex-col justify-between max-h-[250px] px-6 py-6 rounded-lg bg-[#121212] shadow-md">
         <div
           className="absolute right-5 top-5 text-2xl cursor-pointer"
           onClick={() => setModalVisible(false)}
         >
-          <IoMdClose />
+          <IoMdClose className="text-white" />
         </div>
-        <h2 className="text-xl font-semibold">Create a new list</h2>
-        <label htmlFor="listName" className="text-lg">
+        <h2 className="text-xl text-white font-semibold">Create a new list</h2>
+        <label htmlFor="listName" className="text-lg text-white">
           List name:
         </label>
         <input
@@ -54,7 +54,7 @@ export default function CreateListModalDashboard({
           id="listName"
           name="listName"
           placeholder="Enter list name"
-          className="p-1 w-full border border-gray-300 rounded-md mt-2"
+          className="p-1 w-full border bg-black border-zinc-800 text-white rounded-md mt-2"
           onChange={(e) => setListName(e.target.value)}
         />
         <button

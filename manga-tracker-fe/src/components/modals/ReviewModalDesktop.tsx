@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function ReviewModalMobile({ neededAttributes }: Props) {
-  const [value, setValue] = useState<number>(0);
+  const [value, setValue] = useState<number>(1);
   const [spoiler, setSpoiler] = useState<boolean>(false);
   const [reviewText, setReviewText] = useState<string>("");
   const { mutate, isSuccess } = useAddReview();
@@ -47,9 +47,7 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
     setSpoiler(value);
   };
 
-  const handleReviewTextChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleReviewTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewText(e.target.value);
   };
   return (
@@ -69,9 +67,7 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
             onChange={handleReviewTextChange}
           />
           <div className="w-full flex mt-4 justify-between items-center">
-            <h2 className="text-white text-xl font-semibold mr-4">
-              Rate the series 1-10
-            </h2>
+            <h2 className="text-white text-xl font-semibold mr-4">Rate the series 1-10</h2>
             <div className="flex gap-2">
               <button
                 className="w-10 h-10 rounded-md border-2 border-zinc-800 flex justify-center items-center"
@@ -80,17 +76,13 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
                 <p className="text-center text-xl font-bold text-white">-</p>
               </button>
               <div className="w-10 h-10 rounded-md border-2 border-zinc-800 flex justify-center items-center">
-                <p className="text-center text-xl font-bold text-white">
-                  {value}
-                </p>
+                <p className="text-center text-xl font-bold text-white">{value}</p>
               </div>
               <button
                 className="w-10 h-10 rounded-md border-2 border-zinc-800 flex justify-center items-center"
                 onClick={handleValueChangeUp}
               >
-                <p className="text-center text-xl font-bold text-white shadow-sm">
-                  +
-                </p>
+                <p className="text-center text-xl font-bold text-white shadow-sm">+</p>
               </button>
             </div>
           </div>

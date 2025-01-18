@@ -62,7 +62,7 @@ const SortAndFilterControls = ({
         <select
           value={sort}
           onChange={onSortChange}
-          className="w-2/4 p-2 border lg:max-w-48 border-gray-300 rounded-md"
+          className="w-2/4 p-2 border lg:max-w-48 bg-black text-white border-gray-300 rounded-md"
         >
           <option value="popularity">Popularity</option>
           <option value="chapters">Chapters released</option>
@@ -72,7 +72,7 @@ const SortAndFilterControls = ({
         <select
           value={dropdown2}
           onChange={onDropdown2Change}
-          className="w-2/4 lg:max-w-48 p-2 border border-gray-300 rounded-md "
+          className="w-2/4 lg:max-w-48 p-2 border bg-black text-white border-gray-300 rounded-md "
         >
           <option value="">Release period</option>
           <option value="option1">This month</option>

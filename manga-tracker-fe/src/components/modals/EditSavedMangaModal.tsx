@@ -1,7 +1,4 @@
-import {
-  SaveMangaDto,
-  useUpdateSavedManga,
-} from "../../services/SaveMangaService";
+import { SaveMangaDto, useUpdateSavedManga } from "../../services/SaveMangaService";
 import { useAuthContext } from "../../provider/AuthProvider";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,10 +13,8 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
   const { dbUser } = useAuthContext();
   const { mutate, isLoading, isError, isSuccess } = useUpdateSavedManga();
   const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
-  const [isStatusDropdownOpen, setIsStatusDropdownOpen] =
-    useState<Boolean>(false);
-  const [isScoreDropdownOpen, setIsScoreDropdownOpen] =
-    useState<Boolean>(false);
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState<Boolean>(false);
+  const [isScoreDropdownOpen, setIsScoreDropdownOpen] = useState<Boolean>(false);
   const [selectedChapter, setSelectedChapter] = useState<string>("");
   const [readingStatus, setReadingStatus] = useState<string>("");
   const [score, setScore] = useState<number>(0);
@@ -38,9 +33,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
       mangaid: manga.mangaid,
       status: readingStatus || "",
       score: score || 0,
-      chaptersRead: selectedChapter
-        ? parseInt(selectedChapter.split(" ")[1])
-        : 0,
+      chaptersRead: selectedChapter ? parseInt(selectedChapter.split(" ")[1]) : 0,
       title: manga.title,
     });
     setIsModalOpen(false);
@@ -94,7 +87,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
   };
 
   return (
-    <div className="h-[400px] sm:h-[390px] flex flex-row py-2 mb-3">
+    <div className="h-[400px] sm:h-[390px] flex flex-row py-2 mb-3 bg-[#121212] text-white">
       <div className="w-full">
         <h1 className="font-semibold text-2xl truncate">{manga.title}</h1>
         <div className="w-full flex sm:flex-row mt-4">
@@ -113,12 +106,9 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
                 {handleTextForChapter()}
               </button>
               {isDropdownOpen && (
-                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50 max-h-44 overflow-y-scroll w-[320px]">
+                <div className="absolute border border-zinc-800 rounded mt-2 font-semibold text-white pl-2 bg-[#121212] max-h-44 overflow-y-scroll w-[290px]">
                   <ul>
-                    {Array.from(
-                      { length: mangaData?.chapters || 0 },
-                      (_, i) => i
-                    ).map((i) => (
+                    {Array.from({ length: mangaData?.chapters || 0 }, (_, i) => i).map((i) => (
                       <li
                         key={i}
                         className="hover:bg-gray-200 p-1"
@@ -141,23 +131,19 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
                 {readingStatus || manga.status}
               </button>
               {isStatusDropdownOpen && (
-                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50 max-h-44 overflow-y-scroll w-[320px]">
+                <div className="absolute border border-zinc-800 rounded mt-2 font-semibold text-white pl-2 bg-[#121212] max-h-44 overflow-y-scroll w-[290px]">
                   <ul>
-                    {[
-                      "Reading",
-                      "Completed",
-                      "On Hold",
-                      "Dropped",
-                      "Plan to read",
-                    ].map((status) => (
-                      <li
-                        key={status}
-                        className="hover:bg-gray-200 p-1"
-                        onClick={() => handleStatusOptionClick(status)}
-                      >
-                        {status}
-                      </li>
-                    ))}
+                    {["Reading", "Completed", "On Hold", "Dropped", "Plan to read"].map(
+                      (status) => (
+                        <li
+                          key={status}
+                          className="hover:bg-gray-200 p-1"
+                          onClick={() => handleStatusOptionClick(status)}
+                        >
+                          {status}
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
               )}
@@ -172,7 +158,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
                 {score || manga.score || "Select a rating"}
               </button>
               {isScoreDropdownOpen && (
-                <div className="absolute border rounded mt-2 font-semibold text-purple-700 bg-gray-50  max-h-44 overflow-y-scroll w-[320px]">
+                <div className="absolute border border-zinc-800 rounded mt-2 font-semibold text-white pl-2 bg-[#121212] max-h-44 overflow-y-scroll w-[290px]">
                   <ul>
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
                       <li

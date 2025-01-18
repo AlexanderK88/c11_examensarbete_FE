@@ -61,8 +61,8 @@ export default function HeroSlider({ mangas }: HeroSectionProps) {
                 </div>
               );
             })
-          : Array.from({ length: 15 }).map((_) => (
-              <div className="mx-auto my-8">
+          : Array.from({ length: 15 }).map((_, index) => (
+              <div className="mx-auto my-8" key={index}>
                 <ImageCardSkeleton />
               </div>
             ))}

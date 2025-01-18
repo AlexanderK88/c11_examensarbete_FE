@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 import { useMutation, useQuery } from "react-query";
-import { SaveMangaDto } from "./SaveMangaService";
+import { SaveMangaDtoWithId } from "./SaveMangaService";
 
 interface ListDto {
   listName: string;
@@ -9,7 +9,7 @@ interface ListDto {
 
 export interface ListDtoWithId extends ListDto {
   id: string;
-  savedMangas: SaveMangaDto[];
+  savedMangas: SaveMangaDtoWithId[];
 }
 
 const createNewList = async (list: ListDto): Promise<ListDto> => {
@@ -43,15 +43,11 @@ export const useFetchAllLists = (userId: string) => {
   return useQuery(["lists", userId], () => fetchAllLists(userId), {
     retry: false,
     enabled: !!userId,
-    onError: () =>
-      console.log("Failed to fetch lists for user with id:", userId),
+    onError: () => console.log("Failed to fetch lists for user with id:", userId),
   });
 };
 
-const addMangaToList = async (
-  listId: string,
-  mangaIds: number[]
-): Promise<void> => {
+const addMangaToList = async (listId: string, mangaIds: number[]): Promise<void> => {
   try {
     console.log("Adding manga with id:", mangaIds, "to list with id:", listId);
     await axiosInstance.post(`/user/list/add/${listId}`, mangaIds);
@@ -86,5 +82,25 @@ const deleteList = async (listId: string): Promise<void> => {
 export const useDeleteList = () => {
   return useMutation(deleteList, {
     onError: () => console.log("Failed to delete list"),
+  });
+};
+
+interface RemoveMangaProps {
+  mangaId: number;
+  listId: string;
+}
+
+const removeMangaFromList = async ({ mangaId, listId }: RemoveMangaProps): Promise<void> => {
+  try {
+    console.log("removing manga with id " + mangaId + " from list " + listId);
+    await axiosInstance.delete(`/user/list/${listId}/${mangaId}`);
+  } catch (error) {
+    console.error("Failed to delete manga from list", error);
+  }
+};
+
+export const useRemoveMangaFromList = () => {
+  return useMutation(removeMangaFromList, {
+    onError: () => console.log("Failed to remove manga from list"),
   });
 };
