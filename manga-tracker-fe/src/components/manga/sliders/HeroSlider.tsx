@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Carousel, { ResponsiveType } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ImageCard from "../cards/ImageCard";
@@ -10,6 +11,19 @@ interface HeroSectionProps {
 
 export default function HeroSlider({ mangas }: HeroSectionProps) {
   const responsive: ResponsiveType = {
+    SuperDuperMegaLarge: {
+      breakpoint: { max: 5000, min: 3001 },
+      items: 11,
+    },
+    SuperDuperLarge: {
+      breakpoint: { max: 3000, min: 2401 },
+      items: 9,
+    },
+
+    SuperLarge: {
+      breakpoint: { max: 2400, min: 1601 },
+      items: 7,
+    },
     ExtraLarge: {
       breakpoint: { max: 1600, min: 1301 },
       items: 5,
@@ -33,6 +47,31 @@ export default function HeroSlider({ mangas }: HeroSectionProps) {
   };
 
   const mangasContent = mangas?.map((manga: MangaDto) => manga) || [];
+
+  const calculateSkeletonCount = () => {
+    const width = window.innerWidth;
+
+    switch (true) {
+      case width > 3000:
+        return responsive.SuperDuperMegaLarge.items;
+      case width > 2400 && width <= 3000:
+        return responsive.SuperDuperLarge.items;
+      case width > 1600 && width <= 2400:
+        return responsive.SuperLarge.items;
+      case width > 1300 && width <= 1600:
+        return responsive.ExtraLarge.items;
+      case width > 1025 && width <= 1300:
+        return responsive.Large.items;
+      case width > 800 && width <= 1024:
+        return responsive.smallTablet.items;
+      case width > 600 && width <= 800:
+        return responsive.xSmallTablet.items;
+      case width <= 599:
+        return responsive.mobile.items;
+      default:
+        return responsive.ExtraLarge.items; // Fallback value
+    }
+  };
 
   return (
     <div className="my-12">
@@ -61,7 +100,7 @@ export default function HeroSlider({ mangas }: HeroSectionProps) {
                 </div>
               );
             })
-          : Array.from({ length: 15 }).map((_, index) => (
+          : Array.from({ length: calculateSkeletonCount() }).map((_, index) => (
               <div className="mx-auto my-8" key={index}>
                 <ImageCardSkeleton />
               </div>

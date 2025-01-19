@@ -5,32 +5,36 @@ import { MangaDto } from "../../types/mangaTypes";
 import SearchInput from "../filtering/SearchInput";
 import MangaModal from "../modals/MangaModal";
 import { useAuthContext } from "../../provider/AuthProvider";
+import ConfirmationModal from "../modals/ConfirmationModal";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
-  const [manga, setManga] = useState<MangaDto[]>([]);
-  const [manga1, setManga1] = useState<MangaDto[]>([]);
+  const [searchResults, setSearchResults] = useState<MangaDto[]>([]);
+  const [confirmationModalVisible, setConfirmationModalVisible] = useState<boolean>(false);
+  const [continueAction, setcontinueAction] = useState<boolean>(false);
 
   const location = useLocation();
-  const { dbUser, logout } = useAuthContext();
+  const { dbUser } = useAuthContext();
+
+  const handleLogout = () => {
+    console.log("opening modal");
+    setConfirmationModalVisible(true);
+  };
 
   const handleMobileMenu = () => {
     setIsMobile(!isMobile);
   };
 
   const isActive = (path: string) => {
-    return location.pathname === path
-      ? "border-purple-800"
-      : "border-transparent";
+    return location.pathname === path ? "border-purple-800" : "border-transparent";
   };
 
   return (
     <>
       <header className="w-full bg-[#121212] text-white  shadow-md relative z-20 h-16 px-4 font-sans">
         <div className="flex justify-between h-full ">
-          <div className="h-full flex items-center text-3xl font-semibold ml-8">
-            MangaVault
-          </div>
+          <div className="h-full flex items-center text-3xl font-semibold ml-8">MangaVault</div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">
               <nav className="h-full w-full font-semibold">
@@ -40,27 +44,27 @@ export default function Header() {
                       "/dashboard"
                     )} `}
                   >
-                    <a href="/dashboard" className=" text-xl">
+                    <Link to="/dashboard" className=" text-xl">
                       Dashboard
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/browse"
                     )} `}
                   >
-                    <a href="/browse" className=" text-xl">
+                    <Link to="/browse" className=" text-xl">
                       Browse
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/discovery"
                     )}`}
                   >
-                    <a href="/discovery" className=" text-xl">
+                    <Link to="/discovery" className=" text-xl">
                       Discovery
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -68,31 +72,41 @@ export default function Header() {
 
             <div className="flex items-center ">
               <div className="hidden lg:inline-block relative">
-                <SearchInput setMangas={setManga} />
-                <MangaModal mangas={manga} />
+                <SearchInput setMangas={setSearchResults} />
+                <MangaModal mangas={searchResults} />
               </div>
               {dbUser ? (
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="hidden lg:block text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md ml-4"
                 >
                   Logout
                 </button>
               ) : null}
-              <button
-                onClick={handleMobileMenu}
-                className="lg:hidden text-white"
-              >
+              <button onClick={handleMobileMenu} className="lg:hidden text-white">
                 <FaBars size={30} />
               </button>
-              <a href="/profile">
+              <Link to="/profile">
                 <img
-                  src={dbUser?.profilePictureUrl || "/avatar.png"}
+                  src={dbUser?.profilePictureUrl || "/pfp2.png"}
                   alt="Avatar"
+                  loading="lazy"
                   className="rounded-full ml-4 w-10 sm:w-12 md:mx-4  hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
                 />
-              </a>
+              </Link>
             </div>
+            {confirmationModalVisible && (
+              <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] rounded-lg shadow-lg px-10 py-5">
+                  <ConfirmationModal
+                    confirmationType="logout"
+                    setContinueAction={setcontinueAction}
+                    setConfirmationModalVisible={setConfirmationModalVisible}
+                    continueAction={continueAction}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -101,30 +115,32 @@ export default function Header() {
           isMobile
             ? "opacity-100 pointer-events-auto translate-y-0 duration-200"
             : "opacity-0 pointer-events-none -translate-y-full duration-0"
-        } transition-all ease-out absolute left-0 right-0 z-10 border-2 border-t-0 shadow-sm bg-white p-6 pt-8 rounded-sm lg:hidden`}
+        } transition-all ease-out absolute left-0 right-0 z-10 border-2 border-t-0 border-zinc-800 shadow-sm bg-[#121212] text-white p-6 pt-8 rounded-sm lg:hidden`}
       >
         <ul className="space-y-6 text-lg font-semibold">
           <li>
-            <a href="/dashboard">Dashboard</a>
+            <Link to="/dashboard">Dashboard</Link>
           </li>
           <li>
-            <a href="/browse">Browse</a>
+            <Link to="/browse">Browse</Link>
           </li>
           <li>
-            <a href="/discovery">Discovery</a>
+            <Link to="/discovery">Discovery</Link>
           </li>
           <li>
-            <SearchInput setMangas={setManga1} />
-            <MangaModal mangas={manga1} />
+            <SearchInput setMangas={setSearchResults} />
+            <MangaModal mangas={searchResults} />
           </li>
           <li>
             {dbUser ? (
-              <button
-                onClick={logout}
-                className="w-full text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md "
-              >
-                Logout
-              </button>
+              <>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-white font-semibold bg-purple-800 hover:bg-purple-600 text-sm py-2 px-4 rounded-md "
+                >
+                  Logout
+                </button>
+              </>
             ) : null}
           </li>
         </ul>

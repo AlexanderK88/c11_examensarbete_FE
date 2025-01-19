@@ -6,10 +6,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const PersonalRecommendations: React.FC = () => {
-  const { data: manga1, isLoading: loading1 } = useMangaById("147272");
+  const { data: manga1, isLoading: loading1 } = useMangaById("7");
   const { data: manga2, isLoading: loading2 } = useMangaById("11");
-  const { data: manga3, isLoading: loading3 } = useMangaById("146878");
-  const { data: manga4, isLoading: loading4 } = useMangaById("102256");
+  const { data: manga3, isLoading: loading3 } = useMangaById("26");
+  const { data: manga4, isLoading: loading4 } = useMangaById("44");
 
   const isLoading = loading1 || loading2 || loading3 || loading4;
   const sliderSettings = {

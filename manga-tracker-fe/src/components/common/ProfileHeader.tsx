@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { MangaDto } from "../../types/mangaTypes";
@@ -19,9 +20,7 @@ export default function ProfileHeader() {
   };
 
   const isActive = (path: string) => {
-    return location.pathname === path
-      ? "border-purple-800"
-      : "border-transparent";
+    return location.pathname === path ? "border-purple-800" : "border-transparent";
   };
 
   return (
@@ -40,27 +39,27 @@ export default function ProfileHeader() {
                       "/dashboard"
                     )} `}
                   >
-                    <a href="/dashboard" className="text-white text-xl">
+                    <Link to="/dashboard" className="text-white text-xl">
                       Dashboard
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/browse"
                     )} `}
                   >
-                    <a href="/browse" className="text-white text-xl">
+                    <Link to="/browse" className="text-white text-xl">
                       Browse
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/discovery"
                     )}`}
                   >
-                    <a href="/discovery" className="text-white text-xl">
+                    <Link to="/discovery" className="text-white text-xl">
                       Discovery
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -79,15 +78,13 @@ export default function ProfileHeader() {
                   Logout
                 </button>
               ) : null}
-              <button
-                onClick={handleMobileMenu}
-                className=" text-white lg:hidden"
-              >
+              <button onClick={handleMobileMenu} className=" text-white lg:hidden">
                 <FaBars size={30} />
               </button>
               <img
-                src={dbUser?.profilePictureUrl}
+                src={dbUser?.profilePictureUrl || "/pfp2.png"}
                 alt="Avatar"
+                loading="lazy"
                 className="rounded-full ml-4 w-10 sm:w-12 md:mx-4  hover:shadow-purple-800 hover:shadow-sm cursor-pointer"
               />
             </div>
@@ -103,13 +100,13 @@ export default function ProfileHeader() {
       >
         <ul className="space-y-6 text-lg font-semibold">
           <li>
-            <a href="/dashboard">Dashboard</a>
+            <Link to="/dashboard">Dashboard</Link>
           </li>
           <li>
-            <a href="/browse">Browse</a>
+            <Link to="/browse">Browse</Link>
           </li>
           <li>
-            <a href="/discovery">Discovery</a>
+            <Link to="/discovery">Discovery</Link>
           </li>
           <li>
             <SearchInput setMangas={setManga1} />

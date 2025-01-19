@@ -10,7 +10,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ manga }) => {
     <div className="p-2">
       <img
         className={`w-[215px] h-[322px] rounded-lg shadow-lg shadow-black hover:transform hover:scale-105 transition-transform hover:cursor-pointer`}
-        src={manga.images[0]?.imageUrl ?? ""}
+        src={manga.images[0]?.imageUrl ?? "/default-fallback-image.png"}
         alt={manga.title}
       />
     </div>

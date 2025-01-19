@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function HomeHeader() {
   const [isMobile, setIsMobile] = useState(false);
@@ -14,10 +15,10 @@ export default function HomeHeader() {
 
   return (
     <>
-      <header className="w-full bg-[#121212] border-b-2 shadow-sm relative z-20 h-16 px-4 text-white font-sans">
+      <header className="w-full bg-[#121212] shadow-sm shadow-black relative z-20 h-16 px-4 text-white font-sans">
         <div className="flex justify-between h-full ">
           <div className="h-full flex items-center text-purple-700">
-            <h1 className="text-3xl"> MangaVault </h1>
+            <h1 className="text-3xl font-bold"> MangaVault </h1>
           </div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">
@@ -28,27 +29,27 @@ export default function HomeHeader() {
                       "/d"
                     )} `}
                   >
-                    <a href="/" className="text-white text-xl">
+                    <Link to="/" className="text-white text-xl">
                       About us
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/d"
                     )} `}
                   >
-                    <a href="/" className="text-white text-xl">
+                    <Link to="/" className="text-white text-xl">
                       FAQ
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className={`h-full flex items-center border-b-2  hover:border-purple-800 ${isActive(
                       "/d"
                     )}`}
                   >
-                    <a href="/" className="text-white text-xl">
+                    <Link to="/" className="text-white text-xl">
                       Pricing
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -67,17 +68,17 @@ export default function HomeHeader() {
           isMobile
             ? "opacity-100 pointer-events-auto translate-y-0 duration-200"
             : "opacity-0 pointer-events-none -translate-y-full duration-0"
-        } transition-all ease-out absolute left-0 right-0 z-10 border-2 border-t-0 shadow-sm bg-white p-6 pt-8 rounded-sm lg:hidden`}
+        } transition-all ease-out absolute left-0 right-0 z-10 border-2 border-t-0 shadow-sm bg-[#121212] p-6 pt-8 rounded-sm lg:hidden`}
       >
         <ul className="space-y-6 text-lg font-semibold">
           <li>
-            <a href="/dashboard"> us</a>
+            <Link to="/"> About us</Link>
           </li>
           <li>
-            <a href="/browse"></a>
+            <Link to="/"> FAQ</Link>
           </li>
           <li>
-            <a href="/discovery"></a>
+            <Link to="/"> PRICING </Link>
           </li>
         </ul>
       </div>

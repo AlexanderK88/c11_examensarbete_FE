@@ -1,4 +1,5 @@
 import axiosInstance from "./axiosInstance";
+import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { SaveMangaDtoWithId } from "./SaveMangaService";
 
@@ -17,8 +18,16 @@ const createNewList = async (list: ListDto): Promise<ListDto> => {
     const response = await axiosInstance.post("/user/list", list);
     return response.data;
   } catch (error) {
-    console.error("Failed to create new list:", error);
-    return list;
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Creation failed: ${error.message}`);
+    } else {
+      throw new Error("Craetion failed: Unknown error occurred");
+    }
   }
 };
 
@@ -34,8 +43,16 @@ const fetchAllLists = async (userId: string): Promise<ListDtoWithId[]> => {
     const response = await axiosInstance.get(`/user/${userId}/lists`);
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch lists:", error);
-    return [];
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Fetch failed: ${error.message}`);
+    } else {
+      throw new Error("Fetch failed: Unknown error occurred");
+    }
   }
 };
 
@@ -52,8 +69,16 @@ const addMangaToList = async (listId: string, mangaIds: number[]): Promise<void>
     console.log("Adding manga with id:", mangaIds, "to list with id:", listId);
     await axiosInstance.post(`/user/list/add/${listId}`, mangaIds);
   } catch (error) {
-    console.error("Failed to add manga to list:", error);
-    throw error;
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Add failed: ${error.message}`);
+    } else {
+      throw new Error("Add failed: Unknown error occurred");
+    }
   }
 };
 
@@ -74,8 +99,16 @@ const deleteList = async (listId: string): Promise<void> => {
     console.log("Deleting list with id:", listId);
     await axiosInstance.delete(`/user/list/${listId}`);
   } catch (error) {
-    console.error("Failed to delete list:", error);
-    throw error;
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Delete failed: ${error.message}`);
+    } else {
+      throw new Error("Delete failed: Unknown error occurred");
+    }
   }
 };
 
@@ -95,7 +128,16 @@ const removeMangaFromList = async ({ mangaId, listId }: RemoveMangaProps): Promi
     console.log("removing manga with id " + mangaId + " from list " + listId);
     await axiosInstance.delete(`/user/list/${listId}/${mangaId}`);
   } catch (error) {
-    console.error("Failed to delete manga from list", error);
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Delete failed: ${error.message}`);
+    } else {
+      throw new Error("Delete failed: Unknown error occurred");
+    }
   }
 };
 

@@ -30,6 +30,7 @@ export default function SearchInput({ setMangas }: SearchInputProps) {
     <div className="flex items-center">
       <input
         type="text"
+        aria-label="Search series"
         placeholder="Search series..."
         className="p-1 pl-3 border bg-black text-white border-gray-300 rounded-md"
         value={search}

@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { ClipLoader } from "react-spinners";
 import { Navigate } from "react-router-dom";
 import { useAuthContext } from "./AuthProvider"; // Update the path as necessary
 
@@ -8,18 +9,16 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { dbUser, isLoading } = useAuthContext();
-
-  // Show a loading screen while user authentication is being checked
   if (isLoading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading component if desired
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900">
+        <ClipLoader color="#ffffff" size={50} />
+      </div>
+    );
   }
-
-  // Redirect to the home page if no user is logged in
   if (!dbUser) {
     return <Navigate to="/" replace />;
   }
-
-  // Render the children if the user is authenticated
   return <>{children}</>;
 };
 

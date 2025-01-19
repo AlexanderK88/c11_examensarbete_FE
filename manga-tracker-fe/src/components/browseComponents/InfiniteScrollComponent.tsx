@@ -12,9 +12,7 @@ interface Props {
 
 const InfiniteScrollContent = ({ data, fetchNextPage, hasNextPage }: Props) => (
   <InfiniteScroll
-    dataLength={
-      data?.pages.flatMap((page: Page<MangaDto[]>) => page.content).length || 0
-    }
+    dataLength={data?.pages.flatMap((page: Page<MangaDto[]>) => page.content).length || 0}
     next={fetchNextPage}
     hasMore={!!hasNextPage}
     loader={Array.from({ length: 10 }).map((_, index) => (

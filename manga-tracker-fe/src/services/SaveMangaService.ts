@@ -1,4 +1,5 @@
 import axiosInstance from "./axiosInstance";
+import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { MangaDto } from "../types/mangaTypes";
 
@@ -23,12 +24,19 @@ export interface SaveMangaDtoWithId {
 
 const saveManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
   try {
-    console.log("Saving manga:", manga);
     const response = await axiosInstance.post("/user/manga", manga);
     return response.data;
   } catch (error) {
-    console.error("Failed to save manga:", error);
-    return manga;
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Save failed: ${error.message}`);
+    } else {
+      throw new Error("Save failed: Unknown error occurred");
+    }
   }
 };
 
@@ -40,12 +48,19 @@ export const useSaveManga = () => {
 
 const fetchAllSavedMangas = async (userId: string): Promise<MangaDto[]> => {
   try {
-    console.log("Fetching all saved mangas for user with id:", userId);
     const response = await axiosInstance.get(`/user/${userId}/mangas`);
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch saved mangas:", error);
-    return [];
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Fetch failed: ${error.message}`);
+    } else {
+      throw new Error("Fetch failed: Unknown error occurred");
+    }
   }
 };
 
@@ -59,10 +74,18 @@ export const useFetchAllSavedMangas = (userId: string) => {
 
 const deleteSavedManga = async (userId: string, mangaId: string): Promise<void> => {
   try {
-    console.log("Deleting saved manga with id:", mangaId);
     await axiosInstance.delete(`/user/manga/${mangaId}/${userId}`);
   } catch (error) {
-    console.error("Failed to delete saved manga:", error);
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Delete failed: ${error.message}`);
+    } else {
+      throw new Error("Delete failed: Unknown error occurred");
+    }
   }
 };
 
@@ -74,7 +97,6 @@ export const useDeleteSavedManga = (userId: string, mangaId: string) => {
 
 const fetchUsersSAvedMangas = async (userId: string): Promise<SaveMangaDto[]> => {
   try {
-    console.log("Fetching all saved mangas for user with id:", userId);
     const response = await axiosInstance.get(`/user/${userId}/savedmanga`);
     return response.data;
   } catch (error) {
@@ -93,12 +115,19 @@ export const useFetchUsersSavedMangas = (userId: string) => {
 
 const updateSavedManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
   try {
-    console.log("Updating saved manga:", manga);
     const response = await axiosInstance.put("/user/manga/edit", manga);
     return response.data;
   } catch (error) {
-    console.error("Failed to update saved manga:", error);
-    return manga;
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error response:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || `Failed with status ${error.response?.status}`
+      );
+    } else if (error instanceof Error) {
+      throw new Error(`Update failed: ${error.message}`);
+    } else {
+      throw new Error("Update failed: Unknown error occurred");
+    }
   }
 };
 

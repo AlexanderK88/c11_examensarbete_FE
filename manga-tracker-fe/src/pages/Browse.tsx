@@ -69,7 +69,20 @@ export default function Browse2() {
   }, [searchParams]);
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-[#121212] text-white">
+        <h1 className="text-3xl font-semibold text-red-500 mb-4">Oops! Something went wrong.</h1>
+        <p className="text-lg text-gray-300 mb-6">
+          We encountered an error while loading the data. Please try again later.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200"
+        >
+          Retry
+        </button>
+      </div>
+    );
   }
 
   return (

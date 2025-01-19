@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -13,8 +14,33 @@ import ProtectedRoute from "./provider/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 
-const queryClient = new QueryClient();
 function App() {
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 60,
+            onError: (error) => {
+              console.error("Error fetching data: ", error);
+            },
+            retry: 2,
+            retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 5000),
+            refetchOnWindowFocus: false,
+          },
+        },
+      }),
+    []
+  );
+
+  const protectedRoutes = [
+    { path: "/manga/:id", component: Individual },
+    { path: "/browse", component: Browse },
+    { path: "/discovery", component: Discovery },
+    { path: "/profile", component: Profile },
+    { path: "/dashboard", component: Dashboard },
+  ];
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
@@ -22,46 +48,13 @@ function App() {
           <main className="min-h-screen">
             <ScrollToTop />
             <Routes>
-              <Route
-                path="/manga/:id"
-                element={
-                  <ProtectedRoute>
-                    <Individual />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/browse"
-                element={
-                  <ProtectedRoute>
-                    <Browse />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/discovery"
-                element={
-                  <ProtectedRoute>
-                    <Discovery />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
+              {protectedRoutes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<ProtectedRoute>{React.createElement(route.component)}</ProtectedRoute>}
+                />
+              ))}
               <Route path="/" element={<Home />} />
             </Routes>
           </main>
