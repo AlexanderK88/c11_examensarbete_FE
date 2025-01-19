@@ -6,11 +6,7 @@ interface GenreModalProps {
   onApply: (selectedGenre: string) => void;
 }
 
-export default function GenreDropdown({
-  isOpen,
-  onClose,
-  onApply,
-}: GenreModalProps) {
+export default function GenreDropdown({ isOpen, onClose, onApply }: GenreModalProps) {
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
   const toggleGenre = (genreValue: string) => {
@@ -20,7 +16,7 @@ export default function GenreDropdown({
   if (!isOpen) return null;
 
   return (
-    <div className="absolute left-0 top-10 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+    <div className="absolute left-0 top-10 mt-2 w-64 bg-black text-white border border-gray-300 rounded-lg shadow-lg z-50">
       <div className="p-4">
         <h2 className="text-lg font-bold mb-4">Select Genre</h2>
         <div className="space-y-2">
@@ -54,7 +50,7 @@ export default function GenreDropdown({
             onClick={() => {
               onClose();
             }}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-4 py-2 bg-red-800 rounded hover:bg-red-600"
           >
             Cancel
           </button>

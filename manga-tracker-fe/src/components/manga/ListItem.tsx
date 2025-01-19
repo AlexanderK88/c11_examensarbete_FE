@@ -3,7 +3,11 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { ListDtoWithId } from "../../services/ListService";
 import MangaDropdownModal from "../modals/MangaDropdownModal";
-import { useAddMangaToList, useDeleteList } from "../../services/ListService";
+import {
+  useAddMangaToList,
+  useDeleteList,
+  useRemoveMangaFromList,
+} from "../../services/ListService";
 import EditSavedMangaModal from "../modals/EditSavedMangaModal";
 import { SaveMangaDto } from "../../services/SaveMangaService";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -23,6 +27,8 @@ export default function ListItem({ list }: ListItemProps) {
   const [sortedList, setSortedList] = useState<ListDtoWithId | null>(null);
   const { mutate: deleteList } = useDeleteList();
   const { mutate: addMangaToList, isLoading, isError } = useAddMangaToList();
+  const [mangasAlreadyInList, setMangasAlreadyInList] = useState<SaveMangaDto[]>([]);
+  const { mutate: removeMangaFromList } = useRemoveMangaFromList();
 
   const navigate = useNavigate();
 
@@ -44,6 +50,7 @@ export default function ListItem({ list }: ListItemProps) {
 
   useEffect(() => {
     sortedListForRating(list);
+    setMangasAlreadyInList(list.savedMangas);
   }, [list.savedMangas]);
 
   const handleAddMangaToList = (listId: string, mangaIds: number[]) => {
@@ -80,19 +87,14 @@ export default function ListItem({ list }: ListItemProps) {
       }));
     }
 
-    const presentStatuses = Object.entries(statusCounts).filter(
-      ([, count]) => count > 0
-    );
+    const presentStatuses = Object.entries(statusCounts).filter(([, count]) => count > 0);
 
     const distribution = presentStatuses.map(([status, count]) => ({
       status: status as Status,
       percentage: (count / total) * 100,
     }));
 
-    const totalPercentage = distribution.reduce(
-      (sum, { percentage }) => sum + percentage,
-      0
-    );
+    const totalPercentage = distribution.reduce((sum, { percentage }) => sum + percentage, 0);
 
     if (totalPercentage < 100) {
       const adjustment = (100 - totalPercentage) / distribution.length;
@@ -135,6 +137,11 @@ export default function ListItem({ list }: ListItemProps) {
     deleteList(listId);
     refreshPage();
   };
+
+  const handleRemoveMangaFromList = (listId: string, mangaId: number) => {
+    removeMangaFromList({ listId, mangaId });
+    refreshPage();
+  };
   return (
     <>
       <div className="w-full h-full flex justify-between shadow-lg border border-gray-800 rounded-t-md shadow-black  mt-8">
@@ -146,10 +153,7 @@ export default function ListItem({ list }: ListItemProps) {
                 <p className="mx-auto my-auto">{list.savedMangas.length}</p>
               </div>
               <div className="cursor-pointer hover:bg-black p-2 items-center rounded-md">
-                <p
-                  className="text-center text-white"
-                  onClick={() => handleDeleteList(list.id)}
-                >
+                <p className="text-center text-white" onClick={() => handleDeleteList(list.id)}>
                   <FaRegTrashCan />
                 </p>
               </div>
@@ -200,18 +204,24 @@ export default function ListItem({ list }: ListItemProps) {
                       {manga.score}/10
                     </p>
                   </div>
-                  <div className="w-20 md:w-[120px] h-8 shadow-md rounded-md bg-zinc-800  flex items-center">
-                    <p className="mx-auto truncate md:text-clip text-center text-white">
-                      {manga.status}
+                  <div className="flex items-center">
+                    <div className="w-20 md:w-[120px] h-8 shadow-md rounded-md bg-zinc-800  flex items-center">
+                      <p className="mx-auto truncate md:text-clip text-center text-white">
+                        {manga.status}
+                      </p>
+                    </div>
+                    <p
+                      className="text-red-600 ml-4"
+                      onClick={() => handleRemoveMangaFromList(list.id, manga.id)}
+                    >
+                      <FaRegTrashCan />
                     </p>
                   </div>
+
                   {isModalOpen && currentManga && (
                     <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20">
                       <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
-                        <EditSavedMangaModal
-                          manga={currentManga}
-                          setIsModalOpen={setIsModalOpen}
-                        />
+                        <EditSavedMangaModal manga={currentManga} setIsModalOpen={setIsModalOpen} />
                       </div>
                     </div>
                   )}
@@ -220,9 +230,8 @@ export default function ListItem({ list }: ListItemProps) {
             })}
             <div className="w-full h-full">
               <p className="p-2 mx-auto w-full text-white italic">
-                * First choose what mangas you would like to add to your list,
-                then after you've saved those you press the "Add series to list"
-                button to add them to your list
+                * First choose what mangas you would like to add to your list, then after you've
+                saved those you press the "Add series to list" button to add them to your list
               </p>
               <div className="relative w-full gap-4 flex justify-evenly my-2">
                 <button
@@ -249,6 +258,7 @@ export default function ListItem({ list }: ListItemProps) {
                       setSelectedMangas={setSelectedMangas}
                       selectedMangas={selectedMangas}
                       handleCancel={handleCancel}
+                      mangasAlreadyInList={mangasAlreadyInList}
                     />
                   </div>
                 )}

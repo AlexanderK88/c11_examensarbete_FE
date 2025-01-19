@@ -66,7 +66,7 @@ export default function ListView() {
       </div>
       {lists &&
         lists.map((list) => {
-          return <ListItem list={list} />;
+          return <ListItem list={list} key={list.id} />;
         })}
       {modalVisible && (
         <div className="fixed inset-0 w-full h-full px-5 bg-black bg-opacity-50 z-50 flex justify-center items-center overflow-hidden">

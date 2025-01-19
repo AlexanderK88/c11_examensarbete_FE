@@ -31,7 +31,7 @@ export default function SearchInput({ setMangas }: SearchInputProps) {
       <input
         type="text"
         placeholder="Search series..."
-        className="text-black p-1 pl-3 border border-gray-300 rounded-md"
+        className="p-1 pl-3 border bg-black text-white border-gray-300 rounded-md"
         value={search}
         onChange={handleSearch}
       />

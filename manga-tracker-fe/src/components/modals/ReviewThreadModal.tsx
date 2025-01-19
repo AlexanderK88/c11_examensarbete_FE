@@ -24,8 +24,7 @@ export default function ReviewThreadModal({
   useEffect(() => {
     setComments(
       [...review.comments].sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       )
     );
   }, [review.comments]);
@@ -43,9 +42,7 @@ export default function ReviewThreadModal({
           // Update comments state with the new comment and re-sort
           setComments((prev) =>
             [...prev, newComment].sort(
-              (a, b) =>
-                new Date(a.createdAt).getTime() -
-                new Date(b.createdAt).getTime()
+              (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
             )
           );
           setShowThread(false);
@@ -70,18 +67,12 @@ export default function ReviewThreadModal({
   };
 
   return (
-    <div className="relative w-full min-h-[400px] max-w-[800px] flex flex-col bg-[#121212] p-4 rounded-lg shadow-lg">
+    <div className="relative w-full min-h-[360px] max-w-[800px] flex flex-col text-white bg-[#121212] p-4 rounded-lg shadow-lg">
       <div className="w-full flex flex-col">
         <div className="flex justify-between">
-          <h2 className="text-xl font-semibold text-purple-500 p-2">
-            {review?.username}
-          </h2>
-          <h3 className="text-xl font-semibold p-2">
-            Rating: {review.rating}/10
-          </h3>
-          <span className="text-md font-semibold p-3">
-            {handleTimeText(review.createdAt)}
-          </span>
+          <h2 className="text-xl font-semibold text-purple-500 p-2">{review?.username}</h2>
+          <h3 className="text-xl font-semibold p-2">Rating: {review.rating}/10</h3>
+          <span className="text-md font-semibold p-3">{handleTimeText(review.createdAt)}</span>
         </div>
         <div className="mb-2 p-2 border-zinc-800 rounded-md w-full min-h-20">
           <p className="text-white text-lg italic">
@@ -93,10 +84,7 @@ export default function ReviewThreadModal({
       <div className="overflow-y-scroll max-h-80 text-white mx-2 border-2 border-zinc-800">
         {comments &&
           comments.map((comment) => (
-            <div
-              className="pl-4 py-2 border-t border-zinc-800 "
-              key={comment.id}
-            >
+            <div className="pl-4 py-2 border-t border-zinc-800 " key={comment.id}>
               <div className="flex justify-between">
                 <p className="font-semibold">{comment.username}</p>
                 {comment.username === dbUser?.username && (

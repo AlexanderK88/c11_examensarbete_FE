@@ -25,10 +25,7 @@ export default function Individual() {
 
   const { data: savedMangas } = useFetchAllSavedMangas(dbUser?.id || "");
 
-  const { mutate: deleteSavedManga } = useDeleteSavedManga(
-    dbUser?.id || "",
-    id as string
-  );
+  const { mutate: deleteSavedManga } = useDeleteSavedManga(dbUser?.id || "", id as string);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -121,9 +118,7 @@ export default function Individual() {
                     </div>
                     <div className="mr-2">
                       <h3 className="text-sm right-0 text-white">Type</h3>
-                      <p className="text-md font-bold text-white">
-                        {manga?.type || "Unknown"}
-                      </p>
+                      <p className="text-md font-bold text-white">{manga?.type || "Unknown"}</p>
                     </div>
                   </div>
                   <div className="border rounded-md shadow-md p-1 flex gap-4 items-center">
@@ -134,9 +129,7 @@ export default function Individual() {
                     </div>
                     <div>
                       <h3 className="text-sm text-white">Chapters</h3>
-                      <p className="text-md font-bold text-white">
-                        {manga?.chapters ?? "Soon"}
-                      </p>
+                      <p className="text-md font-bold text-white">{manga?.chapters ?? "Soon"}</p>
                     </div>
                   </div>
                   <div className="border rounded-md shadow-md p-1 flex gap-4 items-center">
@@ -147,9 +140,7 @@ export default function Individual() {
                     </div>
                     <div>
                       <h3 className="text-sm text-white">Rating</h3>
-                      <p className="text-md font-bold text-white">
-                        {manga?.score ?? "No rating"}
-                      </p>
+                      <p className="text-md font-bold text-white">{manga?.score ?? "No rating"}</p>
                     </div>
                   </div>
                 </div>
@@ -177,9 +168,7 @@ export default function Individual() {
               <div className="flex flex-row justify-center h-full gap-10 mt-5">
                 <p
                   className={`h-full hover:border-b cursor-pointer border-purple-700 py-5 ${
-                    activeMenu === "overview"
-                      ? "border-b-2 border-purple-700"
-                      : ""
+                    activeMenu === "overview" ? "border-b-2 border-purple-700" : ""
                   }`}
                   onClick={() => handleActiveMenu("overview")}
                 >
@@ -187,27 +176,20 @@ export default function Individual() {
                 </p>
                 <p
                   className={`h-full hover:border-b cursor-pointer border-purple-700 py-5 ${
-                    activeMenu === "reviews"
-                      ? "border-b-2 border-purple-700"
-                      : ""
+                    activeMenu === "reviews" ? "border-b-2 border-purple-700" : ""
                   }`}
                   onClick={() => handleActiveMenu("reviews")}
                 >
                   Reviews
                 </p>
-                <p className="h-full hover:border-b border-purple-700 py-5">
+                <p className="h-full hover:border-b border-purple-700 py-5 text-gray-500">
                   Statistics
                 </p>
               </div>
               <div className="bg-stone-400 h-[1px] w-full mb-5"></div>
-              {activeMenu === "overview" && (
-                <SynopsisMobile synopsis={manga?.synopsis} />
-              )}
+              {activeMenu === "overview" && <SynopsisMobile synopsis={manga?.synopsis} />}
               {activeMenu === "reviews" && (
-                <ReviewMobile
-                  mangaid={id ? id : ""}
-                  userid={dbUser?.id ? dbUser.id : ""}
-                />
+                <ReviewMobile mangaid={id ? id : ""} userid={dbUser?.id ? dbUser.id : ""} />
               )}
             </div>
           </main>
@@ -243,9 +225,7 @@ export default function Individual() {
               <div className="flex flex-row gap-10 h-[55px] ml-5 left-[350px] bottom-0 absolute  text-white">
                 <p
                   className={`h-full hover:border-b-2 cursor-pointer hover:border-purple-700 py-5 ${
-                    activeMenu === "overview"
-                      ? "border-b-2 border-purple-700"
-                      : ""
+                    activeMenu === "overview" ? "border-b-2 border-purple-700" : ""
                   }`}
                   onClick={() => setActiveMenu("overview")}
                 >
@@ -253,15 +233,13 @@ export default function Individual() {
                 </p>
                 <p
                   className={`h-full hover:border-b-2 hover:border-purple-700 cursor-pointer py-5 ${
-                    activeMenu === "reviews"
-                      ? "border-b-2 border-purple-700"
-                      : ""
+                    activeMenu === "reviews" ? "border-b-2 border-purple-700" : ""
                   }`}
                   onClick={() => setActiveMenu("reviews")}
                 >
                   Reviews
                 </p>
-                <p className="h-full hover:border-b-2 py-5">Statistics</p>
+                <p className="h-full hover:border-b-2 py-5 text-gray-400">Statistics</p>
               </div>
             </div>
             <div className="flex w-full mt-[150px] px-6">
@@ -287,9 +265,7 @@ export default function Individual() {
                   </div>
                   <div>
                     <h3 className="text-sm text-white">Type</h3>
-                    <p className="text-md font-bold text-white">
-                      {manga?.type || "Unknown"}
-                    </p>
+                    <p className="text-md font-bold text-white">{manga?.type || "Unknown"}</p>
                   </div>
                 </div>
                 <div className="w-[256px] mx-auto border rounded-md shadow-md p-2 flex gap-4 items-center">
@@ -298,9 +274,7 @@ export default function Individual() {
                   </div>
                   <div>
                     <h3 className="text-sm text-white">Chapters</h3>
-                    <p className="text-md font-bold text-white">
-                      {manga?.chapters ?? "Soon"}
-                    </p>
+                    <p className="text-md font-bold text-white">{manga?.chapters ?? "Soon"}</p>
                   </div>
                 </div>
                 <div className="w-[256px] mx-auto border rounded-md shadow-md p-2 flex gap-4 items-center">
@@ -309,9 +283,7 @@ export default function Individual() {
                   </div>
                   <div>
                     <h3 className="text-sm text-white">Rating</h3>
-                    <p className="text-md font-bold text-white">
-                      {manga?.score ?? "No rating"}
-                    </p>
+                    <p className="text-md font-bold text-white">{manga?.score ?? "No rating"}</p>
                   </div>
                 </div>
                 <p className="mx-auto text-red-500  font-thin">REPORT ISSUE</p>
@@ -319,10 +291,7 @@ export default function Individual() {
 
               {activeMenu === "overview" && <SynopsisDesktop manga={manga} />}
               {activeMenu === "reviews" && (
-                <ReviewDesktop
-                  mangaid={id ? id : ""}
-                  userid={dbUser?.id ? dbUser.id : ""}
-                />
+                <ReviewDesktop mangaid={id ? id : ""} userid={dbUser?.id ? dbUser.id : ""} />
               )}
             </div>
           </main>

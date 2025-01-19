@@ -77,11 +77,8 @@ export default function Browse2() {
       <Header />
       <main className="min-h-screen bg-[#121212] text-white">
         <div className="bg-[#121212] py-4 px-0 sm:px-6  pt-10">
-          <div className="w-10/12 mx-auto flex flex-col lg:flex-row justify-between gap-6">
-            <SearchBar
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+          <div className="w-10/12 max-w-[1270px] mx-auto flex flex-col lg:flex-row justify-between gap-6">
+            <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
             <SortAndFilterControls
               sort={sort}
               sortDirection={sortDirection}
@@ -89,14 +86,10 @@ export default function Browse2() {
               dropdown2={dropdown2}
               onDropdown2Change={(e) => setDropdown2(e.target.value)}
               selectedTypes={selectedTypes}
-              onToggleTypeDropdown={() =>
-                setIsTypeDropdownOpen((prev) => !prev)
-              }
+              onToggleTypeDropdown={() => setIsTypeDropdownOpen((prev) => !prev)}
               onApplyTypes={handleApplyTypes}
               isTypeDropdownOpen={isTypeDropdownOpen}
-              onToggleGenreDropdown={() =>
-                setIsGenreDropdownOpen((prev) => !prev)
-              }
+              onToggleGenreDropdown={() => setIsGenreDropdownOpen((prev) => !prev)}
               onApplyGenre={handleApplyGenres}
               isGenreDropdownOpen={isGenreDropdownOpen}
             />

@@ -8,9 +8,7 @@ type Props = {
 };
 export default function MangaListItem({ manga }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [chapterStatus, setChapterStatus] = useState<string>(
-    `Chapter ${manga.chaptersRead}`
-  );
+  const [chapterStatus, setChapterStatus] = useState<string>(`Chapter ${manga.chaptersRead}`);
   useState<boolean>(false);
 
   useEffect(() => {
@@ -88,11 +86,8 @@ export default function MangaListItem({ manga }: Props) {
       </p>
       {isModalOpen && (
         <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
-            <EditSavedMangaModal
-              manga={manga}
-              setIsModalOpen={setIsModalOpen}
-            />
+          <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-[#121212] rounded-lg shadow-lg px-10 py-5">
+            <EditSavedMangaModal manga={manga} setIsModalOpen={setIsModalOpen} />
           </div>
         </div>
       )}

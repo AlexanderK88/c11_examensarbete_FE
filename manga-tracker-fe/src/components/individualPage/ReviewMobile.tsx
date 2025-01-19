@@ -82,19 +82,15 @@ const ReviewMobile = ({ mangaid, userid }: Props) => {
         {reviews &&
           reviews.length > 0 &&
           reviews.map((review: ReviewDto) => (
-            <div className="w-full mt-2 border-b-2 border-zinc-800">
+            <div className="w-full mt-2 border-b-2 border-zinc-800" key={review.reviewId}>
               <div className="relative w-full p-3">
                 <div className="w-full flex space-x-6 ml-3 items-center">
-                  <p className="text-white font-semibold">
-                    Rating: {review.rating}/10
-                  </p>
+                  <p className="text-white font-semibold">Rating: {review.rating}/10</p>
                   <p className="absolute right-6 text-purple-600 hover:text-purple-700 font-semibold">
                     {review.comments.length} comments
                   </p>
                 </div>
-                <p className="px-3 pt-3 text-purple-500 font-semibold">
-                  {review.username}
-                </p>
+                <p className="px-3 pt-3 text-purple-500 font-semibold">{review.username}</p>
                 <div className="w-full px-3 mt-2 max-h-32 ">
                   "{truncateLongReview(review.reviewText)}"
                 </div>

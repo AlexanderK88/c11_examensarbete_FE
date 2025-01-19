@@ -11,11 +11,7 @@ interface HighlightSliderProps {
   route: string;
 }
 
-export default function HighlightSlider({
-  title,
-  data,
-  route,
-}: HighlightSliderProps) {
+export default function HighlightSlider({ title, data, route }: HighlightSliderProps) {
   const navigate = useNavigate();
 
   const handleGoToBrowse = () => {
@@ -85,7 +81,7 @@ function NextArrow(props: any) {
   const { onClick } = props;
   return (
     <button
-      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white text-purple-500 border-2 border-purple-500 rounded-full shadow-lg p-1 text-3xl z-10"
+      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#121212] text-purple-500 border-2 border-purple-500 rounded-full shadow-lg p-1 text-3xl z-10"
       onClick={onClick}
       style={{ right: "-15px" }}
     >
@@ -98,7 +94,7 @@ function PrevArrow(props: any) {
   const { onClick } = props;
   return (
     <button
-      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white text-purple-500 border-2 border-purple-500 rounded-full shadow-lg p-1 text-3xl z-10"
+      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-[#121212] text-purple-500 border-2 border-purple-500 rounded-full shadow-lg p-1 text-3xl z-10"
       onClick={onClick}
       style={{ left: "-15px" }}
     >
