@@ -10,6 +10,7 @@ const SearchBar = ({
     placeholder="Search series..."
     className="w-full sm:w-10/12 mx-auto md:mt-auto md:h-10 lg:mx-0 lg:w-56 p-1 pl-4 border bg-black border-gray-300 rounded-md"
     value={value}
+    aria-label="Search series"
     onChange={onChange}
   />
 );

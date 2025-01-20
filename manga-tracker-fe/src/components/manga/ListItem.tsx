@@ -220,7 +220,7 @@ export default function ListItem({ list }: ListItemProps) {
 
                   {isModalOpen && currentManga && (
                     <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20">
-                      <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-white rounded-lg shadow-lg px-10 py-5">
+                      <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-[#121212] rounded-lg shadow-lg px-10 py-5">
                         <EditSavedMangaModal manga={currentManga} setIsModalOpen={setIsModalOpen} />
                       </div>
                     </div>

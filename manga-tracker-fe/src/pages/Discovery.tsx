@@ -6,30 +6,9 @@ import PersonalRecommendationSlider from "../components/manga/sliders/PersonalRe
 import { useSortedMangas, useMangasByGenre } from "../services/MangaService";
 
 export default function Discovery() {
-  const { data: newMangasData } = useSortedMangas(
-    15,
-    "publishedFrom",
-    "desc",
-    [],
-    "",
-    ""
-  );
-  const { data: highestRatedMangasData } = useSortedMangas(
-    15,
-    "score",
-    "desc",
-    [],
-    "",
-    ""
-  );
-  const { data: mostReadMangasData } = useSortedMangas(
-    15,
-    "popularity",
-    "asc",
-    [],
-    "",
-    ""
-  );
+  const { data: newMangasData } = useSortedMangas(15, "publishedFrom", "desc", [], "", "");
+  const { data: highestRatedMangasData } = useSortedMangas(15, "score", "desc", [], "", "");
+  const { data: mostReadMangasData } = useSortedMangas(15, "popularity", "asc", [], "", "");
   const { data: mostReadManhwasData } = useSortedMangas(
     15,
     "popularity",
@@ -55,8 +34,7 @@ export default function Discovery() {
     "New Releases": "/browse?sort=publishedFrom&sortDirection=desc",
     "Highest Rated": "/browse?sort=score&sortDirection=desc",
     "Most Read Mangas": "/browse?sort=popularity&sortDirection=asc",
-    "Most Read Manhwas":
-      "/browse?sort=popularity&sortDirection=asc&selectedTypes=Manhwa",
+    "Most Read Manhwas": "/browse?sort=popularity&sortDirection=asc&selectedTypes=Manhwa",
     "Popular Romance Series": "/browse?genre=Romance",
     "Popular Comedy Series": "/browse?genre=Comedy",
   };

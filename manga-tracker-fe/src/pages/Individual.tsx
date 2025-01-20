@@ -31,9 +31,14 @@ export default function Individual() {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleDelete = () => {
-    deleteSavedManga();
-    setIsSaved(false);
+  const handleDelete = async () => {
+    try {
+      await deleteSavedManga();
+      setIsSaved(false);
+    } catch (error) {
+      console.error("Failed to delete manga:", error);
+      alert("An error occurred while trying to delete the manga. Please try again.");
+    }
   };
 
   useEffect(() => {

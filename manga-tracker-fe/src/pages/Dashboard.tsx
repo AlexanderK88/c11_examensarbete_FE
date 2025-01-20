@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { useAuthContext } from "../provider/AuthProvider";
@@ -84,12 +85,12 @@ export default function Dashboard() {
               {mangas.length < 1 && (
                 <h2 className="font-sans text-gray-300 text-center">
                   No series has been saved, go to
-                  <a href="/discovery">
+                  <Link to="/discovery">
                     <span className="underlined font-semibold cursor-pointer hover:text-purple-700">
                       {" "}
                       Discovery{" "}
                     </span>{" "}
-                  </a>{" "}
+                  </Link>{" "}
                   to find some!
                 </h2>
               )}

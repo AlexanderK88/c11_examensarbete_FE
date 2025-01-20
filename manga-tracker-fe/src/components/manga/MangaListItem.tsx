@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { SaveMangaDto } from "../../services/SaveMangaService";
 import EditSavedMangaModal from "../modals/EditSavedMangaModal";
@@ -52,11 +53,11 @@ export default function MangaListItem({ manga }: Props) {
     <div className="w-full h-32 flex items-center p-4 border-purple-400 border-t-2">
       <div className="w-full mr-4">
         <div className="flex justify-between w-full">
-          <a href={`/manga/${manga.mangaid}`}>
+          <Link to={`/manga/${manga.mangaid}`}>
             <h3 className="truncate text-white max-w-52 sm:max-w-96 md:max-w-full font-semibold py-1">
               {manga.title}
             </h3>
-          </a>
+          </Link>
           <div
             className={`px-4 py-1 rounded-lg  shadow-md font-semibold text-center w-[127px] ${getStatusClass(
               manga.status

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { MangaDto } from "../../types/mangaTypes";
+import { Link } from "react-router-dom";
 
 export default function MangaModal({ mangas }: { mangas: MangaDto[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function MangaModal({ mangas }: { mangas: MangaDto[] }) {
             <h3 className="text-lg font-semibold mb-2">Search List</h3>
             <ul className="space-y-4">
               {mangas.map((manga, index) => (
-                <a href={`/manga/${manga.id}`} key={index}>
+                <Link to={`/manga/${manga.id}`} key={index}>
                   <li
                     key={index}
                     className="flex items-center space-x-4 hover:shadow-md rounded-md p-2"
@@ -29,7 +30,7 @@ export default function MangaModal({ mangas }: { mangas: MangaDto[] }) {
                     />
                     <span className="text-lg truncate">{manga.title}</span>
                   </li>
-                </a>
+                </Link>
               ))}
             </ul>
           </div>

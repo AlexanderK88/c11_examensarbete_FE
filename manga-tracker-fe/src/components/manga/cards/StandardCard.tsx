@@ -1,4 +1,5 @@
 import { MangaDto } from "../../../types/mangaTypes";
+import { Link } from "react-router-dom";
 
 interface StandardCardProps {
   manga: MangaDto;
@@ -6,8 +7,8 @@ interface StandardCardProps {
 
 export default function StandardCard({ manga }: StandardCardProps) {
   return (
-    <a
-      href={`manga/${manga.id}`}
+    <Link
+      to={`/manga/${manga.id}`}
       key={manga.id}
       className="mx-auto max-w-[215px] hover:cursor-default"
     >
@@ -23,6 +24,6 @@ export default function StandardCard({ manga }: StandardCardProps) {
           {manga.title}
         </h2>
       </div>
-    </a>
+    </Link>
   );
 }
