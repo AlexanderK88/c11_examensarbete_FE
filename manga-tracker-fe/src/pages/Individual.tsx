@@ -13,6 +13,8 @@ import SynopsisDesktop from "../components/individualPage/SynopsisDesktop";
 import SynopsisMobile from "../components/individualPage/SynopsisMobile";
 import ReviewMobile from "../components/individualPage/ReviewMobile";
 import ReviewDesktop from "../components/individualPage/ReviewDesktop";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Individual() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -31,13 +33,20 @@ export default function Individual() {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleDelete = async () => {
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    navigate(0); // React Router 6+ supports reloading the current route
+  };
+
+  const handleDelete = () => {
     try {
-      await deleteSavedManga();
+      deleteSavedManga();
       setIsSaved(false);
+      refreshPage();
     } catch (error) {
       console.error("Failed to delete manga:", error);
-      alert("An error occurred while trying to delete the manga. Please try again.");
+      toast.error("An error occurred while trying to delete the manga. Please try again.");
     }
   };
 

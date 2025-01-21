@@ -34,14 +34,14 @@ export default function SaveMangaModal({ manga, setIsModalOpen, setIsSaved }: Pr
         mangaid: manga.id,
         status: readingStatus || "reading",
         score: score || 8,
-        chaptersRead: selectedChapter ? parseInt(selectedChapter.split(" ")[1]) : 0,
+        chaptersRead: selectedChapter ? parseInt(selectedChapter.split(" ")[1]) : null,
         title: manga.title,
       },
       {
         onSuccess: () => {
-          toast.success("Manga saved successfully!");
           setIsSaved(true);
           setIsModalOpen(false);
+          refreshPage();
         },
         onError: (error: any) => {
           toast.error(`Failed to save the manga: ${error.message || "Unknown error"}`);

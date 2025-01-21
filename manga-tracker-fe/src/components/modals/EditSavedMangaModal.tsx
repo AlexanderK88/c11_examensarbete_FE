@@ -15,9 +15,9 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState<Boolean>(false);
   const [isScoreDropdownOpen, setIsScoreDropdownOpen] = useState<Boolean>(false);
-  const [selectedChapter, setSelectedChapter] = useState<string>("");
-  const [readingStatus, setReadingStatus] = useState<string>("");
-  const [score, setScore] = useState<number>(0);
+  const [selectedChapter, setSelectedChapter] = useState<number | null>(manga.chaptersRead);
+  const [readingStatus, setReadingStatus] = useState<string>(manga.status);
+  const [score, setScore] = useState<number>(manga.score);
 
   const { data: mangaData } = useMangaById(manga.mangaid.toString());
 
@@ -33,14 +33,14 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
       mangaid: manga.mangaid,
       status: readingStatus || "",
       score: score || 0,
-      chaptersRead: selectedChapter ? parseInt(selectedChapter.split(" ")[1]) : 0,
+      chaptersRead: selectedChapter,
       title: manga.title,
     });
     setIsModalOpen(false);
     refreshPage();
   };
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = (option: number) => {
     setSelectedChapter(option);
     setIsDropdownOpen(false);
   };
@@ -74,16 +74,13 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
   };
 
   const handleTextForChapter = () => {
-    if (manga.chaptersRead) {
-      return `Chapter ${manga.chaptersRead}`;
+    if (selectedChapter !== null && selectedChapter !== undefined) {
+      return `Chapter ${selectedChapter}`;
     }
-    if (selectedChapter == "" && !mangaData?.chapters) {
+    if (!mangaData?.chapters) {
       return "No chapters available";
-    } else if (selectedChapter == "") {
-      return "Choose chapter";
-    } else {
-      return selectedChapter;
     }
+    return "Choose chapter";
   };
 
   return (
@@ -112,7 +109,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
                       <li
                         key={i}
                         className="hover:bg-blue-600 p-1"
-                        onClick={() => handleOptionClick(`Chapter ${i}`)}
+                        onClick={() => handleOptionClick(i)}
                       >
                         {`Chapter ${i}`}
                       </li>
