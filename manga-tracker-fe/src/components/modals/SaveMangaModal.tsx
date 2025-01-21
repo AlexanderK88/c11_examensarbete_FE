@@ -3,13 +3,15 @@ import { useAuthContext } from "../../provider/AuthProvider";
 import { useState } from "react";
 import { MangaDto } from "../../types/mangaTypes";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type Props = {
   manga: MangaDto;
   setIsModalOpen: (isOpen: boolean) => void;
+  setIsSaved: (isOpen: boolean) => void;
 };
 
-export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
+export default function SaveMangaModal({ manga, setIsModalOpen, setIsSaved }: Props) {
   const { dbUser } = useAuthContext();
   const { mutate, isLoading, isError, isSuccess } = useSaveManga();
   const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
@@ -26,16 +28,26 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
   };
 
   const handleSave = () => {
-    mutate({
-      userid: dbUser ? parseInt(dbUser.id) : 0,
-      mangaid: manga.id,
-      status: readingStatus || "reading",
-      score: score || 8,
-      chaptersRead: selectedChapter ? parseInt(selectedChapter.split(" ")[1]) : 0,
-      title: manga.title,
-    });
-    setIsModalOpen(false);
-    refreshPage();
+    mutate(
+      {
+        userid: dbUser ? parseInt(dbUser.id) : 0,
+        mangaid: manga.id,
+        status: readingStatus || "reading",
+        score: score || 8,
+        chaptersRead: selectedChapter ? parseInt(selectedChapter.split(" ")[1]) : 0,
+        title: manga.title,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Manga saved successfully!");
+          setIsSaved(true);
+          setIsModalOpen(false);
+        },
+        onError: (error: any) => {
+          toast.error(`Failed to save the manga: ${error.message || "Unknown error"}`);
+        },
+      }
+    );
   };
 
   const handleOptionClick = (option: string) => {
@@ -83,7 +95,7 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
   };
 
   return (
-    <div className="h-[450px] flex flex-row p-6 py-10  bg-[#121212] rounded-md shadow-md text-white">
+    <div className="h-[450px] flex flex-row p-6 py-10 bg-[#121212] rounded-md shadow-md text-white">
       <div className="w-full">
         <h1 className="font-semibold text-2xl">{manga.title}</h1>
         <div className="w-full flex sm:flex-row mt-4">
@@ -91,7 +103,6 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
             className="hidden sm:block sm:mr-10 rounded-md shadow-md max-h-[300px]"
             src={manga.images[0].imageUrl}
           />
-
           <div className="w-full flex flex-col space-y-4 sm:justify-between">
             <div className="w-ful">
               <p className="font-semibold">Last Read Chapter</p>
@@ -107,7 +118,7 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
                     {Array.from({ length: manga.chapters || 0 }, (_, i) => i).map((i) => (
                       <li
                         key={i}
-                        className="hover:bg-gray-200 p-1"
+                        className="hover:bg-blue-600 p-1"
                         onClick={() => handleOptionClick(`Chapter ${i}`)}
                       >
                         {`Chapter ${i}`}
@@ -133,7 +144,7 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
                       (status) => (
                         <li
                           key={status}
-                          className="hover:bg-gray-200 p-1"
+                          className="hover:bg-blue-600 p-1"
                           onClick={() => handleStatusOptionClick(status)}
                         >
                           {status}
@@ -159,7 +170,7 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
                       <li
                         key={score}
-                        className="hover:bg-gray-200 p-1"
+                        className="hover:bg-blue-600 p-1"
                         onClick={() => handleScoreOptionClick(score)}
                       >
                         {score}
@@ -171,17 +182,15 @@ export default function SaveMangaModal({ manga, setIsModalOpen }: Props) {
             </div>
             <div className="w-full">
               <button
-                className="w-full p-2 bg-purple-600 rounded-md shadow-md text-white mb-2 mt-4 sm:my-0"
+                className="w-full p-2 font-semibold bg-purple-600 rounded-md shadow-md text-white mb-2 mt-4 sm:my-0"
                 onClick={handleSave}
                 disabled={isLoading}
               >
                 Save Manga
               </button>
               {isLoading && <p>Saving...</p>}
-              {isError && <p>Failed to save the manga.</p>}
-              {isSuccess && <p>Manga saved successfully!</p>}
               <button
-                className="text-red-500 text-xl  font-sans mt-3 cursor-pointer hover:text-red-600"
+                className="text-red-500 text-xl font-semibold font-sans mt-3 cursor-pointer hover:text-red-600"
                 onClick={() => setIsModalOpen(false)}
               >
                 Close

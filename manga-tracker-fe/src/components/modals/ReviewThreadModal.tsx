@@ -3,6 +3,7 @@ import { CommentDto, ReviewDto } from "../../types/mangaTypes";
 import { useAddComment, useDeleteComment } from "../../services/ReviewService";
 import { useAuthContext } from "../../provider/AuthProvider";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 interface ReviewThreadModalProps {
   review: ReviewDto;
@@ -30,7 +31,9 @@ export default function ReviewThreadModal({
   }, [review.comments]);
 
   const handleAddComment = (comment: string) => {
-    if (!comment.trim()) return;
+    if (!comment.trim()) {
+      toast.error("Comment has to include letters");
+    }
     addComment(
       {
         reviewId: review.reviewId,
@@ -39,15 +42,18 @@ export default function ReviewThreadModal({
       },
       {
         onSuccess: (newComment: CommentDto) => {
-          // Update comments state with the new comment and re-sort
           setComments((prev) =>
             [...prev, newComment].sort(
               (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
             )
           );
+          toast.success("Added comment successfully");
           setShowThread(false);
           setHasCommented(true);
-          setComment(""); // Clear input
+          setComment("");
+        },
+        onError: (error: any) => {
+          toast.error("Error creating comment " + error.message);
         },
       }
     );

@@ -111,7 +111,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
                     {Array.from({ length: mangaData?.chapters || 0 }, (_, i) => i).map((i) => (
                       <li
                         key={i}
-                        className="hover:bg-gray-200 p-1"
+                        className="hover:bg-blue-600 p-1"
                         onClick={() => handleOptionClick(`Chapter ${i}`)}
                       >
                         {`Chapter ${i}`}
@@ -137,7 +137,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
                       (status) => (
                         <li
                           key={status}
-                          className="hover:bg-gray-200 p-1"
+                          className="hover:bg-blue-600 p-1"
                           onClick={() => handleStatusOptionClick(status)}
                         >
                           {status}
@@ -163,7 +163,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
                       <li
                         key={score}
-                        className="hover:bg-gray-200 p-1"
+                        className="hover:bg-blue-600 p-1"
                         onClick={() => handleScoreOptionClick(score)}
                       >
                         {score}
@@ -175,7 +175,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
             </div>
             <div className="w-full">
               <button
-                className="w-full p-2 bg-purple-600 rounded-md shadow-md text-white mb-2 mt-4 sm:my-0"
+                className="w-full p-2 bg-purple-600 rounded-md font-semibold shadow-md text-white mb-2 mt-4 sm:my-0"
                 onClick={handleSave}
                 disabled={isLoading}
               >
@@ -188,7 +188,7 @@ export default function EditSavedMangaModal({ manga, setIsModalOpen }: Props) {
           </div>
         </div>
         <button
-          className="text-red-400 text-xl font-thin font-sans mt-3 cursor-pointer hover:text-red-500"
+          className="text-red-500 text-xl font-semibold font-sans mt-3 cursor-pointer hover:text-red-500"
           onClick={() => setIsModalOpen(false)}
         >
           Close

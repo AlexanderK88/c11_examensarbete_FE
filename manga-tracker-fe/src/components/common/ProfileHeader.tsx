@@ -28,7 +28,9 @@ export default function ProfileHeader() {
       <header className="w-full bg-black bg-opacity-25  shadow-sm relative z-20 h-16 px-4">
         <div className="flex justify-between h-full ">
           <div className="h-full flex items-center ">
-            <h1 className="text-purple-600 text-4xl font-bold font-sans">MV</h1>
+            <h1 className="text-white text-4xl font-bold font-sans">
+              <Link to="/dashboard">MangaVault</Link>
+            </h1>
           </div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">

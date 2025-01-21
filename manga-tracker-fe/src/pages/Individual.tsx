@@ -305,7 +305,7 @@ export default function Individual() {
       {isModalOpen && manga && (
         <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] rounded-lg shadow-lg px-10 py-5">
-            <SaveMangaModal manga={manga} setIsModalOpen={setIsModalOpen} />
+            <SaveMangaModal manga={manga} setIsModalOpen={setIsModalOpen} setIsSaved={setIsSaved} />
           </div>
         </div>
       )}

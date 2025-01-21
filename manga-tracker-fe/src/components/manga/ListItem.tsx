@@ -12,7 +12,7 @@ import EditSavedMangaModal from "../modals/EditSavedMangaModal";
 import { SaveMangaDto } from "../../services/SaveMangaService";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 type Status = "Reading" | "Completed" | "On Hold" | "Dropped" | "Plan to read";
 
 interface ListItemProps {
@@ -26,7 +26,7 @@ export default function ListItem({ list }: ListItemProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [sortedList, setSortedList] = useState<ListDtoWithId | null>(null);
   const { mutate: deleteList } = useDeleteList();
-  const { mutate: addMangaToList, isLoading, isError } = useAddMangaToList();
+  const { mutate: addMangaToList } = useAddMangaToList();
   const [mangasAlreadyInList, setMangasAlreadyInList] = useState<SaveMangaDto[]>([]);
   const { mutate: removeMangaFromList } = useRemoveMangaFromList();
 
@@ -139,8 +139,17 @@ export default function ListItem({ list }: ListItemProps) {
   };
 
   const handleRemoveMangaFromList = (listId: string, mangaId: number) => {
-    removeMangaFromList({ listId, mangaId });
-    refreshPage();
+    removeMangaFromList(
+      { listId, mangaId },
+      {
+        onSuccess: () => {
+          refreshPage();
+        },
+        onError: (error: any) => {
+          toast.error("Error removing series: " + error.message);
+        },
+      }
+    );
   };
   return (
     <>

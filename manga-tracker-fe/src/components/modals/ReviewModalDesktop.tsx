@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useAddReview } from "../../services/ReviewService";
+import { toast } from "react-toastify";
 
 interface Props {
   neededAttributes: {
@@ -18,18 +19,28 @@ export default function ReviewModalMobile({ neededAttributes }: Props) {
   const { userid, mangaId, setShowModal } = neededAttributes;
 
   const handleAddReview = () => {
-    if (!reviewText) {
+    if (!reviewText.trim()) {
       alert("Please write a review");
       return;
     }
-    mutate({
-      userId: Number(userid),
-      mangaId: mangaId,
-      rating: value,
-      spoiler: spoiler,
-      reviewText: reviewText,
-    });
-    setShowModal(false);
+    mutate(
+      {
+        userId: Number(userid),
+        mangaId: mangaId,
+        rating: value,
+        spoiler: spoiler,
+        reviewText: reviewText,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Review created successfully!");
+          setShowModal(false);
+        },
+        onError: (error: any) => {
+          toast.error("Error creating review: " + error.message);
+        },
+      }
+    );
   };
 
   const handleValueChangeUp = () => {
