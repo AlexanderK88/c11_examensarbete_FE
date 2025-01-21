@@ -65,7 +65,7 @@ const fetchAllSavedMangas = async (userId: string): Promise<MangaDto[]> => {
 };
 
 export const useFetchAllSavedMangas = (userId: string) => {
-  return useQuery(["savedMangas", userId], () => fetchAllSavedMangas(userId), {
+  return useQuery(["usersMangas", userId], () => fetchAllSavedMangas(userId), {
     retry: false,
     enabled: !!userId,
     onError: () => console.log("Failed to fetch saved mangas for user with id:", userId),
@@ -95,7 +95,7 @@ export const useDeleteSavedManga = (userId: string, mangaId: string) => {
   });
 };
 
-const fetchUsersSAvedMangas = async (userId: string): Promise<SaveMangaDto[]> => {
+const fetchUsersSavedMangas = async (userId: string): Promise<SaveMangaDto[]> => {
   try {
     const response = await axiosInstance.get(`/user/${userId}/savedmanga`);
     return response.data;
@@ -106,7 +106,7 @@ const fetchUsersSAvedMangas = async (userId: string): Promise<SaveMangaDto[]> =>
 };
 
 export const useFetchUsersSavedMangas = (userId: string) => {
-  return useQuery(["savedMangas", userId], () => fetchUsersSAvedMangas(userId), {
+  return useQuery(["savedMangas", userId], () => fetchUsersSavedMangas(userId), {
     retry: false,
     enabled: !!userId,
     onError: () => console.log("Failed to fetch saved mangas for user with id:", userId),

@@ -13,6 +13,8 @@ import { AuthProvider } from "./provider/AuthProvider";
 import ProtectedRoute from "./provider/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const queryClient = useMemo(
@@ -57,6 +59,15 @@ function App() {
               ))}
               <Route path="/" element={<Home />} />
             </Routes>
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              closeOnClick
+              pauseOnHover
+              draggable
+              theme="light"
+            />
           </main>
         </AuthProvider>
       </Router>

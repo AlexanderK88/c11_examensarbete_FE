@@ -34,7 +34,9 @@ export default function Header() {
     <>
       <header className="w-full bg-[#121212] text-white  shadow-md relative z-20 h-16 px-4 font-sans">
         <div className="flex justify-between h-full ">
-          <div className="h-full flex items-center text-3xl font-semibold ml-8">MangaVault</div>
+          <div className="h-full flex items-center text-3xl font-semibold ml-8">
+            <Link to="/dashboard">MangaVault</Link>
+          </div>
           <div className="flex flex-row align-center h-full">
             <div className="hidden md:flex items-center h-full mr-10">
               <nav className="h-full w-full font-semibold">

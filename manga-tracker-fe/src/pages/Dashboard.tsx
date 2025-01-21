@@ -31,6 +31,9 @@ export default function Dashboard() {
   const handleListView = () => {
     const newIsListView = !isListView;
     setIsListView(newIsListView);
+    if (newIsListView == true) {
+      setIsFilterModalVisible(false);
+    }
     localStorage.setItem("isListView", JSON.stringify(newIsListView));
   };
 
@@ -65,11 +68,13 @@ export default function Dashboard() {
             </h4>
           </div>
           <div className="w-full">
-            <div className="absolute right-4 top-[20px] max-w-44 border-2 rounded-lg py-[8px] border-gray-200 flex flex-col items-center">
-              <div className="flex justify-between cursor-pointer" onClick={toggleFilterModal}>
-                <h3 className="text-xl ml-10 font-semibold text-white">Filters</h3>
-                <IoIosArrowDown className="text-2xl text-white mt-1 mr-10" />
-              </div>
+            <div className="absolute right-4 top-[20px] max-w-44  rounded-lg py-[8px]  flex flex-col items-center">
+              {!isListView && (
+                <div className="flex justify-between cursor-pointer" onClick={toggleFilterModal}>
+                  <h3 className="text-xl ml-10 font-semibold text-white">Filters</h3>
+                  <IoIosArrowDown className="text-2xl text-white mt-1 mr-10" />
+                </div>
+              )}
             </div>
             <div className="mt-[90px] w-full">
               {isFilterModalVisible && data && (
