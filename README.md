@@ -1,10 +1,5 @@
 # c11_examensarbete_FE
 
-
-Here’s the **Installation & Setup** section tailored for your **frontend repository**:
-
----
-
 ## 🛠 Frontend Installation & Setup  
 
 ### **Step 1: Clone the Repository**  
