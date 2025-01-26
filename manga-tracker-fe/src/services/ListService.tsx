@@ -21,7 +21,8 @@ const createNewList = async (list: ListDto): Promise<ListDto> => {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Creation failed: ${error.message}`);
@@ -37,16 +38,17 @@ export const useCreateNewList = () => {
   });
 };
 
-const fetchAllLists = async (userId: string): Promise<ListDtoWithId[]> => {
+const fetchAllLists = async (): Promise<ListDtoWithId[]> => {
   try {
-    console.log("Fetching all lists for user with id:", userId);
-    const response = await axiosInstance.get(`/user/${userId}/lists`);
+    console.log("Fetching all lists for user with id:");
+    const response = await axiosInstance.get(`/user/lists`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Fetch failed: ${error.message}`);
@@ -56,15 +58,17 @@ const fetchAllLists = async (userId: string): Promise<ListDtoWithId[]> => {
   }
 };
 
-export const useFetchAllLists = (userId: string) => {
-  return useQuery(["lists", userId], () => fetchAllLists(userId), {
+export const useFetchAllLists = () => {
+  return useQuery(["lists"], () => fetchAllLists(), {
     retry: false,
-    enabled: !!userId,
-    onError: () => console.log("Failed to fetch lists for user with id:", userId),
+    onError: () => console.log("Failed to fetch lists for user with id:"),
   });
 };
 
-const addMangaToList = async (listId: string, mangaIds: number[]): Promise<void> => {
+const addMangaToList = async (
+  listId: string,
+  mangaIds: number[]
+): Promise<void> => {
   try {
     console.log("Adding manga with id:", mangaIds, "to list with id:", listId);
     await axiosInstance.post(`/user/list/add/${listId}`, mangaIds);
@@ -72,7 +76,8 @@ const addMangaToList = async (listId: string, mangaIds: number[]): Promise<void>
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Add failed: ${error.message}`);
@@ -102,7 +107,8 @@ const deleteList = async (listId: string): Promise<void> => {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Delete failed: ${error.message}`);
@@ -123,7 +129,10 @@ interface RemoveMangaProps {
   listId: string;
 }
 
-const removeMangaFromList = async ({ mangaId, listId }: RemoveMangaProps): Promise<void> => {
+const removeMangaFromList = async ({
+  mangaId,
+  listId,
+}: RemoveMangaProps): Promise<void> => {
   try {
     console.log("removing manga with id " + mangaId + " from list " + listId);
     await axiosInstance.delete(`/user/list/${listId}/${mangaId}`);
@@ -131,7 +140,8 @@ const removeMangaFromList = async ({ mangaId, listId }: RemoveMangaProps): Promi
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Delete failed: ${error.message}`);

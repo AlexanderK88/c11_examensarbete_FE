@@ -9,17 +9,19 @@ import StandardCard from "../components/manga/cards/StandardCard";
 import StandardCardSkeleton from "../components/skeleton/StandardCardSkeleton";
 import FilterModalProfile from "../components/modals/FilterModalProfile";
 import { MangaDto } from "../types/mangaTypes";
+import UserAddInfoModal from "../components/modals/UserAddInfoModal";
 
 export default function Profile() {
   const { dbUser } = useAuthContext();
   const [isLibrary, setIsLibrary] = useState<boolean>(true);
   const [mangas, setMangas] = useState<MangaDto[]>([]);
-  const [isFilterModalVisible, setIsFilterModalVisible] = useState<boolean>(false);
+  const [isFilterModalVisible, setIsFilterModalVisible] =
+    useState<boolean>(false);
 
   if (!dbUser) {
     return null;
   }
-  const { data, isError, isLoading } = useFetchAllSavedMangas(dbUser.id);
+  const { data, isError, isLoading } = useFetchAllSavedMangas();
 
   useEffect(() => {
     if (data && JSON.stringify(mangas) !== JSON.stringify(data)) {
@@ -33,6 +35,16 @@ export default function Profile() {
 
   const toggleFilterModal = () => {
     setIsFilterModalVisible((prev) => !prev);
+  };
+
+  const handleUserInfoModal = () => {
+    if (!dbUser.username || !dbUser.email) {
+      return true;
+    } else if (dbUser.username == null && dbUser.email == null) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -51,7 +63,11 @@ export default function Profile() {
               {dbUser?.username}
             </p>
             <p className="text-center text-gray-500 max-w-[100px]">
-              Joined {dbUser?.createdAt ? formatDistanceToNow(new Date(dbUser.createdAt)) : ""} ago
+              Joined{" "}
+              {dbUser?.createdAt
+                ? formatDistanceToNow(new Date(dbUser.createdAt))
+                : ""}{" "}
+              ago
             </p>
           </div>
 
@@ -80,7 +96,10 @@ export default function Profile() {
         </div>
         <div></div>
         <div className="w-full h-full h-min-screen mt-[140px] border-t-2 border-b-2 py-4 border-zinc-800 flex flex-col items-center">
-          <div className="w-full flex justify-between cursor-pointer" onClick={toggleFilterModal}>
+          <div
+            className="w-full flex justify-between cursor-pointer"
+            onClick={toggleFilterModal}
+          >
             <h3 className="text-xl ml-10 font-semibold text-white">Filters</h3>
             <IoIosArrowDown className="text-2xl mt-1 text-white mr-10" />
           </div>
@@ -111,8 +130,18 @@ export default function Profile() {
         )}
 
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
-          {data && mangas.map((manga) => <StandardCard manga={manga} key={manga.id} />)}
+          {data &&
+            mangas.map((manga) => (
+              <StandardCard manga={manga} key={manga.id} />
+            ))}
         </div>
+        {handleUserInfoModal() && (
+          <div className="w-full fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out">
+            <div className="w-[400px] sm:w-[600px] w-max-[400px] sm:w-max-[600px] bg-[#121212] rounded-lg shadow-lg px-10 py-5">
+              <UserAddInfoModal />
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </>

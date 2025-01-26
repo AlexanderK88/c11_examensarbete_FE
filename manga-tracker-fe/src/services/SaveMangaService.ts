@@ -30,7 +30,8 @@ const saveManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Save failed: ${error.message}`);
@@ -46,15 +47,16 @@ export const useSaveManga = () => {
   });
 };
 
-const fetchAllSavedMangas = async (userId: string): Promise<MangaDto[]> => {
+const fetchAllSavedMangas = async (): Promise<MangaDto[]> => {
   try {
-    const response = await axiosInstance.get(`/user/${userId}/mangas`);
+    const response = await axiosInstance.get(`/user/mangas`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Fetch failed: ${error.message}`);
@@ -64,22 +66,23 @@ const fetchAllSavedMangas = async (userId: string): Promise<MangaDto[]> => {
   }
 };
 
-export const useFetchAllSavedMangas = (userId: string) => {
-  return useQuery(["usersMangas", userId], () => fetchAllSavedMangas(userId), {
+export const useFetchAllSavedMangas = () => {
+  return useQuery(["usersMangas"], () => fetchAllSavedMangas(), {
     retry: false,
-    enabled: !!userId,
-    onError: () => console.log("Failed to fetch saved mangas for user with id:", userId),
+    onError: () =>
+      console.log("Failed to fetch saved mangas for user with id:"),
   });
 };
 
-const deleteSavedManga = async (userId: string, mangaId: string): Promise<void> => {
+const deleteSavedManga = async (mangaId: string): Promise<void> => {
   try {
-    await axiosInstance.delete(`/user/manga/${mangaId}/${userId}`);
+    await axiosInstance.delete(`/user/manga/${mangaId}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Delete failed: ${error.message}`);
@@ -89,15 +92,15 @@ const deleteSavedManga = async (userId: string, mangaId: string): Promise<void> 
   }
 };
 
-export const useDeleteSavedManga = (userId: string, mangaId: string) => {
-  return useMutation(() => deleteSavedManga(userId, mangaId), {
+export const useDeleteSavedManga = (mangaId: string) => {
+  return useMutation(() => deleteSavedManga(mangaId), {
     onError: () => console.log("Failed to delete saved manga"),
   });
 };
 
-const fetchUsersSavedMangas = async (userId: string): Promise<SaveMangaDto[]> => {
+const fetchUsersSavedMangas = async (): Promise<SaveMangaDto[]> => {
   try {
-    const response = await axiosInstance.get(`/user/${userId}/savedmanga`);
+    const response = await axiosInstance.get(`/user/savedmanga`);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch saved mangas:", error);
@@ -105,11 +108,11 @@ const fetchUsersSavedMangas = async (userId: string): Promise<SaveMangaDto[]> =>
   }
 };
 
-export const useFetchUsersSavedMangas = (userId: string) => {
-  return useQuery(["savedMangas", userId], () => fetchUsersSavedMangas(userId), {
+export const useFetchUsersSavedMangas = () => {
+  return useQuery(["savedMangas"], () => fetchUsersSavedMangas(), {
     retry: false,
-    enabled: !!userId,
-    onError: () => console.log("Failed to fetch saved mangas for user with id:", userId),
+    onError: () =>
+      console.log("Failed to fetch saved mangas for user with id:"),
   });
 };
 
@@ -121,7 +124,8 @@ const updateSavedManga = async (manga: SaveMangaDto): Promise<SaveMangaDto> => {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || `Failed with status ${error.response?.status}`
+        error.response?.data?.message ||
+          `Failed with status ${error.response?.status}`
       );
     } else if (error instanceof Error) {
       throw new Error(`Update failed: ${error.message}`);
