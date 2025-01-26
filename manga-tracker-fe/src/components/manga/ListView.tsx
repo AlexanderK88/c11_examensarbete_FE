@@ -2,27 +2,11 @@ import { useState, useEffect } from "react";
 import CreateListModalDashboard from "../modals/CreateListModalDashboard";
 import ListItem from "./ListItem";
 import { useFetchAllLists } from "../../services/ListService";
-import { useAuthContext } from "../../provider/AuthProvider";
 type Status = "Reading" | "Completed" | "On-Hold" | "Dropped" | "Plan to Read";
-
-const testStatuses: Status[] = [
-  "Reading",
-  "Reading",
-  "Reading", // 3 items
-  "Completed",
-  "Completed", // 2 items
-  "On-Hold", // 1 item
-  "Dropped",
-  "Dropped",
-  "Dropped",
-  "Dropped", // 4 items
-  "Plan to Read", // 1 item
-];
 
 export default function ListView() {
   const [modalVisible, setModalVisible] = useState<Boolean>(false);
-  const { dbUser } = useAuthContext();
-  const { data: lists } = useFetchAllLists(dbUser?.id || "");
+  const { data: lists } = useFetchAllLists();
 
   const handleModalVisibility = () => {
     if (!modalVisible) {
