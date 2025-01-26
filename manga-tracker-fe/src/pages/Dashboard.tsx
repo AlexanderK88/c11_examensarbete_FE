@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { useAuthContext } from "../provider/AuthProvider";
-import { SaveMangaDto, useFetchUsersSavedMangas } from "../services/SaveMangaService";
+import {
+  SaveMangaDto,
+  useFetchUsersSavedMangas,
+  useFetchAllSavedMangas,
+} from "../services/SaveMangaService";
 import FilterForDashboard from "../components/modals/FilterForDashboard";
 import { IoIosArrowDown } from "react-icons/io";
 import MangaListItem from "../components/manga/MangaListItem";
 import ListView from "../components/manga/ListView";
+import { MangaDto } from "../types/mangaTypes";
 
 export default function Dashboard() {
   const [isListView, setIsListView] = useState<boolean>(() =>
@@ -15,16 +20,21 @@ export default function Dashboard() {
   );
   const { dbUser } = useAuthContext();
   const [mangas, setMangas] = useState<SaveMangaDto[]>([]);
+  const [savedMangas, setSavedMangas] = useState<MangaDto[]>([]);
   const [isFilterModalVisible, setIsFilterModalVisible] = useState<boolean>(false);
 
   if (!dbUser) {
     return null;
   }
   const { data, error, isLoading } = useFetchUsersSavedMangas(dbUser.id);
+  const { data: fullSavedMangas } = useFetchAllSavedMangas(dbUser.id);
 
   useEffect(() => {
     if (data) {
       setMangas(data);
+    }
+    if (fullSavedMangas) {
+      setSavedMangas(fullSavedMangas);
     }
   }, [data]);
 
@@ -99,7 +109,14 @@ export default function Dashboard() {
                   to find some!
                 </h2>
               )}
-              {mangas && mangas.map((manga) => <MangaListItem manga={manga} key={manga.mangaid} />)}
+              {mangas &&
+                mangas.map((manga) => (
+                  <MangaListItem
+                    manga={manga}
+                    key={manga.mangaid}
+                    savedManga={savedMangas.find((x) => x.id == manga.mangaid) || ({} as MangaDto)}
+                  />
+                ))}
             </div>
           )}
           {isListView && <ListView />}

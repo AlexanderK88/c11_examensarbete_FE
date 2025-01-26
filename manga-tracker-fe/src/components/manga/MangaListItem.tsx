@@ -3,18 +3,22 @@ import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { SaveMangaDto } from "../../services/SaveMangaService";
 import EditSavedMangaModal from "../modals/EditSavedMangaModal";
+import { MangaDto } from "../../types/mangaTypes";
 
 type Props = {
   manga: SaveMangaDto;
+  savedManga: MangaDto;
 };
-export default function MangaListItem({ manga }: Props) {
+export default function MangaListItem({ manga, savedManga }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [chapterStatus, setChapterStatus] = useState<string>(`Chapter ${manga.chaptersRead}`);
   useState<boolean>(false);
 
   useEffect(() => {
-    if (manga.chaptersRead === 0) {
+    if (!manga.chaptersRead && !savedManga.chapters) {
       setChapterStatus("No chapters available");
+    } else if (!manga.chaptersRead) {
+      setChapterStatus("No chapters read");
     }
   }, [manga.status, manga.chaptersRead]);
 

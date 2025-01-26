@@ -8,7 +8,7 @@ export interface SaveMangaDto {
   mangaid: number;
   status: string;
   score: number;
-  chaptersRead: number;
+  chaptersRead: number | null;
   title: string;
 }
 
@@ -18,7 +18,7 @@ export interface SaveMangaDtoWithId {
   mangaid: number;
   status: string;
   score: number;
-  chaptersRead: number;
+  chaptersRead: number | null;
   title: string;
 }
 
