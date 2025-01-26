@@ -1,82 +1,118 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useSortedMangas } from "../services/MangaService";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
-import StandardCard from "../components/manga/cards/StandardCard";
-import { useMangas } from "../services/MangaService";
+import SearchBar from "../components/browseComponents/SearchBar";
+import SortAndFilterControls from "../components/browseComponents/SortAndFilterControls";
+import InfiniteScrollContent from "../components/browseComponents/InfiniteScrollComponent";
 
-export default function Browse() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [dropdown1, setDropdown1] = useState("");
+export default function Browse2() {
+  const [sort, setSort] = useState("popularity");
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [search, setSearch] = useState("");
+  const [searchParams] = useSearchParams();
   const [dropdown2, setDropdown2] = useState("");
 
-  const { data, error } = useMangas();
+  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+  const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const { data, error, fetchNextPage, hasNextPage } = useSortedMangas(
+    21,
+    sort,
+    sortDirection,
+    selectedTypes,
+    selectedGenre,
+    search
+  );
+
+  const handleApplyTypes = (types: string[]) => {
+    setSelectedTypes(types);
+  };
+
+  const handleApplyGenres = (genre: string) => {
+    setSelectedGenre(genre);
+  };
+
+  const handleSortChange = (e: any) => {
+    const value = e.target.value;
+    if (value === "popularity") {
+      setSortDirection("asc");
+      setSort(value);
+    }
+    if (value === "score") {
+      setSortDirection("desc");
+      setSort(value);
+    }
+    if (value === "publishedFrom") {
+      setSortDirection("desc");
+      setSort(value);
+    }
+    if (value === "chapters") {
+      setSortDirection("desc");
+      setSort(value);
+    }
+  };
+
+  useEffect(() => {
+    if (searchParams.has("sort") && searchParams.has("sortDirection")) {
+      setSort(searchParams.get("sort") || "popularity");
+      setSortDirection(searchParams.get("sortDirection") || "asc");
+    }
+    if (searchParams.has("selectedTypes")) {
+      setSelectedTypes([searchParams.get("selectedTypes") || ""]);
+    }
+    if (searchParams.has("genre")) {
+      setSelectedGenre(searchParams.get("genre") || "");
+    }
+  }, [searchParams]);
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-[#121212] text-white">
+        <h1 className="text-3xl font-semibold text-red-500 mb-4">Oops! Something went wrong.</h1>
+        <p className="text-lg text-gray-300 mb-6">
+          We encountered an error while loading the data. Please try again later.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200"
+        >
+          Retry
+        </button>
+      </div>
+    );
   }
-
-  const handleSearchChange = (e: any) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleDropdown1Change = (e: any) => {
-    setDropdown1(e.target.value);
-  };
-
-  const handleDropdown2Change = (e: any) => {
-    setDropdown2(e.target.value);
-  };
 
   return (
     <>
       <Header />
-      <main className="min-h-screen">
-        <div className="w-10/12 lg:w-11/12 mt-40 p-4 mx-auto flex flex-col md:flex-row justify-between">
-          <input
-            type="text"
-            placeholder="Search"
-            className="w-10/12 mx-auto md:mt-auto md:h-10 lg:mx-0 lg:w-56 p-1 border border-gray-300 rounded-md lg:ml-4"
-          />
-          <div className=" mt-4 md:mt-0 md:ml-4 w-10/12 lg:w-3/4 xl:w-2/4 mx-auto lg:mx-0 flex flex-col lg:flex-row  gap-4">
-            <div className="w-full mx-auto flex gap-6 md:gap-4 items-center md:justify-end">
-              <button className="w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none">
-                Type
-              </button>
-              <button className="w-2/4 px-4 py-2 border-2 border-dashed border-gray-400 rounded-md hover:bg-gray-100 lg:w-24 focus:outline-none">
-                Tags
-              </button>
-            </div>
-            <div className="w-full mx-auto flex gap-6 md:gap-4 items-center">
-              <select
-                value={dropdown1}
-                onChange={handleDropdown1Change}
-                className="w-2/4 p-2 border lg:max-w-48 border-gray-300 rounded-md"
-              >
-                <option value="">Newest</option>
-                <option value="option1">Longest</option>
-                <option value="option2">Popularity</option>
-                <option value="option3">Highest rated</option>
-              </select>
-              <select
-                value={dropdown2}
-                onChange={handleDropdown2Change}
-                className="w-2/4 lg:max-w-48  p-2 border border-gray-300 rounded-md lg:mr-4"
-              >
-                <option value="">Release period</option>
-                <option value="option1">This month</option>
-                <option value="option2">This year</option>
-                <option value="option3">All time</option>
-              </select>
-            </div>
+      <main className="min-h-screen bg-[#121212] text-white">
+        <div className="bg-[#121212] py-4 px-0 sm:px-6  pt-10">
+          <div className="w-10/12 max-w-[1270px] mx-auto flex flex-col lg:flex-row justify-between gap-6">
+            <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
+            <SortAndFilterControls
+              sort={sort}
+              sortDirection={sortDirection}
+              onSortChange={handleSortChange}
+              dropdown2={dropdown2}
+              onDropdown2Change={(e) => setDropdown2(e.target.value)}
+              selectedTypes={selectedTypes}
+              onToggleTypeDropdown={() => setIsTypeDropdownOpen((prev) => !prev)}
+              onApplyTypes={handleApplyTypes}
+              isTypeDropdownOpen={isTypeDropdownOpen}
+              onToggleGenreDropdown={() => setIsGenreDropdownOpen((prev) => !prev)}
+              onApplyGenre={handleApplyGenres}
+              isGenreDropdownOpen={isGenreDropdownOpen}
+            />
           </div>
         </div>
-        <div className="w-11/12 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-4">
-          {data ? (
-            data.map((manga) => <StandardCard key={manga.id} manga={manga} />)
-          ) : (
-            <div>No data available</div>
-          )}
-        </div>
+        <InfiniteScrollContent
+          data={data}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage ?? false}
+        />
       </main>
       <Footer />
     </>
