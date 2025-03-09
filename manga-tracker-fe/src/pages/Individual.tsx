@@ -25,9 +25,9 @@ export default function Individual() {
   const { id } = useParams();
   const { data: manga, isLoading, error } = useMangaById(id as string);
 
-  const { data: savedMangas } = useFetchAllSavedMangas(dbUser?.id || "");
+  const { data: savedMangas } = useFetchAllSavedMangas();
 
-  const { mutate: deleteSavedManga } = useDeleteSavedManga(dbUser?.id || "", id as string);
+  const { mutate: deleteSavedManga } = useDeleteSavedManga(id as string);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);

@@ -26,8 +26,8 @@ export default function Dashboard() {
   if (!dbUser) {
     return null;
   }
-  const { data, error, isLoading } = useFetchUsersSavedMangas(dbUser.id);
-  const { data: fullSavedMangas } = useFetchAllSavedMangas(dbUser.id);
+  const { data, error, isLoading } = useFetchUsersSavedMangas();
+  const { data: fullSavedMangas } = useFetchAllSavedMangas();
 
   useEffect(() => {
     if (data) {
